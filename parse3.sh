@@ -127,11 +127,11 @@ postit() {
             fbstring=$(printf " -auto-submit https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
             gplusstring=$(printf " -auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
 		fi
-		echo "WOULD POST::"
-		echo "$tweetstring"
-		echo "$tootstring"
-		echo "$fbstring"
-        echo "$gplusstring"
+#		echo "WOULD POST::"
+#		echo "$tweetstring"
+#		echo "$tootstring"
+#		echo "$fbstring"
+#       echo "$gplusstring"
         
         ThisPostText=$(echo "$ThisPostDir/posting.txt")
         touch "$ThisPostText"
@@ -240,11 +240,9 @@ pull_feeds () {
 		# NEED TO CHECK HERE SO THAT IF SOMEONE LEAVES IT OFF...
 		@CON*)     
             CONTENTWARNING=$(echo "$line" | awk -F '@CON=' '{print $2}')
-            echo "$CONTENTWARNING"
         ;;
 		@FEED*)
             FEED=$(echo "$line" | awk -F '@FEED=' '{print $2}')
-			echo "$FEED"
             curl -s --max-time 10 "$FEED" | xml2 | sed 's|/feed/entry/||' > "$TEMPRSS"
 			parse_feeds
 			rm "$TEMPRSS"
@@ -264,4 +262,3 @@ initialize
 pull_feeds
 
 #Clean
-rmdir "$TEMPDIR"
