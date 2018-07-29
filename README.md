@@ -44,8 +44,9 @@ of a virtual enviroment is encouraged for `toot`, at least, but is not required.
 In this archive are two files - `tweet.py` and `tweet.patch` - that require a 
 little explanation. I did not need the full functionality of twython-tools, 
 and in fact, had a bit of a problem getting the gpg encoding of my app keys 
-to work. Further, the functionality I *did* want - posting an image to Twitter 
-- was always *interactive* when I wanted to enter the file on the command line. 
+to work. Further, the functionality I *did* want, that is posting an 
+image to Twitter, was always *interactive* when I wanted to enter the 
+file on the command line. 
 
 So I (thank you Apache2 license) ripped out the authentication portions and 
 hardcoded them, ripped out all the interactive bits, and remade the Twython-tools 
