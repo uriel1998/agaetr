@@ -97,15 +97,15 @@ postit() {
 		if [ -z "$TEMPIMG" ];then
 			# post without image
 			poststring=$(echo "$TITLE $PERMLINK")
-			tweetstring=$(printf "--message \"%s  %s\"" "$TITLE" "$PERMLINK")
-            if [ ! -z "$CONTENTWARNING"];then
+			tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK")
+            if [ ! -z "$CONTENTWARNING" ];then
                 tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\"" "$CONTENTWARNING" "$TITLE" "$PERMLINK")
             else
                 tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK")
             fi
             #not sure if -remote will work with pexpect
-            fbstring=$(printf "-auto-submit https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
-            gplusstring=$(printf "-auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
+            fbstring=$(printf " -auto-submit https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
+            gplusstring=$(printf " -auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
 		else
 			# post with image
             
@@ -121,17 +121,17 @@ postit() {
             else
                 tootstring=$(printf "post \"%s  %s\" --media %s" "$TITLE" "$PERMLINK" "$TEMPIMG2")
             fi
-            if [ "$SENSITIVE" -gt 0 ];then 
+            if [ "$SENSITIVE" == 1 ];then 
                 tootstring=$(printf "%s --sensitive" "$tootstring")
             fi
             fbstring=$(printf " -auto-submit https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
             gplusstring=$(printf " -auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
 		fi
-#		echo "WOULD POST::"
-#		echo "$tweetstring"
-#		echo "$tootstring"
-#		echo "$fbstring"
-#        echo "$gplusstring"
+		echo "WOULD POST::"
+		echo "$tweetstring"
+		echo "$tootstring"
+		echo "$fbstring"
+        echo "$gplusstring"
         
         ThisPostText=$(echo "$ThisPostDir/posting.txt")
         touch "$ThisPostText"
@@ -220,7 +220,10 @@ parse_feeds (){
 				fi
 				;;
 			esac
+            					
 	done < "$TEMPRSS"
+    postit
+					COMPOSING=0
 }
 
 ########################################################################
@@ -232,11 +235,17 @@ pull_feeds () {
 
 	while read -r line; do
         case $line in 
-		@SEN*) SENSITIVE=1;;
+		@SEN*) SENSITIVE=1
+        ;;
 		# NEED TO CHECK HERE SO THAT IF SOMEONE LEAVES IT OFF...
-		@CON=*) CONTENTWARNING=$(echo "$line" | awk -F '@CON=' '{print $2}');;
-		http*)
-			curl -s --max-time 10 "$line" | xml2 | sed 's|/feed/entry/||' > "$TEMPRSS"
+		@CON*)     
+            CONTENTWARNING=$(echo "$line" | awk -F '@CON=' '{print $2}')
+            echo "$CONTENTWARNING"
+        ;;
+		@FEED*)
+            FEED=$(echo "$line" | awk -F '@FEED=' '{print $2}')
+			echo "$FEED"
+            curl -s --max-time 10 "$FEED" | xml2 | sed 's|/feed/entry/||' > "$TEMPRSS"
 			parse_feeds
 			rm "$TEMPRSS"
             SENSITIVE=0

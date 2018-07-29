@@ -1,0 +1,37 @@
+<?xml  version="1.0" encoding="UTF-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>political</title>
+  <subtitle>Shaared links</subtitle>
+  
+    <updated>2018-07-29T09:28:35-04:00</updated>
+  
+  <link rel="self" href="https://stevesaus.me/shaarli-2/?do=atom" />
+  
+  <author>
+    <name>https://stevesaus.me/shaarli-2/</name>
+    <uri>https://stevesaus.me/shaarli-2/</uri>
+  </author>
+  <id>https://stevesaus.me/shaarli-2/</id>
+  <generator>Shaarli</generator>
+  
+    <entry>
+      <title>Twelve Times Trump Suprised The Pentagon</title>
+      
+        <link href="http://thehill.com/policy/defense/399288-twelve-times-trump-surprised-the-pentagon" />
+      
+      <id>https://stevesaus.me/shaarli-2/?D5-tww</id>
+      
+        <published>2018-07-29T09:28:35-04:00</published>
+        <updated>2018-07-29T09:28:35-04:00</updated>
+      
+      <content type="html" xml:lang="en"><![CDATA[
+<br>&#8212; <a href="https://stevesaus.me/shaarli-2/?D5-tww" title="Permalink">Permalink</a>]]></content>
+      
+        <category scheme="https://stevesaus.me/shaarli-2/?searchtags=" term="politics" label="politics" />
+      
+        <category scheme="https://stevesaus.me/shaarli-2/?searchtags=" term="trump" label="trump" />
+      
+      
+    </entry>
+  
+</feed>

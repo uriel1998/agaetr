@@ -1,6 +1,6 @@
-http://feeds.dlvr.it/7ff3a9f9def74078842acd7f0c7bd9a8.xml
-@CON="Political"
-http://feeds.dlvr.it/7ff3a9f9def74078842acd7f0c7bd9a8.xml
+@FEED=https://ideatrash.net/feed
+@CON=News
+@FEED=http://feeds2.feedburner.com/time/topstories
 @SEN
-@CON="NSFW"
-http://feeds.dlvr.it/7ff3a9f9def74078842acd7f0c7bd9a8.xml
+@CON=NSFW
+@FEED=http://www.tinynibbles.com/feed

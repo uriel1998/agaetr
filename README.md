@@ -8,11 +8,13 @@ when those are available.
 Intended for *single user* use, as personal logins, cookies, and API keys
 are required.
 
+Currently works well with feeds from [dlvr.it](https://dlvrit.com/) 
+and [shaarli](https://github.com/shaarli/Shaarli) instances. Will 
+probably work fine with other well-formed RSS/Atom feeds. *Probably.*
+
 * TODO - to make twitter thing not have API keys in open
 * TODO - work with less standardized RSS, duh.
-* TODO - Does twitter have a real way to mark media PER TWEET like Mastodon?
-* MAYBE: https://thenextweb.com/twitter/2011/07/29/twitter-plans-to-add-an-nsfw-flag-for-sensitive-tweets/
-* TODO: Picture only for certain feeds (like for comics, etc)	
+* TODO - Have the tags from shaarli be used for content warning text
 	
 # Requirements
 
@@ -96,15 +98,15 @@ line in the configuration file.
 This file is simply parsed from the top to the bottom. Only three line beginnings
 matter here:
 
-* @CON
+* @CON=Content Warning Text
 * @SEN
-* http
+* @FEED=http://link.to.feed
 
 The first two are entirely option (and separately toggleable, as seen in the 
 example).  If @SEN exists, all images processed from that feed will have the
 "sensitive" tag on Mastodon. If @CON exists, everything after the equals sign 
 will be the content warning descriptor for Mastodon. (See the example file). 
-Finally, any line starting with http should be an ATOM/RSS feed which will be
+Finally, any line starting with @FEED should be an ATOM/RSS feed which will be
 processed.
 
 # Usage
