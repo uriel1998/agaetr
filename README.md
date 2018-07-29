@@ -26,6 +26,7 @@ probably work fine with other well-formed RSS/Atom feeds. *Probably.*
 
 AND (these are probably already installed or easily available from your package manager/distro)
 
+* [uuidgen](https://www.systutorials.com/docs/linux/man/1-uuidgen/)
 * [wget](https://www.gnu.org/software/wget/)
 * [awk](http://www.gnu.org/software/gawk/manual/gawk.html)
 * [grep](http://en.wikipedia.org/wiki/Grep)

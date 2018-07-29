@@ -86,12 +86,11 @@ postit() {
 		# Remember sensitive and CW.  CW is a string
 
         #Caching the result and image
-        bob=$(date +"%Y%m%d%H%M%s")
-
+        uuid=$(uuidgen -r)
+        bob=$(echo "$TDSTAMP-$uuid")
         ThisPostDir="$CACHEDIR/$bob"
         mkdir "$ThisPostDir"       
         ToEncodeString=$(echo "$ENCODER $PERMLINK")
-#        EncodedUrl=$(eval "$ToEncodeString")
         EncodedUrl=$($ENCODER "$PERMLINK")
  
 		if [ -z "$TEMPIMG" ];then
@@ -108,7 +107,6 @@ postit() {
             gplusstring=$(printf " -auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
 		else
 			# post with image
-            
             imgname=$(basename "$TEMPIMG")
             cpstring="$TEMPIMG $ThisPostDir"
             out=$(eval cp "$cpstring")
@@ -167,6 +165,11 @@ parse_feeds (){
 				#strip url off title if it is there 
 				COMPOSING=1
 			;;
+            updated* )
+                DateSTAMP=$(echo "$line" | awk -F 'updated=' '{print $2}' | awk -F 'T' '{print $1}')
+                TimeSTAMP=$(echo "$line" | awk -F 'updated=' '{print $2}' | awk -F 'T' '{print $2}' | awk -F '-' '{print $1}')
+                TDSTAMP=$(date --date="$DateSTAMP $TimeSTAMP" +"%Y%m%d%H%M%s")
+            ;;
 			link/@href* ) 
 				testurl=$(echo "$line" | awk -F 'link/@href=' '{print $2}')
 				expand
