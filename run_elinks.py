@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-'''This demonstrates an FTP "bookmark". This connects to an ftp site; does a
-few ftp stuff; and then gives the user interactive control over the session. In
-this case the "bookmark" is to a directory on the OpenBSD ftp server. It puts
-you in the i386 packages directory. You can easily modify this for other sites.
+'''
 
 PEXPECT LICENSE
 
@@ -28,6 +25,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import argparse
 import pexpect
 import sys
 import time
@@ -41,12 +39,27 @@ KEY_ESCAPE = '\x1b'
 KEY_BACKSPACE = '\x7f'
 KEY_ENTER = '\x1b[13'
 
+parser = argparse.ArgumentParser(add_help=False)
+parser.add_argument('-e','--execute', action='store',dest='execute', type=str, nargs='+')
+parser.add_argument('-c', '--command', action='store',dest='command', type=str, nargs='+')
+parser.add_argument('-u', '--url', action='store', dest='url', type=str)
+args = parser.parse_args()
+
+#exe = str(args.execute)
+#url = str(args.url)
+#command = str(args.command)  
+#exe = args.execute
+url = args.url
+#command = args.command  
+
+print (url)
 # Note that, for Python 3 compatibility reasons, we are using spawnu and
 # importing unicode_literals (above). spawnu accepts Unicode input and
 # unicode_literals makes all string literals in this script Unicode by default.
-child = pexpect.spawnu('elinks -auto-submit https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fideatrash.net')
+#child = pexpect.spawnu(exe + ' -' + command + ' ' + url)
+child = pexpect.spawnu('./browser.sh ' + url)
 
-print ('waiting for python.org to load')
+print ('Waiting for it to load...')
 child.expect ('Warning')
 time.sleep(0.1)
 child.sendline(KEY_ENTER)  # "the requested fragment doesn't exist ... but it did post."

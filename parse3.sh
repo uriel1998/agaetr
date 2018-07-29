@@ -103,8 +103,8 @@ postit() {
                 tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK")
             fi
             #not sure if -remote will work with pexpect
-            fbstring=$(printf " -auto-submit https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
-            gplusstring=$(printf " -auto-submit https://plus.google.com/share?url=%s" "$EncodedUrl")
+            fbstring=$(printf " -c auto-submit -u https://www.facebook.com/sharer/sharer.php?u=%s" "$EncodedUrl")
+            gplusstring=$(printf " -c auto-submit -u https://plus.google.com/share?url=%s" "$EncodedUrl")
 		else
 			# post with image
             imgname=$(basename "$TEMPIMG")

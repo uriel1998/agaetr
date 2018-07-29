@@ -15,6 +15,8 @@ probably work fine with other well-formed RSS/Atom feeds. *Probably.*
 * TODO - to make twitter thing not have API keys in open
 * TODO - work with less standardized RSS, duh.
 * TODO - Have the tags from shaarli be used for content warning text
+* TODO - Actually get the FB and G+ posting working automatically
+* TODO - test the sending
 	
 # Requirements
 
@@ -63,13 +65,17 @@ Usage is `tweet.py --message "Thing to tweet" --file /path/to/file/to/tweet`.
 
 * Posting to Facebook, Google Plus, etc
 
+## IMPORTANT NOTE: 
+These do not work great (if at all) yet; you might want to put `FALSE`
+in the appropriate sections of the configuration
+
 Due to crappy API restrictions, there isn't a real programmatic way to 
 post to these services. However, this is *linux* so, dammit, there is. 
 We are going to get around this by the use of `elinks` and the `pexpect` 
 python library.
 
 Prior to use, you will need to use elinks and to log in to Facebook 
-(use [http://m.facebook.com] ) and to [the main Google page](http://www.google.com).
+(use [the mobile site](http://m.facebook.com) ) and to [the main Google page](http://www.google.com).
 By default, elinks saves cookies, so you should be good there. 
 
 ## Configuration Files
@@ -115,6 +121,10 @@ processed.
 * Run `parse3.sh` on a semi-regular basis (e.g. a cron job)
 * Run `send.sh` on a semi-regular basis (e.g. a cron job)
 * Profit.
+
+Items are sent on a first _published_ first out, so slapping as many feeds
+into this as you like will still result in the first published articles 
+being shared first.
 
 # Credits and where a lot of this started
 
