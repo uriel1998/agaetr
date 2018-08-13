@@ -57,11 +57,12 @@ print (url)
 # importing unicode_literals (above). spawnu accepts Unicode input and
 # unicode_literals makes all string literals in this script Unicode by default.
 #child = pexpect.spawnu(exe + ' -' + command + ' ' + url)
-child = pexpect.spawnu('./browser.sh ' + url)
-
+child = pexpect.spawnu('./browser.sh' + ' ' + url)
+child.logfile = open("/tmp/mylog", "w")
 print ('Waiting for it to load...')
-child.expect ('Warning')
-time.sleep(0.1)
+#child.expect ('Warning')
+time.sleep(1)
+child.send("\r")
 child.sendline(KEY_ENTER)  # "the requested fragment doesn't exist ... but it did post."
 print ('quitting')
 child.sendline('q')
