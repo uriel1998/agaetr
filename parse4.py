@@ -1,0 +1,195 @@
+#!/usr/bin/python3
+
+#https://alvinalexander.com/python/python-script-read-rss-feeds-database
+#super props
+
+import feedparser
+import time
+from subprocess import check_output
+import sys
+import json
+from bs4 import BeautifulSoup
+from pprint import pprint
+import configparser
+import os
+from os.path import expanduser
+from appdirs import *
+from pathlib import Path
+import shutil
+
+########################################################################
+# Defining configuration locations and such
+########################################################################
+
+appname = "rss_social"
+appauthor = "Steven Saus"
+#Where to store data, duh
+datadir = user_data_dir(appname)
+cachedir = user_cache_dir(appname)
+configdir = user_config_dir(appname)
+if not os.path.isdir(datadir):
+    os.makedirs(user_data_dir(appname))
+#local cache
+if not os.path.isdir(cachedir):
+    os.makedirs(user_cache_dir(appname))
+#YUP
+if not os.path.isdir(configdir):
+    os.makedirs(user_config_dir(appname))
+ini = configdir+'/rss_social.ini'
+db = datadir+'/posts.db'
+tmp = cachedir+'/posts.db'
+Path(db).touch()
+Path(tmp).touch()
+########################################################################
+# Have we already posted this? (our "db" is a flat file, btw)
+########################################################################
+def post_is_in_db(title):
+    with open(db, 'r') as database:
+        for line in database:
+            if title in line:
+                return True
+    return False
+
+########################################################################
+# Parsing that feed!
+########################################################################
+def parse_that_feed(url,sensitive,CW,GCW):
+
+    feed = feedparser.parse(url)
+
+    for post in feed.entries:
+
+        # if post is already in the database, skip it
+        # TODO check the time
+
+        title = post.title
+        itemurl = post.link
+        date_parsed = post.published_parsed
+        date_published = post.published
+        thetime=time.strftime("%Y%m%d%H%M%S",date_parsed)
+        if not post_is_in_db(title):      
+            f = open(db, 'a')
+
+            #tags = post.tags
+            tags = []
+            if GCW:
+                tags.append('%s' % str.lower(GCW))
+            i = 0
+            while i < len(post.tags):
+                if "uncategorized" not in (str.lower(post.tags[i]['term'])):
+                    if "onetime" not in (str.lower(post.tags[i]['term'])):
+                    #print(post.tags[i]['term'])
+                        tags.append('%s' % str.lower(post.tags[i]['term']))
+                i += 1
+
+            #Do we always have CW on this feed?
+            if CW == "no":
+                cwmarker = 0
+            else:
+                cwmarker = 1
+
+            for d in tags:
+                if d in ContentWarningString:
+                    cwmarker += 1
+
+            # double checking with title as well
+            bob = str.lower((', '.join(tags)) + ' ' + post.title)
+            for d in ContentWarningString.split():
+                if d in bob:
+                    cwmarker += 1
+                    tags.append('%s' % str.lower(d))
+                    
+
+            #if cwmarker > 0:
+            #    print("cw: " + str.lower(', '.join(tags)))
+            #print(tags)
+            imgalt=None
+            imgurl=None
+            # Look for image in media content first
+            if 'media_content' in post:
+                mediaContent=post.media_content
+                for item in post.media_content:
+                    amgurl = item['url'].split('?')
+                    if amgurl[0].endswith("jpg"):
+                        imgurl = amgurl[0]
+                        imgalt = post.title
+                        break
+            else:
+                # Finding image in the html
+                soup = BeautifulSoup((post.content[0]['value']), 'html.parser')
+                imgtag = soup.find("img")
+
+                # checking for tracking images
+                if soup.find("img"):
+                    if imgtag.has_attr('width'):
+                        if (int(imgtag['width']) > 2):    
+                            imgurl = imgtag['src']
+                            # seeing if there's an alt title for accessibility
+                            if imgtag.has_attr('alt'):
+                                imgalt = imgtag['alt']
+                            else: 
+                                if imgtag.has_attr('title'):
+                                    imgalt = imgtag['title']
+                                else:    
+                                    imgalt = None
+                            #checking for empty strings
+                            imgalt = imgalt.strip()
+                            if not imgalt:
+                                imgalt = post.title
+                               
+        #put post in db?
+        #how bring down img? at posting time?
+            print("Adding " + post.title)
+            #print(post.link)
+            if cwmarker > 0:
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "\n")
+            else:
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "\n")
+            #print(thetime)
+            
+            f.close
+        else:
+            print("We've already got one")
+    return
+
+
+########################################################################
+# Read ini section
+########################################################################
+
+config = configparser.ConfigParser()
+config.read(ini)
+sections=config.sections()
+
+########################################################################
+# Begin loop over feedlist
+########################################################################
+ContentWarningList = config['DEFAULT']['filters']
+ContentWarningString = str.lower(config['DEFAULT']['filters'])
+for x in sections:
+    if "feed" in (str.lower(x)):
+        feed=config[x]['url']
+        feed_sensitive=config[x]['sensitive']
+        feed_CW=config[x]['ContentWarning']
+        feed_GlobalCW=config[x]['GlobalCW']
+        parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW)
+        #sort the db file
+        
+        lines = open(db, 'r').readlines()
+        out = open(tmp, 'w')
+        for line in sorted(lines, key=lambda line: line.split()[0]):
+            out.write(line)
+        out.close
+        shutil.copyfile(tmp,db)
+exit()
+
+
+# super first - check the url against our "db"
+# first, check the dict of tags against a list
+# determine if sensitive and/or CW based on user preference
+#   Options - by keyword (title, tags)
+#           - always
+#           - never
+# second, create a cachedir (because we need that picture)
+# third, write the posting strings and the image to the cachedir
+            # TODO: Take out null tags like overnight and uncategorized

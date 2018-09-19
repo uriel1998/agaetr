@@ -1,0 +1,12 @@
+GlobalCW implies that there is CW
+
+CW list is a suggestion list, not something that is mandatorily applied
+Because it's based off matching, "abuse" should catch "child abuse" and "sexual abuse", etc.
+
+
+python requirements
+
+appdirs  https://pypi.org/project/appdirs/
+configparser
+beautiful soup
+feedparser

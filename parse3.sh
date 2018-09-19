@@ -247,6 +247,9 @@ pull_feeds () {
 		@FEED*)
             FEED=$(echo "$line" | awk -F '@FEED=' '{print $2}')
             curl -s --max-time 10 "$FEED" | xml2 | sed 's|/feed/entry/||' > "$TEMPRSS"
+            #cat "$TEMPRSS"
+            #echo "$FEED"
+            #sleep 10
 			parse_feeds
 			rm "$TEMPRSS"
             SENSITIVE=0
