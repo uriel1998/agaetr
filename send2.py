@@ -75,15 +75,22 @@ def parse_that_line(dataline):
     wget.download(lineimgurl, lineimgloc) 
     if not os.path.isfile(lineimgloc):
         # post without image
+        tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
         if linecw is None:
-            tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK")
-
-            tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK")
-        else
-            tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\"" "$CONTENTWARNING" "$TITLE" "$PERMLINK")
-			tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK")
-
-    
+            tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
+        else:
+            tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\"" "$CONTENTWARNING" "$TITLE" "$PERMLINK" "$HASHTAGS")
+    else:
+		tweetstring=$(printf " --message \"%s  %s\" --file %s" "$TITLE" "$PERMLINK" "$HASHTAGS" "$TEMPIMG2")
+           if [ ! -z "$CONTENTWARNING" ];then
+                tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\" --media %s" "$CONTENTWARNING" "$TITLE" "$PERMLINK" "$TEMPIMG2")
+            else
+                tootstring=$(printf "post \"%s  %s\" --media %s" "$TITLE" "$PERMLINK" "$TEMPIMG2")
+            fi
+            if [ "$SENSITIVE" == 1 ];then 
+                tootstring=$(printf "%s --sensitive" "$tootstring")
+            fi
+     
     
     
     #if CW == "no":
