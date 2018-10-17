@@ -5,6 +5,7 @@
 
 import feedparser
 import time
+import string
 from subprocess import check_output
 import sys
 import json
@@ -35,9 +36,10 @@ if not os.path.isdir(cachedir):
 #YUP
 if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
-ini = configdir+'/rss_social.ini'
-db = datadir+'/posts.db'
-tmp = cachedir+'/posts.db'
+ini = os.path.join(configdir,'rss_social.ini')
+db = os.path.join(datadir,'posts.db')
+tmp = os.path.join(cachedir,'posts.db')
+
 Path(db).touch()
 Path(tmp).touch()
 ########################################################################
@@ -72,14 +74,25 @@ def parse_that_feed(url,sensitive,CW,GCW):
 
             #tags = post.tags
             tags = []
+            hashtags = []
+            i = 0
+            while i < len(post.tags):
+                if "uncategorized" not in (str.lower(post.tags[i]['term'])):
+                    if "onetime" not in (str.lower(post.tags[i]['term'])):
+                        if "overnight" not in (str.lower(post.tags[i]['term'])):
+                            if "post" not in (str.lower(post.tags[i]['term'])):
+                                hashtags.append('#%s' % str.lower(post.tags[i]['term']))
+                i += 1
+
             if GCW:
                 tags.append('%s' % str.lower(GCW))
             i = 0
             while i < len(post.tags):
                 if "uncategorized" not in (str.lower(post.tags[i]['term'])):
                     if "onetime" not in (str.lower(post.tags[i]['term'])):
-                    #print(post.tags[i]['term'])
-                        tags.append('%s' % str.lower(post.tags[i]['term']))
+                        if "overnight" not in (str.lower(post.tags[i]['term'])):
+                            if "post" not in (str.lower(post.tags[i]['term'])):
+                                tags.append('%s' % str.lower(post.tags[i]['term']))
                 i += 1
 
             #Do we always have CW on this feed?
@@ -141,10 +154,12 @@ def parse_that_feed(url,sensitive,CW,GCW):
         #how bring down img? at posting time?
             print("Adding " + post.title)
             #print(post.link)
+            #print (str.lower(''.join(hashtags))
+            
             if cwmarker > 0:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "\n")
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "\n")
             else:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "\n")
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "\n")
             #print(thetime)
             
             f.close
@@ -173,14 +188,20 @@ for x in sections:
         feed_CW=config[x]['ContentWarning']
         feed_GlobalCW=config[x]['GlobalCW']
         parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW)
-        #sort the db file
-        
-        lines = open(db, 'r').readlines()
-        out = open(tmp, 'w')
-        for line in sorted(lines, key=lambda line: line.split()[0]):
-            out.write(line)
-        out.close
-        shutil.copyfile(tmp,db)
+
+
+
+shutil.copyfile(db,tmp)
+
+infile = open(tmp,'r')
+lines = infile.readlines()
+infile.close
+out = open(db, 'w')
+for line in sorted(lines, key=lambda line: line.split()[0]):
+    out.write(line)
+out.close
+os.remove(tmp)
+
 exit()
 
 
