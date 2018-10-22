@@ -75,6 +75,8 @@ def parse_that_line(dataline):
     wget.download(lineimgurl, lineimgloc) 
     if not os.path.isfile(lineimgloc):
         # post without image
+        
+        ###THIS IS FROM THE BASH VERSION I NEED TO CHANGE IT
         tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
         if linecw is None:
             tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
