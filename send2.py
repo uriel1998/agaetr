@@ -67,47 +67,57 @@ def parse_that_line(dataline):
     
     linetime,linetitle,linelink,linecw,lineimgalt,lineimgurl,linehashtags = dataline.split("|")
 
+    print('Building base args for posters')
+    tweetlist = []
+    tweetlist.append('--tweet "')
+    tweetlist.append(linetitle)
+    tweetlist.append(' ')
+    tweetlist.append(linelink)
+    tweetlist.append(' ')       
+    tweetlist.append(linehashtags)
+    tweetlist.append('"')
+
+    mastolist = []
+    mastolist.append('post ')
+    if linecw is not None:
+        mastolist.append('--spoiler-text "')
+        mastolist.append(linecw)
+        mastolist.append('" ')
+    mastolist.append('"')
+    mastolist.append(linetitle)
+    mastolist.append(' ')
+    mastolist.append(linelink)
+    mastolist.append(' ')
+    mastolist.append(linehashtags)
+    mastolist.append('"')
+    
     #getting image
-    a = urlparse.urlparse(lineimgurl)
+    a = urlparse(lineimgurl)
     imgfilename = os.path.basename(a.path)
     lineimgloc = os.path.join(cachedir,imgfilename)
     print('Beginning file download with wget module')
     wget.download(lineimgurl, lineimgloc) 
-    if not os.path.isfile(lineimgloc):
-        # post without image
-        
+    if os.path.isfile(lineimgloc):
+        tweetlist.append(' --file ')
+        tweetlist.append(lineimgloc)
+        mastolist.append(' --media ')
+        mastolist.append(lineimgloc)
+        if linecw is not None:
+            mastolist.append(' --sensitive')
+    tweetstring = ''.join(tweetlist)
+    tootstring = ''.join(mastolist)
+    print(tweetstring)
+    print(tootstring)       
+#        subprocess.call(['ls','--message','-a'])
         ###THIS IS FROM THE BASH VERSION I NEED TO CHANGE IT
-        tweetstring=$(printf " --message \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
-        if linecw is None:
-            tootstring=$(printf "post \"%s  %s\"" "$TITLE" "$PERMLINK" "$HASHTAGS")
-        else:
-            tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\"" "$CONTENTWARNING" "$TITLE" "$PERMLINK" "$HASHTAGS")
-    else:
-		tweetstring=$(printf " --message \"%s  %s\" --file %s" "$TITLE" "$PERMLINK" "$HASHTAGS" "$TEMPIMG2")
-           if [ ! -z "$CONTENTWARNING" ];then
-                tootstring=$(printf "post --spoiler-text \"%s\" \"%s  %s\" --media %s" "$CONTENTWARNING" "$TITLE" "$PERMLINK" "$TEMPIMG2")
-            else
-                tootstring=$(printf "post \"%s  %s\" --media %s" "$TITLE" "$PERMLINK" "$TEMPIMG2")
-            fi
-            if [ "$SENSITIVE" == 1 ];then 
-                tootstring=$(printf "%s --sensitive" "$tootstring")
-            fi
-     
     
-    
-    #if CW == "no":
-    
-    
-    
-    
-    #what posting services are configured?
-    #run posting services
-
+ 
 ########################################################################
 # Begin loop over feedlist
 ########################################################################
 
 Loops = config['DEFAULT']['ArticlesPerRun']
+Loops = int(Loops)
 LoopsPerformed = 0
 
 # Open the file with read only permit
@@ -130,87 +140,7 @@ while line:
 f.close()
 out.close()
 
-
-##########################
-#BASH VERSION HERE
-##########################
-
-initialize () {
-	TEMPFILE=$(mktemp)
-    TEMPDIR=$(mktemp -d)
-	
-	if [ -f "$HOME/.config/rss_social.rc" ];then
-		readarray -t line < "$HOME/.config/rss_social.rc"
-		TOOTCLI=${line[0]}
-		TWEETCLI=${line[1]}
-        FBCLI=${line[2]}
-        GPLUSCLI=${line[3]}
-		RSSFEEDS=${line[4]}
-		CACHEDIR=${line[5]}
-		SENDNUM=${line[6]}        
-        ENCODER=${line[7]}   
-	else
-		echo "Configuration file not set up properly."
-		exit
-	fi
-
-    CACHEFILE=$(echo "$CACHEDIR/urls")
-
-}
-
-# for directories in cachedir
-# get the posting.txt file (tempimg, if it exists, will be encoded)
-# read the posting.txt file - first line is tweet second tood
-# maybe use an array there?
-# execute the programs
-
-NUMSENT=0
-
-# Might have an option for sorted or random later, but for right now...
-# Getting the cache dirs in numerical order (e.g. first in first out)
-# The first line will actually be the base dir but won't have the 
-# appropriate file, so it'll skip
-find "$CACHEDIR" -maxdepth 1 -type d -exec echo {} \; | sort > "$TEMPFILE"
-
-while read -r d; do
-    if [ -d "$d" ]; then
-        if [ -f "$d/posting.txt" ];then
-            readarray -t line < "$d/posting.txt"
-            ToToot=${line[0]}
-            ToTweet=${line[1]}
-            ToFB=${line[2]}
-            ToGPlus=${line[3]}
-        
-            if [ -z "$ToToot" ];then
-                SocialString=$(echo "$TOOTCLI $ToToot")
-                output=$(eval "$SocialString")
-                echo "$output"
-            fi
-            if [ -z "$ToTweet" ];then
-                SocialString=$(echo "$TWEETTCLI $ToTweet")
-                output=$(eval "$SocialString")
-                echo "$output"
-            fi
-            if [ -z "$ToFB" ];then
-                SocialString=$(echo "$FBCLI $ToFB")
-                output=$(eval "$SocialString")
-                echo "$output"
-            fi
-            ((NUMSENT++))
-            rm -rf "$d"
-        else
-            echo "Not a post file"
-        fi   
-
-        
-        if [ "$NUMSENT" -ge "$SENDNUM" ];then
-            exit
-        fi
-    fi
-	done < "$TEMPFILE"
-}
-
 #Clean
 
-rm -rf "$TEMPDIR"
-rm "$TEMPFILE"
+#rm -rf "$TEMPDIR"
+#rm "$TEMPFILE"
