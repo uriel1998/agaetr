@@ -124,6 +124,7 @@ LoopsPerformed = 0
 f = open(db)
 while LoopsPerformed < Loops:
     line = f.readline()
+    line = line.rstrip()
     LoopsPerformed += 1
     #this goes to the posting bit
     parse_that_line(line)
