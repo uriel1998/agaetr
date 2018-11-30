@@ -108,6 +108,8 @@ def parse_that_line(dataline):
     tootstring = ''.join(mastolist)
     print(tweetstring)
     print(tootstring)       
+
+######### STill have to do this, mate
 #        subprocess.call(['ls','--message','-a'])
         ###THIS IS FROM THE BASH VERSION I NEED TO CHANGE IT
     # DO NOT FORGET TO CLEAN UP THE IMAGE HERE

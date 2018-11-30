@@ -71,30 +71,31 @@ def parse_that_feed(url,sensitive,CW,GCW):
         thetime=time.strftime("%Y%m%d%H%M%S",date_parsed)
         if not post_is_in_db(title):      
             f = open(db, 'a')
-
-            #tags = post.tags
             tags = []
             hashtags = []
-            i = 0
-            while i < len(post.tags):
-                if "uncategorized" not in (str.lower(post.tags[i]['term'])):
-                    if "onetime" not in (str.lower(post.tags[i]['term'])):
-                        if "overnight" not in (str.lower(post.tags[i]['term'])):
-                            if "post" not in (str.lower(post.tags[i]['term'])):
-                                hashtags.append('#%s' % str.lower(post.tags[i]['term']))
-                i += 1
 
-            if GCW:
-                tags.append('%s' % str.lower(GCW))
-            i = 0
-            while i < len(post.tags):
-                if "uncategorized" not in (str.lower(post.tags[i]['term'])):
-                    if "onetime" not in (str.lower(post.tags[i]['term'])):
-                        if "overnight" not in (str.lower(post.tags[i]['term'])):
-                            if "post" not in (str.lower(post.tags[i]['term'])):
-                                if (str.lower(post.tags[i]['term'])) not in tags: 
-                                    tags.append('%s' % str.lower(post.tags[i]['term']))
-                i += 1
+            if hasattr(post, 'tags'):
+                i = 0
+
+                while i < len(post.tags):
+                    if "uncategorized" not in (str.lower(post.tags[i]['term'])):
+                        if "onetime" not in (str.lower(post.tags[i]['term'])):
+                            if "overnight" not in (str.lower(post.tags[i]['term'])):
+                                if "post" not in (str.lower(post.tags[i]['term'])):
+                                    hashtags.append('#%s' % str.lower(post.tags[i]['term']))
+                    i += 1
+
+                if GCW:
+                    tags.append('%s' % str.lower(GCW))
+                i = 0
+                while i < len(post.tags):
+                    if "uncategorized" not in (str.lower(post.tags[i]['term'])):
+                        if "onetime" not in (str.lower(post.tags[i]['term'])):
+                            if "overnight" not in (str.lower(post.tags[i]['term'])):
+                                if "post" not in (str.lower(post.tags[i]['term'])):
+                                    if (str.lower(post.tags[i]['term'])) not in tags: 
+                                        tags.append('%s' % str.lower(post.tags[i]['term']))
+                    i += 1
 
             #Do we always have CW on this feed?
             if CW == "no":
@@ -102,9 +103,10 @@ def parse_that_feed(url,sensitive,CW,GCW):
             else:
                 cwmarker = 1
 
-            for d in tags:
-                if d in ContentWarningString:
-                    cwmarker += 1
+            if hasattr(post, 'tags'):
+                for d in tags:
+                    if d in ContentWarningString:
+                        cwmarker += 1
 
             # double checking with title as well
             bob = str.lower((', '.join(tags)) + ' ' + post.title)
