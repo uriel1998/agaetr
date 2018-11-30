@@ -110,7 +110,7 @@ def parse_that_line(dataline):
     print(tootstring)       
 #        subprocess.call(['ls','--message','-a'])
         ###THIS IS FROM THE BASH VERSION I NEED TO CHANGE IT
-    
+    # DO NOT FORGET TO CLEAN UP THE IMAGE HERE
  
 ########################################################################
 # Begin loop over feedlist
@@ -131,8 +131,8 @@ while LoopsPerformed < Loops:
 
 #finished posting
 
-#print the rest to the tempfile
 out = open(tmp, 'w')
+line = f.readline()
 while line:
     out.write(line)
     # use realine() to read next line
@@ -141,7 +141,13 @@ while line:
 f.close()
 out.close()
 
+os.remove(db)
+shutil.copyfile(tmp,db)
+
+
 #Clean
 
 #rm -rf "$TEMPDIR"
 #rm "$TEMPFILE"
+
+exit()

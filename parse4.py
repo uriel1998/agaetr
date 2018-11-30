@@ -92,7 +92,8 @@ def parse_that_feed(url,sensitive,CW,GCW):
                     if "onetime" not in (str.lower(post.tags[i]['term'])):
                         if "overnight" not in (str.lower(post.tags[i]['term'])):
                             if "post" not in (str.lower(post.tags[i]['term'])):
-                                tags.append('%s' % str.lower(post.tags[i]['term']))
+                                if (str.lower(post.tags[i]['term'])) not in tags: 
+                                    tags.append('%s' % str.lower(post.tags[i]['term']))
                 i += 1
 
             #Do we always have CW on this feed?
