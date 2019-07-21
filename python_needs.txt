@@ -8,5 +8,5 @@ python requirements
 
 appdirs  https://pypi.org/project/appdirs/
 configparser
-beautiful soup
+beautifulsoup4
 feedparser

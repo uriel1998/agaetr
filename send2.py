@@ -56,6 +56,8 @@ config = configparser.ConfigParser()
 config.read(ini)
 sections=config.sections()
 
+
+# change this to ini where multiple loops like we do with feeds, dumbass!
 mastoposter = config['DEFAULT']['mastoposter']
 birdposter = config['DEFAULT']['birdposter']
 

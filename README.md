@@ -13,31 +13,31 @@ and [shaarli](https://github.com/shaarli/Shaarli) instances. Will
 probably work fine with other well-formed RSS/Atom feeds. *Probably.*
 
 * TODO - to make twitter thing not have API keys in open
-* TODO - work with less standardized RSS, duh.
-* TODO - Have the tags from shaarli be used for content warning text
+* TODO - check global cw
+* TODO - add tags from feeds instead of just having them be CW
 * TODO - Actually get the FB and G+ posting working automatically
-* TODO - test the sending
 	
 # Requirements
 
-* [xml2](http://manpages.ubuntu.com/manpages/xenial/man1/2csv.1.html) 
+* python3
 * [toot](https://github.com/ihabunek/toot/)
 * [twython](https://github.com/ryanmcgrath/twython)
 * [twython-tools](https://github.com/adversary-org/twython-tools) - **IMPORTANT- SEE BELOW**
-* [pexpect](https://github.com/pexpect/pexpect)
 
 AND (these are probably already installed or easily available from your package manager/distro)
 
 * [uuidgen](https://www.systutorials.com/docs/linux/man/1-uuidgen/)
-* [wget](https://www.gnu.org/software/wget/)
-* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)
-* [grep](http://en.wikipedia.org/wiki/Grep)
-* [elinks](http://elinks.or.cz/)
 
 # Installation
 
-Install `xml2` from your package manager, `toot` and `twython` via pip3. Use 
-of a virtual enviroment is encouraged for `toot`, at least, but is not required.
+Install `toot` and `twython` and `wget`
+configparser
+feedparser
+json
+bs4
+pprint
+
+ via pip3. Use of a virtual enviroment is encouraged for `toot`, at least, but is not required.
 
 ## Twython-tools (sort of)
 
@@ -54,7 +54,6 @@ program `tweet-full.py` into `tweet.py`.
 
    1.) First of all you have to copy the checkmailrc to ~/.checkmailrc and edit it. Don´t forget to change its
        permissions to 600.
-
 
 If you wish to see the difference, `tweet.patch` is included for you to verify 
 my changes to the code.
@@ -81,7 +80,7 @@ By default, elinks saves cookies, so you should be good there.
 
 ## Configuration Files
 
-These configuration files are expected to be in `$HOME/.config` . 
+This configuration file is expected to be in `$HOME/.config/rss_social` . 
 
 * `rss_social.rc`
 
