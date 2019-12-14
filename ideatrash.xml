@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>ideatrash</title>
+	<atom:link href="https://ideatrash.net/feed" rel="self" type="application/rss+xml" />
+	<link>https://ideatrash.net</link>
+	<description>Writing, publishing, geekdom, and errata. By Steven Saus.</description>
+	<lastBuildDate>Mon, 09 Dec 2019 19:49:34 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.3.1</generator>
+
+<image>
+	<url>https://i0.wp.com/ideatrash.net/wp-content/uploads/2018/03/cropped-DARK_Square-1-1.jpg?fit=32%2C32&#038;ssl=1</url>
+	<title>ideatrash</title>
+	<link>https://ideatrash.net</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+<site xmlns="com-wordpress:feed-additions:1">144741783</site>	<item>
+		<title>Proxies, TT-RSS, and Newsboat (Or Newsbeuter), Oh My</title>
+		<link>https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my</link>
+				<comments>https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my#respond</comments>
+				<pubDate>Mon, 09 Dec 2019 19:49:28 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[programming]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[rss]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103485</guid>
+				<description><![CDATA[If Newsboat and Newsbeuter don't authenticate with a nginx proxy to Apache, this post is for you. ]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/12/markus-spiske-qjnAnF0jIGk-unsplash-300x200.jpg" alt="Proxies, TT-RSS, and Newsboat (Or Newsbeuter), Oh My" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>Offered here as a solve for anyone else who finds this problem (everyone else will probably not understand this, and that’s okay):</p>
+
+
+
+<p>I had a functioning installation of TT-RSS being served by Apache, then decided to put a nginx proxy in front of my home websites/servers.  Immediately after doing so, I could no longer authenticate with <a href="http://www.newsbeuter.org/" target="_blank" rel="nofollow">Newsbeuter</a> or <a href="https://newsboat.org/" target="_blank" rel="nofollow">Newsboat</a> (a fork of Newsbeuter that is actively maintained).</p>
+
+
+
+<p>My nginx setup has all HTTP traffic redirected to HTTPS, as you should, and then it communicated with Apache via HTTP on a different port.  And in my Newsboat config, I had this line:</p>
+
+
+
+<p>ttrss-url “https://my.tt-rss.install.com”</p>
+
+
+
+<p>After messing around with Apache and nginx configurations, I finally stumbled upon the right solution: changing that line in my Newsboat configuration to:</p>
+
+
+
+<p>ttrss-url “http://my.tt-rss.install.com”</p>
+
+
+
+<p>And now it works just fine.</p>
+
+
+
+<p>I’m not sure <em>why</em> changing it to http instead of https made a difference, but it did. So hopefully this helps someone else down the line.  </p>
+
+
+
+<p>Now I might just update <a href="https://ideatrash.net/2013/03/scripts-and-utilities-to-make.html">my scripts for Newsbeuter</a> to be more functional with my current flow. </p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Fproxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dproxies-tt-rss-and-newsboat-or-newsbeuter-oh-my&amp;action_name=%3Cspan+class%3D%27p-name%27%3EProxies%2C+TT-RSS%2C+and+Newsboat+%28Or+Newsbeuter%29%2C+Oh+My%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/12/markus-spiske-qjnAnF0jIGk-unsplash.jpg" length="125463" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/12/markus-spiske-qjnAnF0jIGk-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103485</post-id>	</item>
+		<item>
+		<title>Inequality In The Work Week</title>
+		<link>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467</link>
+				<comments>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467#respond</comments>
+				<pubDate>Wed, 27 Nov 2019 22:34:19 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[sociology]]></category>
+		<category><![CDATA[structural discrimination]]></category>
+		<category><![CDATA[inequality]]></category>
+		<category><![CDATA[systemic inequality]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103467</guid>
+				<description><![CDATA[The work week was a great progressive triumph. It's also an example of structural inequality.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&pk_kwd=103467"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash-300x200.jpg" alt="Inequality In The Work Week" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>Sometimes it’s difficult to see inequality. Particularly when it’s the structural kind.  (Previously discussed in <a href="https://ideatrash.net/2015/08/you-might-be-acting-like-bigot-and.html">You might be acting like a bigot – and never mean to</a>, <a href="https://ideatrash.net/2017/08/the-cowardly-way-to-address-racism-and.html">The Cowardly Way To Address Racism (and other bigotry)</a>, and <a href="https://ideatrash.net/2009/11/structures-of-power-vignette-six.html">Structures of Power (Vignette Six)</a>. </p>
+
+
+
+<p>There’s another example that really brings home how we can be surrounded by a pervasive structural system and rarely actually <em>think</em> about it.</p>
+
+
+
+<p>It’s the classism of the work week.</p>
+
+
+
+<p>Don’t get me wrong – I’m <em>fantastically</em> thankful for the progressives and unions that changed working conditions in the United States and <a href="https://www.nbcnews.com/news/us-news/where-did-40-hour-workweek-come-n192276" target="_blank" rel="nofollow">got us the 40-hour work week</a>.  At the same time, it still solidified and institutionalized structural discrimination based on class.</p>
+
+
+
+<p>This is most evident with things like appointments and activities around children. [1]  It’s still difficult to get doctor appointments outside of “normal business hours”.  For many people, they still have to use vacation or sick time to see a doctor (even for a checkup or preventative care). Even more have to weigh the benefits of going to see a physician against simply <em>not getting paid</em> for that time. PTO/PTA activities are even worse, largely because it also inherits the sexism from before women started becoming part of the workforce. </p>
+
+
+
+<p>And so we end up with a system where those who are upper class, where a single income is (somehow) enough to support the family, are more and better able to take care of themselves and participate in society.</p>
+
+
+
+<p>It’s important to emphasize that this isn’t <em>on purpose</em>. This isn’t an <em>intended</em> effect – it’s just an outcome from the way the system is set up.  Once you stop and examine it, once you stop and <em>see</em> the structural inequality in our daily life, it’s obvious. </p>
+
+
+
+<p>But until then, you’re a fish who doesn’t think of water as being wet.</p>
+
+
+
+<p>And that’s the way structural inequality works. </p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@1walter2?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Johann Walter Bantz</a> on <a href="https://unsplash.com/s/photos/parent-teacher-organization?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F103467.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D103467&amp;action_name=%3Cspan+class%3D%27p-name%27%3EInequality+In+The+Work+Week%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" length="66905" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" width="1200" height="799" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103467</post-id>	</item>
+		<item>
+		<title>So You&#8217;re Anti-Glasses?: Dismantling Right Wing Arguments</title>
+		<link>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments</link>
+				<comments>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments#respond</comments>
+				<pubDate>Wed, 27 Nov 2019 22:17:13 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[education]]></category>
+		<category><![CDATA[inequality]]></category>
+		<category><![CDATA[systemic inequality]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103458</guid>
+				<description><![CDATA[Trying to close the empathy gap, one example at a time.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash-300x200.jpg" alt="So You&#8217;re Anti-Glasses?: Dismantling Right Wing Arguments" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>Sometimes it’s difficult to see inequality. Particularly when it’s the structural kind.  (Previously discussed in <a href="https://ideatrash.net/2015/08/you-might-be-acting-like-bigot-and.html">You might be acting like a bigot – and never mean to</a>, <a href="https://ideatrash.net/2017/08/the-cowardly-way-to-address-racism-and.html">The Cowardly Way To Address Racism (and other bigotry)</a>, and <a href="https://ideatrash.net/2009/11/structures-of-power-vignette-six.html">Structures of Power (Vignette Six)</a>. </p>
+
+
+
+<p>In the hopes of closing <a href="https://ideatrash.net/2019/09/illustrating-the-empathy-gap-with-music.html">the empathy gap just a little bit</a>, I’d like to offer a simple analogy / argument that might help when it comes to that awkward after-dinner conversation.</p>
+
+
+
+<p>When it comes to education (including affirmative action and the rest), right-wingers like to go on about “equality” and “merit”. And there’s something to both of those – but they’re missing (or ignoring) the pretty obvious counter-example:  Not all education environments or education needs are equal.</p>
+
+
+
+<p>Let’s say you’ve got two schools with equally talented students and teachers.  One school has air-conditioning, computers, and the latest textbooks. The other school has none of those things. Which set of students do you think is going to do better?</p>
+
+
+
+<p>And then, when the right-winger says something about individual students excelling regardless (because they <em>will</em>), ask this simple question: “Which of those schools would you want <em>your</em> child to go to?”</p>
+
+
+
+<p>Then, if they continue to go on about “merit”, ask them if they’re in favor of banning glasses and contacts. </p>
+
+
+
+<p>If you take their argument about “individual merit” to its logical endpoint, every student does not get assistance with their vision, so why should <em>any</em>? Therefore, they must believe that any student with glasses is getting an “unfair advantage”.</p>
+
+
+
+<p>Be sure to use this one if they wear glasses themselves.</p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@ugodly?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Ugo °</a> on <a href="https://unsplash.com/s/photos/glasses?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fso-youre-anti-glasses-dismantling-right-wing-arguments.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dso-youre-anti-glasses-dismantling-right-wing-arguments&amp;action_name=%3Cspan+class%3D%27p-name%27%3ESo+You%26%238217%3Bre+Anti-Glasses%3F%3A+Dismantling+Right+Wing+Arguments%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" length="73617" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103458</post-id>	</item>
+		<item>
+		<title>Prosperity Theology: Things To NOT Be Thankful For</title>
+		<link>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for</link>
+				<comments>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for#respond</comments>
+				<pubDate>Tue, 26 Nov 2019 01:30:15 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[religion]]></category>
+		<category><![CDATA[christianity]]></category>
+		<category><![CDATA[faith]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103447</guid>
+				<description><![CDATA[Prosperity theology is entirely made up of dupes and the greedy who prey upon them.  BAR NONE.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&pk_kwd=prosperity-theology-things-to-not-be-thankful-for"><img width="300" height="199" src="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash-300x199.jpg" alt="Prosperity Theology: Things To NOT Be Thankful For" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>As we head into Thanksgiving (for USAians), lots of people are focusing on things to be thankful for. There’s nothing wrong with that – not at all!  But there’s also a <em>lot</em> of crap that we <em>shouldn’t</em> be thankful for.</p>
+
+
+
+<p><a href="https://en.wikipedia.org/wiki/Prosperity_theology" target="_blank" rel="nofollow">Prosperity Theology</a> (aka “health and wealth theology”) is one of them.</p>
+
+
+
+<p>Advocates of this doctrine – sometimes called the “Prosperity Gospel” – is <em>entirely</em> made up of dupes and the greedy who prey upon them.  <strong>BAR NONE</strong>.</p>
+
+
+
+<p>The quick version of this bullshirt preaching is simple:  The more faithful you are (and the more you give to preachers who spout this carp), the better off you are physically, mentally, and financially. To quote Wikipedia:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Prosperity theology views the Bible as a contract between God and humans: if humans have faith in God, he will deliver security and prosperity.</p><cite>https://en.wikipedia.org/wiki/Prosperity_theology</cite></blockquote>
+
+
+
+<p>This idea is <em>forking evil</em>.  <strong>I cannot stress this enough</strong>. It is blaming the victim writ large.  Bad things happening to you? This worldview claims it’s <em>your</em> fault – you’re not faithful enough, you’re not praying hard enough, and you’re <em>definitely</em> not giving enough money to those preaching the prosperity gospel.</p>
+
+
+
+<p>How <em>horrific</em> an idea is that?  It’s the ultimate predatory scam: if results don’t match expectations, it’s still the fault of the sick, poor, and disadvantaged.  This kind of thinking destroys people and destroys faith.</p>
+
+
+
+<p>And yet it’s a major movement, with some of the major movers and shakers including names you’ve probably heard of, including Oral Roberts, the Swaggarts, T. D. Jakes, Guillermo Maldonado, Joel Osteen, and Paula White.</p>
+
+
+
+<p>What’s worse, is that it <em>doesn’t even mesh with the Bible</em>.  Like, at all.  </p>
+
+
+
+<p>Aside from the Gospels and Acts (y’know, where the Son of God and His most faithful get <em>killed</em> for believing), <a href="https://www.sparknotes.com/lit/oldtestament/section11/" target="_blank" rel="nofollow">there’s the <em>entire</em> book of Job</a>.</p>
+
+
+
+<p>If you’re unfamiliar, this book in the Old Testament outlines a bet between God and Satan that a prosperous and faithful man (Job) will renounce his faith in God if he loses everything.  God agrees to the bet, then begins to systematically destroy Job’s wealth and <em>slaughters Job’s family</em> until Job is left penniless.  Job’s “friends” sound like prosperity preachers themselves.  Instead of rallying around their friend, they insinuate that Job <em>must</em> have been sinful to deserve such punishment.  </p>
+
+
+
+<p>Except that’s not the case.  Job remains faithful throughout, eventually having a new family and new wealth granted to him by God after the bet is over [1].</p>
+
+
+
+<p>This <em>entire book</em> of the Bible is <em>expressly</em> a rebuttal of prosperity theology.  There is <em>no way</em> that someone claiming to be a Christian preacher would be unaware of this book in the Bible and the message it contains.  Yet they still preach the opposite, not caring that it goes against the very faith they claim to spread.</p>
+
+
+
+<p>And that’s why I say that <em><strong>everyone</strong></em> involved with prosperity theology is either duped or an evil greedy fartwaffle <em>deliberately</em> preying upon others.</p>
+
+
+
+<p>Prosperity theology, you are something that <em>no-one</em> should be grateful for. </p>
+
+
+
+<p>Where’s the Inquisition when you need them?</p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@steve228uk?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Stephen Radford</a> on <a href="https://unsplash.com/s/photos/preacher?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+
+
+
+<p>(PS – I love that the featured photo has the book of Ecclesiastes showing.  “Vanity of vanities, saith the Preacher, vanity of vanities; all is vanity. What profit hath a man of all his labour which he taketh under the sun?”)</p>
+
+
+
+<p>[1] There’s issues with the way that God “answers” Job’s questions about why this happened to him – and it paints God as a bit of a dick.  I mean, if nothing else, “Hey, I killed your old wife and kids, so here’s a new wife and kids,” (Job 42:12-17) is <em>amazingly</em> clueless.</p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fprosperity-theology-things-to-not-be-thankful-for.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dprosperity-theology-things-to-not-be-thankful-for&amp;action_name=%3Cspan+class%3D%27p-name%27%3EProsperity+Theology%3A+Things+To+NOT+Be+Thankful+For%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" length="74876" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" width="1200" height="797" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103447</post-id>	</item>
+		<item>
+		<title>16 Quick Movie Reviews!</title>
+		<link>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews</link>
+				<comments>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews#respond</comments>
+				<pubDate>Mon, 18 Nov 2019 23:48:35 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[movie review]]></category>
+		<category><![CDATA[movies]]></category>
+		<category><![CDATA[review]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103429</guid>
+				<description><![CDATA[Sixteen movies! One paragraph reviews!  What do you think about these picks and pans?]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&pk_kwd=16-quick-movie-reviews"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash-300x200.jpg" alt="16 Quick Movie Reviews!" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>The title says it all; quick encapsulated reviews of stuff to help you guide your way through the murky world of ALL THE MEDIA.  They are presented in no particular order, and while I’ve frequently linked to Amazon, you can find them on other streaming services as well.  (Check out <a href="https://www.justwatch.com/" target="_blank" rel="nofollow">JustWatch.com</a> for finding them elsewhere!)</p>
+
+
+
+<p>Also, I tend to be a bit…harsh in my numerical judging.  Roughly, 1 is “avoid wasting your time”. 2 is “in the background, and definitely don’t extra for it.”  3 is “it’s okay, but ain’t <em>great</em>.”  4 and up, I <em>definitely</em> recommend.</p>
+
+
+
+<p><em><a href="https://amzn.to/35dL07B" target="_blank" rel="nofollow">Time Trap</a></em> (2 out of 5):  This movie has a neat conceit: there’s a bit of a cave where time passes differently.  That said, this conceit isn’t quite enough to hold throughout the entire runtime.  I think this would have made a great <em>Twilight Zone</em> episode.  Also, the character of Furby (not the toy) was just over-the-top annoying, which weakened the whole thing for me.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/h1J2EUUDywI?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2O2vWnP" target="_blank" rel="nofollow">Small Foot</a></em> (3.5 out of 5): A family friendly film that looks like it’s going to be overly simplistic but instead manages to be surprisingly deep and have a lot more depth than you’d think from the first few minutes.  Entertaining for both kids and adults, I think.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/uBw6EvIxIS8?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2XqQw42" target="_blank" rel="nofollow">Yesterday</a></em> (4 out of 5): Another movie that threaded the needle quite nicely;  you think you know where this movie is going, but you probably don’t.  Respectfully treated, and I think something that any Beatles fan (or music fan in general) would enjoy.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/Ry9honCV3qc?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2r3Suvd" target="_blank" rel="nofollow">The House With A Clock in its Walls</a></em> (3 out of 5):  Like Harry Potter?  You’ll probably like this movie.  It’s better done than I expected, and Cate Blanchett is a freaking delight.  No real new ground trod in this movie, but it’s enjoyable.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/oQGA42-U0Ro?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2OsDyPe" target="_blank" rel="nofollow">Hail Satan?</a></em> (4 out of 5):  I typically am not much of a documentary type person, but this intrigued me.  An unflinching (and unexpectedly <em>fun</em>) look at The Satanic Temple.  Definitely worth watching, especially if you’re an American.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/amB2Ol6wihg?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://vimeo.com/137784146" target="_blank" rel="nofollow">Give Me Sex Jesus</a></em>: (4 out of 5) So of course, two documentaries in a row.  I really enjoyed this documentary of the “purity” movement, because the documentarians really stayed out of it.  There’s no overarching narrative, just the words of those who started, are in, or left the purity movement.  Very thought provoking and very compassionate to all parties.  (Vimeo link above, not Amazon; there isn’t a trailer, but the whole documentary is on YouTube, embedded below.)</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/wp5HkXw9Rag?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2QrDfqJ" target="_blank" rel="nofollow">Hellboy (2019)</a></em>: (3 out of 5)  I actually enjoyed this movie, and think it would have done a <em>lot</em> better if people weren’t comparing it to the earlier films. And moreso than Pearlman’s stint, this Hellboy is a lot closer to the source material in terms of attitude and feel.  An imperfect film, but so were the earlier ones… just in different ways.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/dt5g5_1cKVk?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/37aMxNA" target="_blank" rel="nofollow">The Predator</a></em>: (2 out of 5) Not a bad sci-fi action flick, really.  My biggest complaint (and it’s a doozy):  Being on the autism spectrum does NOT mean that you’re a freaking savant. Relying on that error to make the story work really stuck in my craw.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/AAJ2LVVgqVo?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2rUpgiN" target="_blank" rel="nofollow">The Happytime Murders</a></em>: (3 out of 5) Look, if you’re walking into this expecting <em>Who Framed Roger Rabbit?</em>, you WILL be disappointed.  If you walk into it expecting an alternate reality murder mystery with some humorous bits here and there, the movie actually works pretty well. </p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/XF9Lyb5UJHo?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2qpqSRh" target="_blank" rel="nofollow">Book of Monsters</a></em>: (2 out of 5)  I guess the filmmakers were going for a kind of <em>Evil Dead</em> vibe or something, but it doesn’t quite gel. While not a <em>bad</em> film, it certainly isn’t a <em>good</em> one either.  But if you’re looking for B-movie hijinks, this film does offer them up in droves.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/puEshNPmmp4?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2NXajVG" target="_blank" rel="nofollow">See You Yesterday</a></em>: (4 out of 5) There have been a bunch of time travel movies I’ve seen lately; much like zombie films, it’s difficult to find ones that excel.  While this – like so many others (including <em>Time Trap</em> above) leave the ending somewhat vague, I <em>really</em> enjoyed this film. The stakes are completely personal for the characters, and that gives a sense of urgency and meaning that’s hard to find.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/8MVRWQ1PnMo?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/37jN5AY" target="_blank" rel="nofollow">Assassination Nation</a></em>: (5 out of 5)  This film is absolutely AMAZING.  It’s easy – from the trailers – to call this “<em>The Purge</em> for people who don’t like <em>The Purge</em>“, but that’s selling it short. The cinematography is gorgeous. The characters are well-rounded.  And the scenario is all too believable.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/d9qyOGEuLY4?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2pyUN9k" target="_blank" rel="nofollow">Train to Busan</a></em>:  (5 out of 5) This film is what <em>World War Z</em> should have been.  While not (particularly) gory, and <em>without a single bloody jump scare</em>, it had me and my sweetie totally into it.  Unlike the next movie, this film doesn’t put a twist or do anything completely original with zombie movies, but it<em> </em>does zombie movies <em>absolutely perfectly</em>.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/pyWuHv2-Abk?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2OmWv68" target="_blank" rel="nofollow">The Girl With All The Gifts</a></em>:  (5 out of 5) I can’t believe I haven’t written about how much I love this movie.  It is – as I hinted above – a zombie movie, but a zombie movie that takes it in new and unexpected directions.  Also not particularly gory, but definitely something to mess with your head.  And the soundtrack is <em>amazing</em>.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/HjGkB_oWTe0?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em>Henchmen</em>:  (2 out of 5) Just bleh.  Not horrible, not great.  Put on for the kids when you’re doing something else. Seriously, it <em>could</em> have done a lot more with the material, but feels like a corporate committee came and rewrote the script to fit with what some suit thought it should be.  Meh.  Apparently everyone else thinks so too, because I can’t find it streaming anywhere.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/fo2Rze_W1uE?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p><em><a href="https://amzn.to/2NXaCQk" target="_blank" rel="nofollow">Batman vs. The Teenage Mutant Ninja Turtles</a></em>: (2.75 out of 5) Okay, this sounds like it’s going to be a shitshow.  It’s actually… not.  While it’s a <em>bit</em> goofy, it isn’t bad at all.  (Not like <a rel="noreferrer noopener nofollow" href="http://amzn.to/2bToHvl" target="_blank">Batman Unlimited: Mechs vs. Mutants</a> or <a href="https://amzn.to/2KzlfH8" target="_blank" rel="nofollow">Batman vs. Dracula</a>, both of which are awfully bad.)  This film’s iteration of the Turtles is a <em>lot</em> more like the comic books than the animated TV show or recent live-action films, and as a result manages to be… well, not bad.   (Does this mean that Batman and Daredevil are now canonically in the same universe, though?)</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/wpZPPrnEd_k?version=3&amp;rel=1&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" style="border:0;"></iframe>
+</div></figure><p>So there you have it!  What do you think about these films?</p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@ewitsoe?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Erik Witsoe</a> on <a href="https://unsplash.com/s/photos/movies?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F16-quick-movie-reviews.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D16-quick-movie-reviews&amp;action_name=%3Cspan+class%3D%27p-name%27%3E16+Quick+Movie+Reviews%21%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" length="30185" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103429</post-id>	</item>
+		<item>
+		<title>Your Musical Movie Soundtrack</title>
+		<link>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack</link>
+				<comments>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack#respond</comments>
+				<pubDate>Fri, 15 Nov 2019 21:07:14 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[movies]]></category>
+		<category><![CDATA[music]]></category>
+		<category><![CDATA[survey]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103419</guid>
+				<description><![CDATA[I want to know what songs you want for a movie soundtrack. Fill out my survey at https://stevensaus.com/s/soundtrk ]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&pk_kwd=your-musical-movie-soundtrack"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash-300x200.jpg" alt="Your Musical Movie Soundtrack" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>This is pretty simple, and something that I’ve been thinking about for a while.  </p>
+
+
+
+<p>I’m asking you to choose four songs.</p>
+
+
+
+<p>These songs would be in the soundtrack of a movie you controlled or directed, and correspond to some key “beats” in the movie.  It can be any style of movie, or about anything.  For each question, please give the artist and title of the song and/or a link to a YouTube video of the song.</p>
+
+
+
+<ol><li>The main/introduction theme</li><li>The love/emotional montage</li><li>The “getting ready”/exploring montage</li><li>Action theme</li><li>Sadness theme</li><li>Ending theme </li></ol><p>I’m collecting answers with a Google Form at <a href="https://stevensaus.com/s/soundtrk" target="_blank" rel="nofollow">https://stevensaus.com/s/soundtrk</a></p>
+
+
+
+<p>No sign in required and it’ll just take a minute!</p>
+
+
+
+<p>I’ll talk about the results here probably around the end of the month.</p>
+
+
+
+<p>Privacy Note:  Yes, I know it’s a Google product. No personal information is being collected by me with the survey, it does <em>not</em> require signin, and also bounces it through my own url shortener to try to at least up your privacy.  Thanks!</p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@felixmooneeram?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Felix Mooneeram</a> on <a href="https://unsplash.com/s/photos/movie-soundtrack?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fyour-musical-movie-soundtrack.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dyour-musical-movie-soundtrack&amp;action_name=%3Cspan+class%3D%27p-name%27%3EYour+Musical+Movie+Soundtrack%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" length="28234" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103419</post-id>	</item>
+		<item>
+		<title>Are We People or Parts?: Chronic Illness and Employer Wellness Programs</title>
+		<link>https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&#038;pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs</link>
+				<pubDate>Tue, 12 Nov 2019 21:46:52 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[health]]></category>
+		<category><![CDATA[healthcare]]></category>
+		<category><![CDATA[society]]></category>
+		<category><![CDATA[status]]></category>
+		<category><![CDATA[employment]]></category>
+		<category><![CDATA[restless legs]]></category>
+		<category><![CDATA[rls]]></category>
+		<category><![CDATA[Willis-Ekbom Disease]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=87407</guid>
+				<description><![CDATA[The corporate focus on "wellness choices" is a shiny polish on a toxic attitude.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash-300x200.jpg" alt="Are We People or Parts?: Chronic Illness and Employer Wellness Programs" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>It’s difficult for me to concentrate today.  And it would have been impossible for me to work.</p>
+
+
+
+<p>But my situation – and so many others – are at risk of being inhumanly shoved to the side by corporate trends in Human Resources.  </p>
+
+
+
+<p>The current arctic cold snap has graciously gifted me with <a href="https://ideatrash.net/2010/02/restless-legs-suck-ass.html">the worst RLS (officially Willis-Ekbom Disease) pain</a> I’ve had since August. </p>
+
+
+
+<p>The variants of treatments that my doc and I have been working on have been helping.  When I first <a href="https://ideatrash.net/2018/09/protecting-you-and-your-job-from-chronic-illness.html">got FMLA for this</a>, I was missing work at least a day or three a month, every month.  Since we’ve tweaked my medications, before this week I’d not missed due to the RLS for several months.  </p>
+
+
+
+<p>Unfortunately, I’d gotten <em>conventionally</em> sick earlier this month and missed several days.  So I’ve been gone a lot in the last thirty-odd days.</p>
+
+
+
+<p>Which brings us back to my point.  Right now, I’ve been pretty much awake for three days, with a few hours of sleep sprinkled in there in one to two hour long sections.  I was somewhat incoherent yesterday; today I don’t trust myself to drive.  <strong><em>I’ve fallen asleep twice standing up while writing this blog post, and made SOOOOO many errors while writing, ranging from typos to leaving out words and sentences, or typing gibberish.</em></strong>  <strong><em>Nobody</em></strong> would want me starting an IV, updating sensitive records, or handling radioactive materials today.  </p>
+
+
+
+<p>In these cases – whether from an upper respiratory infection or from a documented chronic illness – if I’d tried to force myself to work it would be a <em>net loss for everyone</em>.  The person who is ill will recover more slowly, or even make themselves worse, like I did after I tried to force myself to work <a href="https://ideatrash.net/2016/02/why-ive-not-been-to-work-lately-or.html">after my hypertensive crisis a few years back.  (Warning – that post has some grody pics.</a>)  And if it’s an infectious illness, the workplace will suffer more, because other employees (and perhaps even customers) will get ill later.  Even if it’s not infectious, the ill employee simply can’t be as productive and will have more errors due to pain, discomfort, or just plain fatigue.</p>
+
+
+
+<p>If directly quizzed, most people will recognize that forcing people to come to work sick is a <em>bad idea</em>.  <a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow">The CDC, for example, estimates that the flu </a><em><a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow">alone</a></em><a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow"> causes over $7 billion in lost productivity</a>.  Any method – such as letting sick people <em>stay home</em> and away from the rest of the office – that would reduce those costs seems reasonable.  </p>
+
+
+
+<p>Even if the sick worker doesn’t infect the rest of the office, <a href="http://hrcsuite.com/reduce-sick-leave/" target="_blank" rel="nofollow">more than half the estimated $576 billion of lost productivity from illness comes when sick employers turn up to work but are unable to perform at their best.</a>  And with liberal sick day policies – <a href="https://www.theguardian.com/commentisfree/2017/nov/16/working-four-day-week-hours-labour" target="_blank" rel="nofollow">or even something like a four-day work week</a> (seriously, read that article) – we could reduce illness while increasing overall productivity and quality of life.</p>
+
+
+
+<p>Sadly, that doesn’t seem to be the focus of our current workplace culture as a while.  Rather than recognizing that illness <em>happens</em>, and making greater accommodations for that fact, it seems that most articles about workplace illness in the last few years focus instead on how to <s>force</s> – I mean, <em>encourage</em> – employees to be healthy.  This excerpt is pretty representative:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>The biggest way you can make an impact  on the health of your employees is to promote exercise. A lack of  regular physical activity is one of the leading causes of preventable  death worldwide ahead of poor sanitation and alcohol abuse. It doesn’t  have to cost a fortune either. Many gyms offer a range of discounts for  local businesses, allowing them to provide discounted, part or full  payment of memberships to their employees, allowing businesses to choose  how much input to have.<br><br>But financial incentives are not the only way to help staff lead  healthy lifestyles – a healthy culture needs to be promoted too. That  might include organising lunch time gym sessions, providing secure bike  parking, and ensuring staff are offered healthy meal choices.</p><cite>http://hrcsuite.com/reduce-sick-leave/</cite></blockquote>
+
+
+
+<p>This kind of attitude is awful in a few ways.</p>
+
+
+
+<ol><li>It treats people as widgets, or maybe as parts in a machine. </li><li>It further stigmatizes those with illnesses – chronic or otherwise – by framing “health” as a <em>choice</em>.  Believe me, I’d <strong>much</strong> rather be at work – rested and pain free – than at home and in pain right now.  It’s the kind of mindset that leads to <a href="https://ideatrash.net/2019/07/invisible-illness-invisible-empathy.html">discounting invisible illnesses</a>, or even the toxic attitude I saw <a href="https://ideatrash.net/2015/02/trainees-my-experience-treating.html">in the military toward trainees who went on sick call</a>.</li><li>It puts the whole burden on the worker. Not only are you expected to devote the largest part of your life to your employer, but you’re supposed to spend additional time and resources in order to fulfill these wellness programs.</li><li>This attitude is <em>horribly</em> toxic and counterproductive.  It frames illness (and needing sick leave) as something voluntary.  </li></ol><p>It’s like telling a religious child that their pet died because they 
+didn’t pray hard enough for God to save them.  This attitude – that if 
+companies just <s>make</s> encourage workers to do enough “wellness” 
+programs like eating better or going to the gym, then they won’t get 
+sick.  Clearly, if they <em>do</em> get sick… well, that’s the employee’s fault, isn’t it?</p>
+
+
+
+<p>There’s nothing <em>wrong</em> with encouraging healthy choices.  I’d love it if, say, the healthy food choices cost less than the unhealthy ones at work.  </p>
+
+
+
+<p>That’s where the proof is in the … ahem… pudding.  Because to continue this example, I’ll bet that if your employer has a “wellness program” of this sort, it’s still cheaper to buy cheap junk food at your cafeteria than a healthy meal… and that’s if healthy food options exist for you at work at all.</p>
+
+
+
+<p>If that $576 billion or so of lost wages was <em>so strongly</em> effected by “wellness choices”, you’d think some of that money could be put into subsidizing (or providing) healthy food choices. Or maybe <em>paying</em> for part or all of gym memberships instead of relying on the gyms’ generosity …or even making it so that workers don’t have to choose between time at the gym or the time they need to work to pay the bills.</p>
+
+
+
+<p>Maybe the toxicity of this attitude is so blatant to me because my chronic medical condition has <strong>NOTHING</strong> to do with my wellness choices.  I had <a href="https://ideatrash.net/2010/02/restless-legs-suck-ass.html">the first symptoms as a child</a>, and have had symptoms continually since, including when I was active duty military and in the best physical shape of my life [1]. </p>
+
+
+
+<p>Maybe this attitude toward illness will change as more and more of the people in charge of these areas get older and start having inevitable degenerative illnesses of their own.</p>
+
+
+
+<p>Or maybe they’ll just find themselves at the wrong end of some corporate wellness program.</p>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@armin_lotfi?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Armin Lotfi</a> on <a href="https://unsplash.com/s/photos/pain?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="https://ideatrash.net/wp-content/uploads/2019/11/black-divider-no-background-hi-560x59.png" alt="" class="wp-image-103409" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></div>
+
+
+
+<p>[1] For those interested: I’ve had a few people suggest that my RLS is due to my obesity. While there’s one study showing a correlation between RLS and weight gain, there’s no causation shown.  Reviews of the literature show either <a href="https://www.sciencedirect.com/science/article/abs/pii/S1389945711001614" target="_blank" rel="nofollow">that there’s not enough real research</a>, that <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow">the lack of sleep caused by RLS might </a><em><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow">contribute</a></em><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow"> to weight gain</a>, or <a href="https://n.neurology.org/content/72/14/1255" target="_blank" rel="nofollow">that both obesity and RLS might be caused by the same lack of production of dopamine </a>(not really something you can control with a “wellness program”), or:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>A comprehensive analysis of RLS epidemiological studies finds the prevalence rate of RLS to be 5–15% in the general population with 2.5% of adults having symptoms severe enough to require medical intervention. Some of the risk factors for RLS include female gender, pregnancy, low iron levels, lower socioeconomic status, poor health, elderly age, comorbidity with Parkinson’s disease, positive family history of RLS, and comorbidity with psychiatric disorders.</p><cite>https://link.springer.com/article/10.1007/s11325-011-0606-x</cite></blockquote>
+
+
+
+<p>Additionally, there’s a preponderance of evidence that dopamine agonists – the main treatment used in the West – can <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1525-1497.2006.00593.x" target="_blank" rel="nofollow">cause symptoms to become worse over time (augmentation)</a> and are associated with new compulsive behaviors – including overeating – to the point where one paper concludes: </p>
+
+
+
+<blockquote class="wp-block-quote"><p>Physicians should be aware that compulsive eating resulting in significant weight gain may occur in [patients] as a side‐effect of dopamine agonist medications.</p><cite>https://onlinelibrary.wiley.com/doi/abs/10.1002/mds.20757</cite></blockquote>
+
+
+
+<p>Whoops.</p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fare-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dare-we-people-or-parts-chronic-illness-and-employer-wellness-programs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EAre+We+People+or+Parts%3F%3A+Chronic+Illness+and+Employer+Wellness+Programs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash.jpg" length="55958" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87407</post-id>	</item>
+		<item>
+		<title>Improve Your Minecraft With These Texture Packs</title>
+		<link>https://ideatrash.net/2019/11/improve-your-minecraft-with-these-texture-packs.html?pk_campaign=feed&#038;pk_kwd=improve-your-minecraft-with-these-texture-packs</link>
+				<pubDate>Thu, 07 Nov 2019 19:48:08 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[minecraft]]></category>
+		<category><![CDATA[uncategorized]]></category>
+		<category><![CDATA[games]]></category>
+		<category><![CDATA[video games]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=87382</guid>
+				<description><![CDATA[Resource packs can do a lot, and are really easy to install.  There's several great resource packs that do a lot to tweak the experience, and I want to highlight a few here.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/improve-your-minecraft-with-these-texture-packs.html?pk_campaign=feed&pk_kwd=improve-your-minecraft-with-these-texture-packs"><img width="300" height="155" src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34-300x155.jpg" alt="Improve Your Minecraft With These Texture Packs" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p><a href="https://ideatrash.net/2019/07/playing-minecraft-i-have-recommendations-for-you.html">I like Minecraft</a>.  I especially like “vanilla plus” Minecraft – where there’s little tweaks to remove some annoyances and present some small enhancements.  I even made up an <a href="https://www.technicpack.net/modpack/grunkle-stevens-villagers.1433528" target="_blank" rel="nofollow">entire Technic modpack that reflects that idea</a>.  I’ve also usually played on PCs that aren’t “gaming” computers, so keeping optimizations in mind has also been a significant focus of mine.  (<a href="https://www.technicpack.net/modpack/grunkles-lite-villagers.1545281" target="_blank" rel="nofollow">There’s even a low-end modpack I made as well.</a>)</p>
+
+
+
+<p>But what if you don’t want to deal with modpacks (or use other ones)?  Resource packs can do a lot, <a href="https://minecraft.gamepedia.com/Tutorials/Loading_a_resource_pack" target="_blank" rel="nofollow">and are really easy to install</a>.  There’s several great resource packs that do a <em>lot</em> to tweak the experience, and I want to highlight a few here.   (You will probably <a href="https://www.optifine.net/home" target="_blank" rel="nofollow">have to use Optifine</a> to get the best – or sometimes <em>any</em> – results.)</p>
+
+
+
+<p><a href="https://www.curseforge.com/minecraft/texture-packs/glass-doors" target="_blank" rel="nofollow"><strong>Glass Doors</strong></a> does exactly what it says on the tin: It replaces the default doors with ones with glass in them.</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.28.38.jpg" alt="" data-id="87383" data-link="https://ideatrash.net/?attachment_id=87383" class="wp-image-87383" width="403" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.28.59.jpg" alt="" data-id="87384" data-link="https://ideatrash.net/?attachment_id=87384" class="wp-image-87384" width="358" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/better-leaves-add-on-2-0" target="_blank" rel="nofollow">Jerm’s Better Leaves Add-on</a></strong> can be used with any texture/resource pack. It does a <em>lot</em> to make the “fancy” leaves actually <em>look</em> fancy…</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://i2.wp.com/ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.31.23.jpg?fit=1024%2C520&amp;ssl=1" alt="" data-id="87385" data-link="https://ideatrash.net/?attachment_id=87385" class="wp-image-87385" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.31.37-560x334.jpg" alt="" data-id="87386" data-link="https://ideatrash.net/?attachment_id=87386" class="wp-image-87386" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/round-trees-mc-vanilla-1-8-1-13" target="_blank" rel="nofollow">Round Trees</a></strong> is quite frankly impressive as hell; it creates a huge atmospheric change with just a resource pack.</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.32.46-560x220.jpg" alt="" data-id="87387" data-link="https://ideatrash.net/?attachment_id=87387" class="wp-image-87387" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.33.01-560x223.jpg" alt="" data-id="87388" data-link="https://ideatrash.net/?attachment_id=87388" class="wp-image-87388" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance" target="_blank" rel="nofollow">Pixel Reality – Luminance</a></strong><a href="https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance" target="_blank" rel="nofollow"> </a>provides realistic lighting with vanilla textures or any other pack, a perfect  alternative to shaders if your machine just can’t handle them!</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.05-560x364.jpg" alt="" data-id="87390" data-link="https://ideatrash.net/?attachment_id=87390" class="wp-image-87390" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.33.53-1-560x370.jpg" alt="" data-id="87391" data-link="https://ideatrash.net/?attachment_id=87391" class="wp-image-87391" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>And then last – but <em>definitely </em>not least – there’s <strong><a href="https://www.planetminecraft.com/texture_pack/overlay-textures-1-14/" target="_blank" rel="nofollow">Overlay Textures</a></strong>.  It takes “connected textures” to  a whole new level.  It’s easiest to just show the results:</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.25-560x378.jpg" alt="" data-id="87392" data-link="https://ideatrash.net/?attachment_id=87392" class="wp-image-87392" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.40-560x368.jpg" alt="" data-id="87393" data-link="https://ideatrash.net/?attachment_id=87393" class="wp-image-87393" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://i0.wp.com/ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.44.jpg?fit=1024%2C528&amp;ssl=1" alt="" data-id="87394" data-link="https://ideatrash.net/?attachment_id=87394" class="wp-image-87394" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>It also means that your stone brick walls can suddenly get a <em>lot</em> more texture to them:</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.36.53-560x434.jpg" alt="" data-id="87395" data-link="https://ideatrash.net/?attachment_id=87395" class="wp-image-87395" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.36.38-560x446.jpg" alt="" data-id="87396" data-link="https://ideatrash.net/?attachment_id=87396" class="wp-image-87396" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>As can your grass areas.  There are <em>some</em> buggy parts to it – for example, you can see where concrete isn’t included in the screens below – but even with its relatively few bugs, it makes the world a <em>lot</em> more organic.</p>
+
+
+
+<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.41.56-560x328.jpg" alt="" data-id="87397" data-link="https://ideatrash.net/?attachment_id=87397" class="wp-image-87397" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.41.58-560x340.jpg" alt="" data-id="87398" data-link="https://ideatrash.net/?attachment_id=87398" class="wp-image-87398" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>If you like any of these, give them a try on your singleplayer instance, or come join us at <a href="https://myminecraft.com" target="_blank" rel="nofollow">MyMinecraft</a> to have a nice survival multiplayer experience!</p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fimprove-your-minecraft-with-these-texture-packs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dimprove-your-minecraft-with-these-texture-packs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EImprove+Your+Minecraft+With+These+Texture+Packs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34.jpg" length="104285" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34.jpg" width="1200" height="618" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87382</post-id>	</item>
+		<item>
+		<title>Three Litanies For Life From Sci-Fi</title>
+		<link>https://ideatrash.net/2019/11/three-litanies-for-life-from-sci-fi.html?pk_campaign=feed&#038;pk_kwd=three-litanies-for-life-from-sci-fi</link>
+				<pubDate>Wed, 06 Nov 2019 14:49:56 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[science fiction]]></category>
+		<category><![CDATA[status update]]></category>
+		<category><![CDATA[quotations]]></category>
+		<category><![CDATA[quotes]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=87371</guid>
+				<description><![CDATA[These are three quotations from science fiction that kept me going.  (Spoiler free)]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/three-litanies-for-life-from-sci-fi.html?pk_campaign=feed&pk_kwd=three-litanies-for-life-from-sci-fi"><img width="300" height="164" src="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse-300x164.jpg" alt="Three Litanies For Life From Sci-Fi" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>When I was younger, I focused on the Litany Against Fear from the <em><a href="https://amzn.to/2WKVecO" target="_blank" rel="nofollow">Dune</a></em> novels. </p>
+
+
+
+<blockquote class="wp-block-quote"><p>“I must not fear.<br>Fear is the mind-killer.<br>Fear is the little-death that brings total obliteration.<br>I will face my fear.<br>I will permit it to pass over me and through me.<br>And when it has gone past I will turn the inner eye to see its path.<br>Where the fear has gone there will be nothing. <br>Only I will remain.”</p></blockquote>
+
+
+
+<p>Not only was I exposed to it at an early age, but it also reflected a lot of the challenges in my life at the time. They were fear inducing – whether because of physical or emotional or social peril, they were things I feared. </p>
+
+
+
+<p>Then I ran across this from <em><a href="https://amzn.to/2WOug3M" target="_blank" rel="nofollow">The Handmaid’s Tale</a></em><em>:</em></p>
+
+
+
+<blockquote class="wp-block-quote"><p>Nolite te bastardes carborundorum</p></blockquote>
+
+
+
+<p>It isn’t about fear so much as perseverance.  Of making it through the tough times and horrid people to get to somewhere better, something better. About being strong enough to endure.</p>
+
+
+
+<p>That held me in good stead for quite a while. </p>
+
+
+
+<p>Now, though, I’ve been having a different problem. It’s not been fear, and it’s not been strength.  I’ve been struggling with straight up nihilism.  </p>
+
+
+
+<p>Not the <a rel="noreferrer noopener" aria-label="cheerful nihilism I've written about before (opens in a new tab)" href="https://ideatrash.net/2018/12/nihilism-existentialism-and-me.html" target="_blank">cheerful nihilism I’ve written about before</a>. This has been a struggle with pure “nothing means anything” grey-colored nihilism.  The kind where you’re just going through the motions.  Where any effort is futile, and entropy has the final laugh. </p>
+
+
+
+<p>And into that space strides Gunny Draper from <em><a href="https://amzn.to/2CoD07j" target="_blank" rel="nofollow">The Expanse</a></em>.  Though not formally named, she too has a litany.  </p>
+
+
+
+<p>Gunny Draper’s litany is perhaps far more relevant for both me at this time in my life, and perhaps for the world as a whole right now.  </p>
+
+
+
+<blockquote class="wp-block-quote"><p>There are people I love. There are people who have loved me. I fought for what I believed, protected those I could, and stood my ground against the encroaching darkness.  Good enough.</p></blockquote>
+
+
+
+<p>Good enough indeed. </p>
+
+
+
+<p>Thank you, Gunny. </p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthree-litanies-for-life-from-sci-fi.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthree-litanies-for-life-from-sci-fi&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThree+Litanies+For+Life+From+Sci-Fi%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse.jpg" length="59766" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse.jpg" width="640" height="350" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87371</post-id>	</item>
+		<item>
+		<title>The Validity of Libido as a Love Language</title>
+		<link>https://ideatrash.net/2019/11/the-validity-of-libido-as-a-love-language.html?pk_campaign=feed&#038;pk_kwd=the-validity-of-libido-as-a-love-language</link>
+				<pubDate>Tue, 05 Nov 2019 20:41:09 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[advice]]></category>
+		<category><![CDATA[relationships]]></category>
+		<category><![CDATA[sex]]></category>
+		<category><![CDATA[love languages]]></category>
+		<category><![CDATA[relationship]]></category>
+		<category><![CDATA[sexuality]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=87354</guid>
+				<description><![CDATA[When "physical touch" gets called "libido", a whole different set of assumptions and judgements gets pulled into the mix.]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/the-validity-of-libido-as-a-love-language.html?pk_campaign=feed&pk_kwd=the-validity-of-libido-as-a-love-language"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash-300x200.jpg" alt="The Validity of Libido as a Love Language" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>You have <em>probably</em> heard about “love languages”.  If you are <em>completely</em> unfamiliar, there’s <a href="https://www.sheknows.com/health-and-wellness/articles/1059295/what-are-the-5-love-languages/" target="_blank" rel="nofollow">a quick primer at this website</a>; the short form is this:  People tend to show affection in five different ways, largely summed up as “Words of Affirmation”, “Quality Time”, “Receiving Gifts”, “Acts of Service”, and “Physical Touch”.  </p>
+
+
+
+<p>The point of the “love languages” model is that different people express – and receive – love in different ways.  If you typically only “hear” acts of service as showing love, but the other person is used to expressing love by giving gifts, it can appear that the other person does <em>not</em> love you, even as they’re screaming it as loud as they can.  It’s just in a different love language.</p>
+
+
+
+<p>You can find more about love languages all over the place (<a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow">including a whole </a><em><a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow">series</a></em><a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow"> of books addressing specific situations</a>), but I want to focus on “physical touch”.</p>
+
+
+
+<p>But I’m going to call it by a different name.</p>
+
+
+
+<p>Libido.</p>
+
+
+
+<p>When “physical touch” gets rebranded “libido”, a whole <em>different</em> set of assumptions and judgements gets pulled into the mix.  That’s why – for just one example – Dan Savage (a sex and relationship advice columnist) routinely gets questions about mismatched libidos.  A recent example is in this column: “<a href="https://www.thestranger.com/slog/2019/10/16/41701896/the-relationship-is-lovely-and-loving-but-entirely-sexless" target="_blank" rel="nofollow">The Relationship Is Lovely and Loving But Entirely Sexless and Can You Guess What Dan’s Advice Will Be?</a>“</p>
+
+
+
+<p>I’m not going to disagree with Dan’s advice here, but I want to clarify and reinforce something: <strong>Libido is incorporated in one of the five love languages, and should get the same respect and consideration the rest of them do</strong>.</p>
+
+
+
+<p>Too often in cases of mismatched libido, the person with the high libido is treated as if they’re a glutton.  It’s as if the high-libido person eats too much chocolate or drinks too much. The requirements of their libido is treated as a luxury… or worse, as someone who abuses a luxury. </p>
+
+
+
+<p>But that isn’t how it feels to the high-libido person in that relationship.</p>
+
+
+
+<p>It’s <em>just</em> like any of the other love languages being ignored.</p>
+
+
+
+<p>The high libido person hears the words “I love you” and “I’m attracted to you”… at the same time that their partner is rejecting you, even literally turning away from you while they say those things.  </p>
+
+
+
+<p>As with any case of mismatched love languages, it’s not JUST the feeling of near-constant low grade rejection from the person you love. It’s that feeling of near-constant low grade rejection… from someone who is simultaneously telling you they are not rejecting you.  </p>
+
+
+
+<p>All the things the “lower libido” person wants are damn near automatic, because the “higher libido” person desperately wants that physical connection <em>with the person they love</em>.</p>
+
+
+
+<p>I’m not shaming or condemning the person with a lower libido.  I don’t think it is on <em>purpose</em> or anything.  </p>
+
+
+
+<p>But I <em>am</em> saying that it gets treated differently than the other love languages.  In our relationships, we <em>must</em> remember that sexual expression <em>is</em> an important way of showing love. For some – even many – it is an <em>extremely important</em>, if not <em>the most important</em> way of showing love.</p>
+
+
+
+<p>If there’s a mismatch, there are <em>lots</em> of ways and resources to work together so that you each can “speak” the love language the other <em>needs</em> to hear.  Some starting points: </p>
+
+
+
+<ul><li><a href="https://www.5lovelanguages.com/2017/11/couples-different-love-languages/" target="_blank" rel="nofollow">https://www.5lovelanguages.com/2017/11/couples-different-love-languages/</a> </li><li><a href="https://www.bustle.com/articles/161169-how-to-cope-when-you-your-partner-have-different-love-languages" target="_blank" rel="nofollow">https://www.bustle.com/articles/161169-how-to-cope-when-you-your-partner-have-different-love-languages</a></li><li><a href="https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928" target="_blank" rel="nofollow">https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928</a> </li></ul><p>If that’s not enough or doesn’t work?  Just like with any love language miscommunication, psychologist Jennifer  Rhodes points out:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Still, if you aren’t feeling taken care of by your partner after you’ve expressed [what love languages you speak and how you need to experience love], then Rhodes also suggests that it might be time to end things or dive deeper. “If after several attempts to communicate your needs, your partner is still not getting it, then you can think about whether this is the right relationship for both of you,” she says. </p><cite>https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928</cite></blockquote>
+
+
+
+<p>Featured Photo by <a href="https://unsplash.com/@pabloheimplatz?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Pablo Heimplatz</a> on <a href="https://unsplash.com/s/photos/sex?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthe-validity-of-libido-as-a-love-language.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthe-validity-of-libido-as-a-love-language&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThe+Validity+of+Libido+as+a+Love+Language%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash.jpg" length="72859" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87354</post-id>	</item>
+	</channel>
+</rss>

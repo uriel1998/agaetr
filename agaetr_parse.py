@@ -6,6 +6,7 @@
 import feedparser
 import time
 import string
+from time import strftime,localtime
 from subprocess import check_output
 import sys
 import json
@@ -22,7 +23,7 @@ import shutil
 # Defining configuration locations and such
 ########################################################################
 
-appname = "rss_social"
+appname = "agaetr"
 appauthor = "Steven Saus"
 #Where to store data, duh
 datadir = user_data_dir(appname)
@@ -36,7 +37,7 @@ if not os.path.isdir(cachedir):
 #YUP
 if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
-ini = os.path.join(configdir,'rss_social.ini')
+ini = os.path.join(configdir,'agaetr.ini')
 db = os.path.join(datadir,'posts.db')
 tmp = os.path.join(cachedir,'posts.db')
 
@@ -66,9 +67,36 @@ def parse_that_feed(url,sensitive,CW,GCW):
 
         title = post.title
         itemurl = post.link
-        date_parsed = post.published_parsed
-        date_published = post.published
-        thetime=time.strftime("%Y%m%d%H%M%S",date_parsed)
+        # cleaning up descriptions and summaries.  Boy, are they trash.
+        if hasattr(post, 'description'):
+            post_description = post.description
+            post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '')
+            splitter = post_description.split()
+            post_description =" ".join(splitter)
+        else:
+            if hasattr(post, 'summary'):
+                post_description = post.summary
+                post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '')
+                splitter = post_description.split()
+                post_description =" ".join(splitter)
+
+        # While this avoids errors from the TT-RSS feed, it provides a bad date
+        # And since the python module pulls in the feed directly, hence the need
+        # for our preprocessor. (And probably also a quick way to see if it's
+        # been updated, too.)
+        date_published = localtime()  
+        thetime=time.strftime("%Y%m%d%H%M%S",localtime())
+        
+        
+        if hasattr(post, 'published_parsed'):
+            date_parsed = post.published_parsed
+            thetime=time.strftime("%Y%m%d%H%M%S",date_parsed)
+        if hasattr(post, 'post.published'):
+            date_published = post.published
+            thetime=time.strftime("%Y%m%d%H%M%S",date_published)
+        if hasattr(post, 'post.updated'):
+            date_published = post.updated
+        
         if not post_is_in_db(title):      
             f = open(db, 'a')
             tags = []
@@ -153,17 +181,16 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             if not imgalt:
                                 imgalt = post.title
                                
-        #put post in db?
-        #how bring down img? at posting time?
+            #put post in db?
+            #how bring down img? at posting time?
             print("Adding " + post.title)
             #print(post.link)
             #print (str.lower(''.join(hashtags))
             
             if cwmarker > 0:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "\n")
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n") 
             else:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "\n")
-            #print(thetime)
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n")
             
             f.close
         else:
@@ -217,3 +244,17 @@ exit()
 # second, create a cachedir (because we need that picture)
 # third, write the posting strings and the image to the cachedir
             # TODO: Take out null tags like overnight and uncategorized
+
+# WILL NEED AWK/SED PREFILTER, uuugh
+# Still, doing it in python seems to be a pain, and a quick bash script would
+# allow others to fix it to their own satisfaction. Also, it's got to be 
+# feed by feed, etc.  And some of these things needing replaced are multiline,
+# which a python sed implementation isn't able to handle afaik.
+
+# Article Note to summary
+# color : #9a8c59;">Article note: That is a lot of Fresh Air.</div><div>
+
+# summary remove <div class="more-link-wrapper"> until</description>
+# sed -e 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g' ideatrash.xml > filename
+# <updated> -> <pubDate> (and closing tags)
+#cat ttrss.xml | sed 's@<updated>@<pubDate>@g' | sed 's@</updated>@</pubDate>@g' > parsed_ttrss.xml

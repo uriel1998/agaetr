@@ -1,45 +1,135 @@
-rss-to-toot
-==================================
+# agaetr
 
-To take a list of RSS feeds and to send them to Mastodon, Twitter, Facebook,
-and Google Pluse with images, content warnings, and sensitive image links 
-when those are available. 
+A modular system to take a list of RSS feeds, process them, and send them to 
+social media with images, content warnings, and sensitive image flags when 
+available. 
 
-Intended for *single user* use, as personal logins, cookies, and API keys
-are required.
+![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr_logo.png "logo")
+
+## Contents
+ 1. [About](#1-about)
+ 2. [License](#2-license)
+ 3. [Prerequisites](#3-prerequisites)
+ 4. [Installation](#4-installation)
+ 5. [Services Setup](#5-services-setup)
+ 6. [Feeds Setup](#6-feeds-setup)
+ 7. [Feed Preprocessing](#7-feed-preprocessing)
+ 8. [Feed Options](#8-feed-options)
+ 9. [Usage](#9-usage)
+ 10. [TODO](#10-todo)
+
+***
+
+## 1. About
+
+`agaetr` is a modular system made up of several small programs designed to take 
+input (particularly RSS feeds) and then share them to various social media outputs.
+
+This system is designed for *single user* use, as API keys are required.
 
 Currently works well with feeds from [dlvr.it](https://dlvrit.com/) 
-and [shaarli](https://github.com/shaarli/Shaarli) instances. Will 
-probably work fine with other well-formed RSS/Atom feeds. *Probably.*
+and [shaarli](https://github.com/shaarli/Shaarli) instances. A preprocessing 
+script is also available (with examples) for fixing a few things with WordPress 
+and TT-RSS "published articles" feeds.  It can also *deobfuscate* incoming 
+links and optionally shorten outgoing links.
 
-* TODO - to make twitter thing not have API keys in open
-* TODO - check global cw
-* TODO - add tags from feeds instead of just having them be CW
-* TODO - Actually get the FB and G+ posting working automatically
-	
-# Requirements
+The modular structure is specifically designed so that it should be easy to 
+create a new module for additional services, as it relies on other programs 
+to do most of the posting.
 
-* python3
-* [toot](https://github.com/ihabunek/toot/)
-* [twython](https://github.com/ryanmcgrath/twython)
-* [twython-tools](https://github.com/adversary-org/twython-tools) - **IMPORTANT- SEE BELOW**
+`agaetr` is an anglicization of ágætr, meaning "famous".
 
-AND (these are probably already installed or easily available from your package manager/distro)
 
-* [uuidgen](https://www.systutorials.com/docs/linux/man/1-uuidgen/)
+## 2. License
 
-# Installation
+This project is licensed under the MIT license. For the full license, see `LICENSE`.
 
-Install `toot` and `twython` and `wget`
-configparser
-feedparser
-json
-bs4
-pprint
+## 3. Prerequisites
 
- via pip3. Use of a virtual enviroment is encouraged for `toot`, at least, but is not required.
+* Python 3
+* Bash
 
-## Twython-tools (sort of)
+These are probably already installed or are easily available from your distro:
+* [wget](https://www.gnu.org/software/wget/)
+* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)
+* [grep](http://en.wikipedia.org/wiki/Grep)
+* [curl](http://en.wikipedia.org/wiki/CURL)
+
+You will need some variety of posting mechanism. Currently written are:
+
+* Mastodon: [toot](https://github.com/ihabunek/toot/)
+* Twitter [twython](https://github.com/ryanmcgrath/twython) and [twython-tools](https://github.com/adversary-org/twython-tools) - **IMPORTANT- SEE BELOW**
+* Twitter [oysttyer](https://github.com/oysttyer/oysttyer)
+                
+
+Ideally, you should create a virtualenv for this project, as there are a number 
+of python dependencies.  Instructions on how to do that are beyond the scope of 
+this document.  It is assumed that you have created and activated the 
+virtualenv henceforth.
+
+## 4. Installation
+
+* `mkdir -p $HOME/.config/agaetr`
+* `mkdir -p $HOME/.local/agaetr`
+* Edit `agaetr.ini` (see instructions below)
+* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
+* `sudo chmod +x $PWD/agaetr_parse.py`
+* `sudo chmod +x $PWD/agaetr_send.sh`
+* (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
+* `pip install -U appdirs`
+* `pip install -U configparser`
+* `pip install -U beautifulsoup4`
+* `pip install -U feedparser`
+
+Any service you would like to use needs to have a symlink made from the "avail" 
+directory to the "enabled" directory. For example:
+
+* `ln -s $PWD/short_avail/yourls.sh $PWD/short_enabled/yourls.sh`
+
+You may use as many "out" options as you care to; choose 0 or 1 shortening 
+services.
+
+## 5. Services Setup
+
+### Ones Not Covered Here
+
+I tried to write the functions here in a way so that it should be simple to 
+add new ones if you like other tools or other services come along (for example, 
+[jediverse](https://jediverse.com/) or if there's a client to post to an IRC 
+channel, etc.
+
+If you create one for another service, please contact me so I can merge it in 
+(this repository is mirrored multiple places).
+
+### murls  
+
+Murls is a free service and does not require an API key. 
+
+### bit.ly  
+
+If you are using bit.ly, you will need a username and bit.ly API key.
+Place the values of your login and API key into `agaetr.ini`.
+bitly_login = 
+bitly_api = 
+
+### YOURLS  
+
+Go to your already functional YOURLS instance.  Get the API key from 
+Place the URL of your instance and API key into `agaetr.ini`.
+yourls_api=
+yourls_site = 
+
+### Oysttyer  
+
+Download the script and follow its setup instructions
+Place the location of the binary into `agaetr.ini`.
+
+### toot  
+
+`pip3 install toot`
+Place the location of the binary into `agaetr.ini`.
+
+### twython (sort of)  
 
 In this archive are two files - `tweet.py` and `tweet.patch` - that require a 
 little explanation. I did not need the full functionality of twython-tools, 
@@ -52,86 +142,112 @@ So I (thank you Apache2 license) ripped out the authentication portions and
 hardcoded them, ripped out all the interactive bits, and remade the Twython-tools 
 program `tweet-full.py` into `tweet.py`. 
 
-   1.) First of all you have to copy the checkmailrc to ~/.checkmailrc and edit it. Don´t forget to change its
-       permissions to 600.
-
 If you wish to see the difference, `tweet.patch` is included for you to verify 
 my changes to the code.
 
 You must register a [Twitter application](https://apps.twitter.com) and get 
 **user** API codes and type them manually into `tweet.py`.
 
-Usage is `tweet.py --message "Thing to tweet" --file /path/to/file/to/tweet`.
+Place the location of the binary into `agaetr.ini`.
 
-* Posting to Facebook, Google Plus, etc
+APP_KEY = ""
+APP_SECRET = ""
+OAUTH_TOKEN = ""
+OAUTH_TOKEN_SECRET = ""
 
-## IMPORTANT NOTE: 
-These do not work great (if at all) yet; you might want to put `FALSE`
-in the appropriate sections of the configuration
+## 6. Feeds Setup
 
-Due to crappy API restrictions, there isn't a real programmatic way to 
-post to these services. However, this is *linux* so, dammit, there is. 
-We are going to get around this by the use of `elinks` and the `pexpect` 
-python library.
+Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a
+header line `[Feed#]` with a different number for each feed.
 
-Prior to use, you will need to use elinks and to log in to Facebook 
-(use [the mobile site](http://m.facebook.com) ) and to [the main Google page](http://www.google.com).
-By default, elinks saves cookies, so you should be good there. 
+If a feed is being preprocessed (see below), you can put the resulting 
+filename directly into `agaetr.ini`.  
 
-## Configuration Files
+[Feed1]
+url = /home/steven/agaetr/ideatrash_parsed.xml
+sensitive = yes
+ContentWarning = no
+GlobalCW = 
 
-This configuration file is expected to be in `$HOME/.config/rss_social` . 
+[Feed2]
+url = https://ideatrash.net/feed
+sensitive = yes
+ContentWarning = yes
+GlobalCW = ideatrash
 
-* `rss_social.rc`
+## 7. Feed Preprocessing
 
-Each line has a single value, without any key. The order is important. Sane 
-defaults are in the example file.
+If you have a feed with some unruly elements - such as the "Read more..." that 
+Wordpress loves to put in my own feed, or how the "published articles" feed from 
+tt-rss uses `<updated>` instead of `<pubDate>`, there is an example bash 
+script to fix both those problems with `sed`.  As you can see above, you can 
+specify a filename *OR* an URL for the feed location. This allows the use of 
+the preprocessor without changing anything else.
 
-* The location of the executable for `toot`
-* The location of the executable for `tweet.py` 
-* The location of `elinks` (for posting to FB, see below)
-* The location of `elinks` (for posting to G+, see below)
-* The location of the list of feeds 
-* The location for the cache of urls 
-* How many articles to send per run
-* The location of the URL encoder. One is included for convenience
+## 8. Feed Options
 
+There are two places to configure feed options in `agaetr.ini`. In the 
+default block, you can define the default options. For social media accounts 
+that support content warnings and sensitive image markers (like Mastodon) you 
+can configure if images are "sensitive" by default, whether the posts from `agaetr` 
+are marked with content warning by default, and what strings (in the post title 
+or tag) will *always* trigger the content warning, 
 
-If you do not wish to post to any service, put a FALSE on the appropriate
-line in the configuration file.
+If you need ideas for what tags/terms make good content warnings, the file 
+`cwlist.txt` is included for your convenience. Because of how it matches, a 
+filter of "abuse" should catch "child abuse" and "sexual abuse", etc.
 
-* `rss_social_feeds.rc`
+Note: Images are marked as sensitive if the content warning is triggered.
 
-This file is simply parsed from the top to the bottom. Only three line beginnings
-matter here:
+Sensitive = no
+ContentWarning = no
+GlobalCW = From feeds, possibly sensitive
+# These ALWAYS trigger a content warning
+filters =
+#filters = politics blog sex bigot supremacist nazi climate
 
-* @CON=Content Warning Text
-* @SEN
-* @FEED=http://link.to.feed
+Then, in each feed's configuration, you can choose the default for *that feed*. 
+For example, in *Feed1* below, images are marked sensitive, but there is *not* 
+a content warning for any items in the feed.  
 
-The first two are entirely option (and separately toggleable, as seen in the 
-example).  If @SEN exists, all images processed from that feed will have the
-"sensitive" tag on Mastodon. If @CON exists, everything after the equals sign 
-will be the content warning descriptor for Mastodon. (See the example file). 
-Finally, any line starting with @FEED should be an ATOM/RSS feed which will be
-processed.
+In *Feed2* below, all images are marked sensitive and all posts are marked with a 
+content warning of "ideatrash".  It will also mark the content warning with 
+any other tags the post may have.
 
-# Usage
+In *Feed3* below, images are only marked sensitive if they are triggered by a 
+content warning (from the "filter" line in the *Default* section), otherwise 
+there are no content warnings and images are presented normally.
 
-* Run `parse3.sh` on a semi-regular basis (e.g. a cron job)
-* Run `send.sh` on a semi-regular basis (e.g. a cron job)
-* Profit.
+[Feed1]
+url = /home/steven/agaetr/ideatrash_parsed.xml
+sensitive = yes
+ContentWarning = no
+GlobalCW = 
 
-Items are sent on a first _published_ first out, so slapping as many feeds
-into this as you like will still result in the first published articles 
-being shared first.
+[Feed2]
+url = https://ideatrash.net/feed
+sensitive = yes
+ContentWarning = yes
+GlobalCW = ideatrash
 
-# Credits and where a lot of this started
+[Feed2]
+url = https://ideatrash.net/feed
+sensitive = no
+ContentWarning = yes
+GlobalCW = 
 
-[https://www.linuxjournal.com/content/parsing-rss-news-feed-bash-script]  
-[https://linux-tips.com/t/expand-shortened-urls-with-gnu-wget/376]  
-[https://www.hyperborea.org/journal/2017/12/mastodon-ifttt/]  
-[https://github.com/poga/rss2mastodon]  
-[https://github.com/blind-coder/rsstootalizer]  
-[https://twitrss.me/]  
-[https://gist.github.com/cdown/1163649]
+## 9. Usage
+
+* (Optional) Call `rss_preprocessor.sh`.
+* `python agaetr_parse.py` to pull down new articles from feeds.
+* `agaetr_send.sh` to send *a* post to the activated social media services
+
+You will probably wish to add `agaetr_send.sh` to your crontab.
+
+## 10. TODO
+
+* Ensure that send exits cleanly if there's no articles
+* Add "wobble" to time of sending with `agaetr_send`.  (e.g. +- 5min)
+* If hashtags are in description or title, make first occurance a hashtag
+* Create some kind of homespun CW for Twitter, etc
+* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Insta
