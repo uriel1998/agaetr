@@ -108,6 +108,9 @@ Murls is a free service and does not require an API key.
 
 ### bit.ly  
 
+**IMPORTANT NOTE** The bit.ly api is changing in March 2020 and is getting 
+more complex; I've not updated/fixed this yet.
+
 If you are using bit.ly, you will need a username and bit.ly API key.
 Place the values of your login and API key into `agaetr.ini`.
 bitly_login = 
@@ -124,6 +127,11 @@ yourls_site =
 
 Download the script and follow its setup instructions
 Place the location of the binary into `agaetr.ini`.
+
+### Shaarli (output)
+
+https://github.com/shaarli/python-shaarli-client
+Make sure you set up the configuration file!
 
 ### toot  
 
