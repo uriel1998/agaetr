@@ -2,7 +2,7 @@
 
 function oysttyer_send {
     
-    binary=$(grep 'oysttyer =' "$HOME/.config/rss_social/rss_social.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'oysttyer =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring = printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags"
 
     if [ ${#outstring} -gt 280 ]; then

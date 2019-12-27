@@ -28,10 +28,8 @@ IFS=$OIFS
 
 # passing published time (from dd MMM)
 posttime=$(echo "${myarr[0]}")
-echo "${myarr[0]}"
-posttime2=${posttime::-4}
+posttime2=${posttime::-6}
 pubtime=$(date -d"$posttime2" +%d\ %b)
-echo "$pubtime"
 title=$(echo "${myarr[1]}")
 link=$(echo "${myarr[2]}")
 cw=$(echo "${myarr[3]}")
@@ -43,7 +41,7 @@ description=$(echo "${myarr[7]}")
 #Deshortening, deobfuscating, and unredirecting the URL
 
 url="$link"
-source "$SCRIPT_DIR/unredirector"
+source "$SCRIPT_DIR/unredirector.sh"
 unredirector
 link="$url"
 
@@ -57,8 +55,9 @@ if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     source "$SCRIPT_DIR/short_enabled/$shortener"
     url="$link"
     echo "$SCRIPT_DIR/short_enabled/$shortener"
-    #eval ${short_funct}
+    eval ${short_funct}
     link="$shorturl"
+    echo "$shorturl"
 fi
     
 # Parsing enabled out systems. Find files in out_enabled, then import 
@@ -71,7 +70,7 @@ for p in $posters;do
     send_funct=$(echo "${p%.*}_send")
     source "$SCRIPT_DIR/out_enabled/$p"
     echo "$SCRIPT_DIR/out_enabled/$p"
-    #eval ${send_funct}
+    eval ${send_funct}
 done
 
 

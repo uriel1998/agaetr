@@ -1,1 +1,0 @@
-/home/steven/documents/programming/agaetr/short_avail/yourls.sh

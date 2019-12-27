@@ -2,7 +2,7 @@
 
 function toot_send {
 
-    binary=$(grep 'toot =' "$HOME/.config/rss_social/rss_social.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'toot =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring = printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags"
 
     #Yes, I know the URL length doesn't actually count against it.  Just 
