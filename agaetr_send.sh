@@ -30,16 +30,25 @@ IFS=$OIFS
 posttime=$(echo "${myarr[0]}")
 posttime2=${posttime::-6}
 pubtime=$(date -d"$posttime2" +%d\ %b)
-title=$(echo "${myarr[1]}")
+title=$(echo "${myarr[1]//\"/\\\"}")
 link=$(echo "${myarr[2]}")
 cw=$(echo "${myarr[3]}")
-imgurl=$(echo "${myarr[4]}")
-imgalt=$(echo "${myarr[5]}")
+imgurl=$(echo "${myarr[5]}")
+imgalt=$(echo "${myarr[4]//\"/\\\"}")
 hashtags=$(echo "${myarr[6]}")
-description=$(echo "${myarr[7]}")
-            
+description=$(echo "${myarr[7]//\"/\\\"}")
+
+echo "$title"
+echo "$link"
+echo "$cw"
+echo "### $imgurl"
+echo "### $imgalt"
+echo "$hashtags"
+echo "$description"
+echo "#####################"            
 #Deshortening, deobfuscating, and unredirecting the URL
 
+read
 url="$link"
 source "$SCRIPT_DIR/unredirector.sh"
 unredirector

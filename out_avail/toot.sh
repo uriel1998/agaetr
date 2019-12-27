@@ -3,7 +3,7 @@
 function toot_send {
 
     binary=$(grep 'toot =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring = printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags"
+    outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
@@ -25,12 +25,15 @@ function toot_send {
         fi
     fi
 
+    echo "!!!!!!!!!! $imgurl"
+    
     # Get the image, if exists, then send the tweet
     if [ ! -z "$imgurl" ];then
-    
+        
         Outfile=$(mktemp)
         urlstring=$(echo "$imgurl -o $Outfile --max-time 60 --create-dirs -s")
-        curl "$urlstring"
+        curl "$imgurl" -o "$Outfile" --max-time 60 --create-dirs -s
+        echo "Image obtained, resizing."
         #resize to twitter's size if available
         if [ -f /usr/bin/convert ];then
             /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
@@ -52,7 +55,8 @@ function toot_send {
         cw=""
     fi
     
-    postme = printf "%s post %s %s %s --quiet" "$binary" "$outstring" "$imgurl" "$cw"
+    postme=$(printf "%s post \"%s\" %s %s --quiet" "$binary" "$outstring" "$imgurl" "$cw")
+    echo "$postme"
     eval ${postme}
     
     
