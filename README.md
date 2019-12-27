@@ -268,6 +268,8 @@ You will probably wish to add `agaetr_send.sh` to your crontab.
 
 ## 10. TODO
 
+* TWYTHON STILL BEING PERSNICKETY about posting when not by itself.  WHY?
+
 * Test CW without a global CW
 * Test install completely on clean machine to make sure I have it right, lol
 * Clean up documentation

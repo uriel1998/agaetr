@@ -67,8 +67,10 @@ if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     eval ${short_funct}
     link="$shorturl"
     echo "$shorturl"
+    echo "$link"
 fi
     
+    echo "FDK"
 # Parsing enabled out systems. Find files in out_enabled, then import 
 # functions from each and running them with variables already established.
 
@@ -80,6 +82,7 @@ for p in $posters;do
     source "$SCRIPT_DIR/out_enabled/$p"
     echo "$SCRIPT_DIR/out_enabled/$p"
     eval ${send_funct}
+    sleep 10
 done
 
 
