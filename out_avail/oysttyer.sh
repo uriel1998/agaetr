@@ -21,7 +21,7 @@ function oysttyer_send {
             fi
         fi
     fi
-    outstring=$(echo "$binary -silent -status=$outstring")
+    outstring=$(echo "$binary -silent -status=\"$outstring\"")
     eval ${outstring}
 }
 
