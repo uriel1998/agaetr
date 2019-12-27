@@ -30,13 +30,13 @@ IFS=$OIFS
 posttime=$(echo "${myarr[0]}")
 posttime2=${posttime::-6}
 pubtime=$(date -d"$posttime2" +%d\ %b)
-title=$(echo "${myarr[1]//\"/\\\"}")
+title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 link=$(echo "${myarr[2]}")
 cw=$(echo "${myarr[3]}")
 imgurl=$(echo "${myarr[5]}")
-imgalt=$(echo "${myarr[4]//\"/\\\"}")
+imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 hashtags=$(echo "${myarr[6]}")
-description=$(echo "${myarr[7]//\"/\\\"}")
+description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 
 echo "$title"
 echo "$link"
