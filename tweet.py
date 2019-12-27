@@ -48,7 +48,7 @@ media_fn = args.media_fn
 
 
 if media_fn is not None:
-    mfiles = media_fn.split()
+    mfiles = media_fn[0].split()
     lm = len(mfiles)
     mfid = []
     for i in range(lm):

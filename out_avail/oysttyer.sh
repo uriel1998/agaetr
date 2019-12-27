@@ -3,19 +3,19 @@
 function oysttyer_send {
     
     binary=$(grep 'oysttyer =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring = printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags"
+    outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
     if [ ${#outstring} -gt 280 ]; then
-        outstring = printf "From %s: %s - %s %s" "$pubtime" "$title" "$description" "$link" 
+        outstring=$(printf "From %s: %s - %s %s" "$pubtime" "$title" "$description" "$link")
         if [ ${#outstring} -gt 280 ]; then
-            outstring = printf "%s - %s %s %s" "$title" "$description" "$link" 
+            outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
             if [ ${#outstring} -gt 280 ]; then
-                outstring = printf "From %s: %s %s " "$pubtime" "$title" "$link" 
+                outstring=$(printf "From %s: %s %s " "$pubtime" "$title" "$link")
                 if [ ${#outstring} -gt 280 ]; then
-                    outstring = printf "%s %s" "$title" "$link" 
+                    outstring=$(printf "%s %s" "$title" "$link" )
                     if [ ${#outstring} -gt 280 ]; then
                         short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                        outstring = printf "%s %s" "$short_title" "$link" 
+                        outstring=$(printf "%s %s" "$short_title" "$link" )
                     fi
                 fi
             fi

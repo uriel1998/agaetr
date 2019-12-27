@@ -76,6 +76,7 @@ virtualenv henceforth.
 * `sudo chmod +x $PWD/agaetr_parse.py`
 * `sudo chmod +x $PWD/agaetr_send.sh`
 * (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
+* `pip install -U twython --user`
 * `pip install -U appdirs`
 * `pip install -U configparser`
 * `pip install -U beautifulsoup4`
@@ -149,6 +150,10 @@ You must register a [Twitter application](https://apps.twitter.com) and get
 **user** API codes and type them manually into `tweet.py`.
 
 Place the location of the binary into `agaetr.ini`.
+
+*Optional* - Put the full path to the virtual environment's python interpreter 
+in for the shebang for `tweet.py`, as in: `#!/path/to/home/agaeter_venv/bin/python` . I had no luck with this;
+I ended up having to install it globally.
 
 APP_KEY = ""
 APP_SECRET = ""
