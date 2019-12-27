@@ -38,17 +38,17 @@ imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 hashtags=$(echo "${myarr[6]}")
 description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 
-echo "$title"
-echo "$link"
-echo "$cw"
-echo "### $imgurl"
-echo "### $imgalt"
-echo "$hashtags"
-echo "$description"
-echo "#####################"            
+#TODO REMOVE THIS CHECKING STUFF
+#echo "$title"
+#echo "$link"
+#echo "$cw"
+#echo "### $imgurl"
+#echo "### $imgalt"
+#echo "$hashtags"
+#echo "$description"
+#echo "#####################"            
 #Deshortening, deobfuscating, and unredirecting the URL
 
-read
 url="$link"
 source "$SCRIPT_DIR/unredirector.sh"
 unredirector

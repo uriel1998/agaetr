@@ -47,9 +47,9 @@ function toot_send {
         #there should be commas in the cw! apply sensitive tag if there's an image
         if [ ! -z "$imgurl" ];then
             #if there is an image, and it's a CW'd post, the image should be sensitive
-            cw=$(echo "--sensitive -p $cw")
+            cw=$(echo "--sensitive -p \"$cw\"")
         else
-            cw=$(echo "-p $cw")
+            cw=$(echo "-p \"$cw\"")
         fi
     else
         cw=""
