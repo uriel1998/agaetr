@@ -77,10 +77,10 @@ virtualenv henceforth.
 * `sudo chmod +x $PWD/agaetr_send.sh`
 * (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
 * `pip install -U twython --user`
-* `pip install -U appdirs`
-* `pip install -U configparser`
-* `pip install -U beautifulsoup4`
-* `pip install -U feedparser`
+* `pip install -U appdirs --user`
+* `pip install -U configparser --user`
+* `pip install -U beautifulsoup4 --user`
+* `pip install -U feedparser --user`
 
 Any service you would like to use needs to have a symlink made from the "avail" 
 directory to the "enabled" directory. For example:
@@ -268,7 +268,10 @@ You will probably wish to add `agaetr_send.sh` to your crontab.
 
 ## 10. TODO
 
-* Ensure that send exits cleanly if there's no articles
+* Test CW without a global CW
+* Test install completely on clean machine to make sure I have it right, lol
+* Clean up documentation
+* Ensure that send exits cleanly if there's no articles !!
 * Add "wobble" to time of sending with `agaetr_send`.  (e.g. +- 5min)
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
