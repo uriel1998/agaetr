@@ -133,6 +133,15 @@ Place the location of the binary into `agaetr.ini`.
 https://github.com/shaarli/python-shaarli-client
 Make sure you set up the configuration file!
 
+### Wallabag (output)
+
+Get the appropriate binary release and install 
+https://github.com/Nepochal/wallabag-cli/blob/master/docs/installation.md
+https://github.com/Nepochal/wallabag-cli/releases
+https://github.com/Nepochal/wallabag-cli
+run wallabag config
+
+
 ### toot  
 
 `pip3 install toot`

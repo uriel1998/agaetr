@@ -38,7 +38,6 @@ function twython_send {
     
     postme=$(printf "%s -t \"%s\" %s" "$binary" "$outstring" "$imgurl")
     echo "$postme"
-    read
     eval ${postme}
 
     if [ -f "$Outfile" ];then

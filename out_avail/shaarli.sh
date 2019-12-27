@@ -9,7 +9,7 @@ function shaarli_send {
     tags=$(echo "$hashtags"  | sed 's|#||g' )
 
     outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
-    echo "$outstring"
+
     eval ${outstring} > /dev/null
 }
 
