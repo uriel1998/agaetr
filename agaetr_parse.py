@@ -65,20 +65,23 @@ def parse_that_feed(url,sensitive,CW,GCW):
         # if post is already in the database, skip it
         # TODO check the time
 
-        title = post.title
+        title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+        post.title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
         itemurl = post.link
         # cleaning up descriptions and summaries.  Boy, are they trash.
         if hasattr(post, 'description'):
-            post_description = post.description
-            post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '')
-            splitter = post_description.split()
-            post_description =" ".join(splitter)
-        else:
-            if hasattr(post, 'summary'):
-                post_description = post.summary
-                post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '')
+            if "Permalink" not in (str.lower(post.description)):
+                post_description = post.description
+                post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
                 splitter = post_description.split()
                 post_description =" ".join(splitter)
+        else:
+            if hasattr(post, 'summary'):
+                if "Permalink" not in (str.lower(post.summary)):
+                    post_description = post.summary
+                    post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+                    splitter = post_description.split()
+                    post_description =" ".join(splitter)
 
         # While this avoids errors from the TT-RSS feed, it provides a bad date
         # And since the python module pulls in the feed directly, hence the need

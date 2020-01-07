@@ -141,6 +141,8 @@ https://github.com/Nepochal/wallabag-cli/releases
 https://github.com/Nepochal/wallabag-cli
 run wallabag config
 
+Note that shorteners and wallabag don't get along all the time.
+
 
 ### toot  
 
@@ -268,8 +270,15 @@ You will probably wish to add `agaetr_send.sh` to your crontab.
 
 ## 10. TODO
 
-* TWYTHON STILL BEING PERSNICKETY about posting when not by itself.  WHY?
+http://rss.upi.com/news/news.rss
+* Test shaarli feed: https://shaarli.stevesaus.me/?do=atom
 
+(gotta turn on RSS direct links)
+
+* Test wallabag feed: https://bag.faithcollapsing.com/ssaus/kJ8VHqEOOfzkp7/unread.xml
+* Archive of sent links?
+
+* Test CW creation from tags
 * Test CW without a global CW
 * Test install completely on clean machine to make sure I have it right, lol
 * Clean up documentation

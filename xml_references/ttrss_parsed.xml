@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>Published articles</title>
 <generator uri="http://tt-rss.org/">Tiny Tiny RSS/19.12-5448a94</generator>
-<pubDate>2019-12-28T19:22:54+00:00</pubDate>
+<pubDate>2019-12-30T15:00:00+00:00</pubDate>
 <id>https://rss.stevesaus.me/public.php?op=rss&amp;id=-2&amp;key=9u5pdo5e07852179fb9</id>
 <link href="https://rss.stevesaus.me/public.php?op=rss&amp;id=-2&amp;key=9u5pdo5e07852179fb9" rel="self"/>
 
@@ -37,34 +37,7 @@
 	<link rel="enclosure" 
 		type="image/generic" 
 		length="1"
-		href="https://rss.stevesaus.me/public.php?op=cached_url&amp;file=images/27e32d382b9c0634296462353adce4eac30fe0e6"/>
-
-</entry>
-
-<entry>
-	<id>tag:rss.stevesaus.me,2019-12-28:/3357</id>
-	<link href="https://www.upi.com/Top_News/US/2019/12/28/Federal-judge-upholds-cancellation-of-98000-Georgia-voters-registration-status/2101577559532/" rel="alternate" type="text/html"/>
-	<title type="html">Federal judge upholds cancellation of 98,000 Georgia voters’ registration status</title>
-	<summary type="html"><![CDATA[<p>A federal judge's ruling uphold the cancellation of 98,000 Georgia voters' registration status und...</p>]]></summary>
-	<content type="html"><![CDATA[<img src="https://cdnph.upi.com/ph/st/th/2101577559532/2019/upi_com/df7c5020f9d835c4f41975b5c2ccca64/v1.5/Federal-judge-upholds-cancellation-of-98000-Georgia-voters-registration-status.jpg" referrerpolicy="no-referrer"> A federal judge's ruling uphold the cancellation of 98,000 Georgia voters' registration status under the state's "use it or lose it" law, which allowed the state to remove voters if they were classified as inactive.]]></content>
-	<pubDate>2019-12-28T19:22:54+00:00</pubDate>
-	<author><name></name></author>
-	<source>
-		<id>https://www.upi.com/</id>
-		<link rel="self" href="https://www.upi.com/"/>
-		<pubDate>2019-12-28T19:22:54+00:00</pubDate>
-		<title>Latest News - UPI.com</title></source>
-
-
-	<link rel="enclosure" 
-		type="image/jpeg" 
-		length="1"
-		href="https://cdnph.upi.com/ph/st/th/2101577559532/2019/upi_com/df7c5020f9d835c4f41975b5c2ccca64/v1.5/Federal-judge-upholds-cancellation-of-98000-Georgia-voters-registration-status.jpg"/>
-
-	<link rel="enclosure" 
-		type="image/generic" 
-		length="1"
-		href="https://cdnph.upi.com/ph/st/th/2101577559532/2019/upi_com/df7c5020f9d835c4f41975b5c2ccca64/v1.2/Federal-judge-upholds-cancellation-of-98000-Georgia-voters-registration-status.jpg"/>
+		href="https://media.wired.com/photos/5dfce058891bc70008d39f1c/master/pass/Science_Swingweather-1175335480.jpg"/>
 
 </entry>
 

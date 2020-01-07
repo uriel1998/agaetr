@@ -38,15 +38,13 @@ imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 hashtags=$(echo "${myarr[6]}")
 description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 
-#TODO REMOVE THIS CHECKING STUFF
-#echo "$title"
-#echo "$link"
-#echo "$cw"
-#echo "### $imgurl"
-#echo "### $imgalt"
-#echo "$hashtags"
-#echo "$description"
-#echo "#####################"            
+if [ "$imgurl" = "None" ];then 
+    imgurl=""
+fi
+if [ "$imgalt" = "None" ];then 
+    imgalt=""
+fi
+
 #Deshortening, deobfuscating, and unredirecting the URL
 
 url="$link"
@@ -70,7 +68,6 @@ if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     echo "$link"
 fi
     
-    echo "FDK"
 # Parsing enabled out systems. Find files in out_enabled, then import 
 # functions from each and running them with variables already established.
 
