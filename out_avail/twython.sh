@@ -31,12 +31,12 @@ function twython_send {
         if [ -f /usr/bin/convert ];then
             /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
         fi
-        imgurl=$(echo "-f $Outfile")
+        Limgurl=$(echo "-f $Outfile")
     else
-        imgurl=""
+        Limgurl=""
     fi
     
-    postme=$(printf "%s -t \"%s\" %s" "$binary" "$outstring" "$imgurl")
+    postme=$(printf "%s -t \"%s\" %s" "$binary" "$outstring" "$Limgurl")
     echo "$postme"
     eval ${postme}
 

@@ -36,9 +36,9 @@ function toot_send {
         if [ -f /usr/bin/convert ];then
             /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
         fi
-        imgurl=$(echo "--media $Outfile")
+        Limgurl=$(echo "--media $Outfile")
     else
-        imgurl=""
+        Limgurl=""
     fi
 
     if [ ! -z "$cw" ];then
@@ -53,7 +53,7 @@ function toot_send {
         cw=""
     fi
     
-    postme=$(printf "%s post \"%s\" %s %s --quiet" "$binary" "$outstring" "$imgurl" "$cw")
+    postme=$(printf "%s post \"%s\" %s %s --quiet" "$binary" "$outstring" "$Limgurl" "$cw")
     eval ${postme}
     
     

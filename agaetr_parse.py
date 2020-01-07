@@ -70,19 +70,25 @@ def parse_that_feed(url,sensitive,CW,GCW):
         itemurl = post.link
         # cleaning up descriptions and summaries.  Boy, are they trash.
         if hasattr(post, 'description'):
-            if "Permalink" not in (str.lower(post.description)):
+            if "permalink" not in (str.lower(post.description)):
                 post_description = post.description
                 post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
                 splitter = post_description.split()
                 post_description =" ".join(splitter)
+                post_description =BeautifulSoup(post_description, "lxml").text
+            else:
+                post_description = ""
         else:
             if hasattr(post, 'summary'):
-                if "Permalink" not in (str.lower(post.summary)):
+                if "permalink" not in (str.lower(post.summary)):
                     post_description = post.summary
                     post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
                     splitter = post_description.split()
                     post_description =" ".join(splitter)
-
+                    post_description =BeautifulSoup(post_description, "lxml").text
+                else:
+                    post_description = ""
+        
         # While this avoids errors from the TT-RSS feed, it provides a bad date
         # And since the python module pulls in the feed directly, hence the need
         # for our preprocessor. (And probably also a quick way to see if it's
@@ -187,6 +193,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
             #put post in db?
             #how bring down img? at posting time?
             print("Adding " + post.title)
+            print("adding" + str(post_description))
             #print(post.link)
             #print (str.lower(''.join(hashtags))
             
