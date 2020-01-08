@@ -18,6 +18,7 @@ from os.path import expanduser
 from appdirs import *
 from pathlib import Path
 import shutil
+import urllib.parse
 
 ########################################################################
 # Defining configuration locations and such
@@ -169,9 +170,13 @@ def parse_that_feed(url,sensitive,CW,GCW):
                         break
             else:
                 # Finding image in the html
-                soup = BeautifulSoup((post.content[0]['value']), 'html.parser')
-                imgtag = soup.find("img")
-
+                if 'content' in post:
+                    soup = BeautifulSoup((post.content[0]['value']), 'html.parser')
+                    imgtag = soup.find("img")
+                else:
+                    soup = BeautifulSoup(urllib.parse.unquote(post.description), 'html.parser')
+                    imgtag = soup.find("img")
+                    print(imgtag)
                 # checking for tracking images
                 if soup.find("img"):
                     if imgtag.has_attr('width'):
@@ -189,7 +194,21 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             imgalt = imgalt.strip()
                             if not imgalt:
                                 imgalt = post.title
-                               
+                    else:
+                        imgurl = imgtag['src']
+                        # seeing if there's an alt title for accessibility
+                        if imgtag.has_attr('alt'):
+                            imgalt = imgtag['alt']
+                        else: 
+                            if imgtag.has_attr('title'):
+                                imgalt = imgtag['title']
+                            else:    
+                                imgalt = None
+                        #checking for empty strings
+                        if not imgalt:
+                            imgalt = post.title
+                        else:
+                            imgalt = imgalt.strip()
             #put post in db?
             #how bring down img? at posting time?
             print("Adding " + post.title)

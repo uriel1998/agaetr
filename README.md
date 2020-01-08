@@ -27,11 +27,18 @@ input (particularly RSS feeds) and then share them to various social media outpu
 
 This system is designed for *single user* use, as API keys are required.
 
-Currently works well with feeds from [dlvr.it](https://dlvrit.com/) 
-and [shaarli](https://github.com/shaarli/Shaarli) instances. A preprocessing 
-script is also available (with examples) for fixing a few things with WordPress 
-and TT-RSS "published articles" feeds.  It can also *deobfuscate* incoming 
-links and optionally shorten outgoing links.
+Tested with feeds from:
+
+* [dlvr.it](https://dlvrit.com/) 
+* [shaarli](https://github.com/shaarli/Shaarli) instances (see note below)
+* [Wordpress](https://wordpress.org/) (with preprocessing script)
+* [TT-RSS](https://tt-rss.org/) (with preprocessing script)
+* [Trakt.tv](https://trakt.tv) 
+
+The preprocessing script is available (with examples) for fixing a few things 
+with WordPress and TT-RSS "published articles" feeds.  
+
+It can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
 This was created because pay services are expensive, and other options are 
 either limited or subject to frequent bitrot.
@@ -250,6 +257,8 @@ anything else.
 This isn't meant to be a comprehensive "fix" so much as an example to 
 help get you started with your own unruly feeds.
 
+### Note about Shaarli feeds
+
 Please note that if you're importing a Shaarli feed, you will probably want to 
 toggle "RSS direct links" in the Preferences menu, otherwise it links directly 
 to your Shaarli, not to the thing your Shaarli is pointing at.
@@ -328,7 +337,6 @@ put these into cronjobs.
 
 * Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
-* test INBOUND trakt.tv https://trakt.tv/users/senorwombat/history.atom?slurm=6b7f4787dd51232f6b752757f8b10969
 * test INBOUND pintrest - https://www.pinterest.com/StevenSaus/cool-stuff.rss/
 * test INBOUND deviant art http://backend.deviantart.com/rss.xml?q=favby%3Auriel1998%2F9804716&type=deviation
 * test INBOUND wallabag - seems to be broken?
