@@ -58,14 +58,16 @@ link="$url"
 
 if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     shortener=$(ls -lR "$SCRIPT_DIR/short_enabled" | grep ^l | awk '{print $9}')
-    short_funct=$(echo "${shortener%.*}_shortener")
-    source "$SCRIPT_DIR/short_enabled/$shortener"
-    url="$link"
-    echo "$SCRIPT_DIR/short_enabled/$shortener"
-    eval ${short_funct}
-    link="$shorturl"
-    echo "$shorturl"
-    echo "$link"
+    if [ "$shortener" != ".keep" ];then 
+        short_funct=$(echo "${shortener%.*}_shortener")
+        source "$SCRIPT_DIR/short_enabled/$shortener"
+        url="$link"
+        echo "$SCRIPT_DIR/short_enabled/$shortener"
+        eval ${short_funct}
+        link="$shorturl"
+        echo "$shorturl"
+        echo "$link"
+    fi
 fi
     
 # Parsing enabled out systems. Find files in out_enabled, then import 
@@ -74,12 +76,14 @@ fi
 posters=$(ls -A "$SCRIPT_DIR/out_enabled")
 
 for p in $posters;do
-    echo "Processing ${p%.*}..."
-    send_funct=$(echo "${p%.*}_send")
-    source "$SCRIPT_DIR/out_enabled/$p"
-    echo "$SCRIPT_DIR/out_enabled/$p"
-    eval ${send_funct}
-    sleep 10
+    if [ "$p" != ".keep" ];then 
+        echo "Processing ${p%.*}..."
+        send_funct=$(echo "${p%.*}_send")
+        source "$SCRIPT_DIR/out_enabled/$p"
+        echo "$SCRIPT_DIR/out_enabled/$p"
+        eval ${send_funct}
+        sleep 5
+    fi
 done
 
 

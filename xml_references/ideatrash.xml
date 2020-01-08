@@ -15,13 +15,13 @@
 	<atom:link href="https://ideatrash.net/feed" rel="self" type="application/rss+xml" />
 	<link>https://ideatrash.net</link>
 	<description>Writing, publishing, geekdom, and errata. By Steven Saus.</description>
-	<lastBuildDate>Mon, 09 Dec 2019 19:49:34 -0400</lastBuildDate>
+	<lastBuildDate>Sat, 21 Dec 2019 16:59:48 +0000</lastBuildDate>
 	<language>en-US</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
 	<sy:updateFrequency>
 	1	</sy:updateFrequency>
-	<generator>https://wordpress.org/?v=5.3</generator>
+	<generator>https://wordpress.org/?v=5.3.2</generator>
 
 <image>
 	<url>https://i0.wp.com/ideatrash.net/wp-content/uploads/2018/03/cropped-DARK_Square-1-1.jpg?fit=32%2C32&#038;ssl=1</url>
@@ -31,6 +31,411 @@
 	<height>32</height>
 </image> 
 <site xmlns="com-wordpress:feed-additions:1">144741783</site>	<item>
+		<title>Upgrading Voxelmap and Keeping Your Waypoints in #Minecraft</title>
+		<link>https://ideatrash.net/2019/12/upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft.html?pk_campaign=feed&#038;pk_kwd=upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft</link>
+				<comments>https://ideatrash.net/2019/12/upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft.html?pk_campaign=feed&#038;pk_kwd=upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft#respond</comments>
+				<pubDate>Sat, 21 Dec 2019 16:59:42 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[minecraft]]></category>
+		<category><![CDATA[howto]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103551</guid>
+				<description><![CDATA[How to keep your waypoints while upgrading VoxelMap to 1.15 in Minecraft!]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft.html?pk_campaign=feed&pk_kwd=upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft"><img width="300" height="169" src="https://ideatrash.net/wp-content/uploads/2019/12/minecraft-3609241_1920-300x169.jpg" alt="Upgrading Voxelmap and Keeping Your Waypoints in #Minecraft" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<div class="wp-block-image"><figure class="alignright size-thumbnail is-resized"><img src="https://ideatrash.net/wp-content/uploads/2019/12/minimap.jpg" alt="" class="wp-image-103552" width="244" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"><figcaption>VoxelMap in action</figcaption></figure></div>
+
+
+
+<p>I love minimaps in Minecraft.  I get lost without a GPS in real life; it’s even worse in games.  Especially <em>big</em> ones like Minecraft.  So I’ve been using minimaps with waypoints since I first learned about them. </p>
+
+
+
+<p>The one I use now is <a href="https://www.curseforge.com/minecraft/mc-mods/voxelmap" target="_blank" rel="nofollow" class="broken_link">VoxelMap</a>, which is hands-down the <em>best</em> minimap for Fabric modloader, and I was thrilled to see that it’s updated for 1.15.1.  But <a href="http://myminecraft.com/" target="_blank" rel="nofollow">on the server I play on</a>, I have a <em>bunch</em> of waypoints that I didn’t want to lose.  So here’s how to upgrade!</p>
+
+
+
+<div class="wp-block-image"><figure class="alignleft size-medium"><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-21-1576946056_658x666_scrot-560x552.jpg" alt="" class="wp-image-103553" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></div>
+
+
+
+<p>First, make sure you have a backup from 1.14 that has your waypoints in it.  Go into your 1.14 Minecraft mods folder and copy /.minecraft/mods/mamiyaotaru somewhere safe.</p>
+
+
+
+<p> Then install the VoxelMap mod like you would normally.  (After I write this, it’ll also be in my <a href="https://senorwombat.com/" target="_blank" rel="nofollow" class="broken_link">MultiMC and Technic modpacks</a>, so upgrade normally there.)  Log in to the server of your choice (or local world).  </p>
+
+
+
+<p>You’ll see the VoxelMap intro screen.   Don’t worry about configuring it yet; <em>we’re also giong to copy your old preferences over</em>.</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-21-1576945398_2390x1280_scrot-560x261.jpg" alt="" class="wp-image-103554" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p>Press “M” and then when prompted, tell VoxelMap that it’s a multiworld server.  (Overworld, Nether, and The End are each a separate world, so the answer is probably yes.)  </p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-21-1576945452_834x405_scrot-560x272.jpg" alt="" class="wp-image-103555" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p>Click “New Name” and give it <em>the same name that you did before</em>.  In my case, that’s “main”.  Press enter to save it.  </p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://i2.wp.com/ideatrash.net/wp-content/uploads/2019/12/2019-12-21-1576945480_2390x1280_scrot.jpg?fit=1024%2C631&amp;ssl=1" alt="" class="wp-image-103556" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p>Also create a waypoint – just anywhere, it doesn’t matter.  Repeat this with the Nether and End if you have waypoints in those locations. </p>
+
+
+
+<p>Leave the server and <strong><em>CLOSE MINECRAFT</em></strong>.  If you do not close the program completely, <em>this does not work</em>.</p>
+
+
+
+<p>You will notice that in your 1.15 installation (or modpack installation) there’s a new  /.minecraft/mods/mamiyaotaru folder.  Copy the <strong><em>OLD</em></strong><em> </em>mamiyaotaru folder from 1.14 into the 1.15 directory.  </p>
+
+
+
+<p>Replace the new files with the old ones.  </p>
+
+
+
+<p>Restart Minecraft; your waypoints should have returned.</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-21-1576945896_870x610_scrot-560x393.jpg" alt="" class="wp-image-103557" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p>I’m not sure why doing it this way is necessary, but just copying it over beforehand didn’t work for me; YMMV.</p>
+
+
+
+<p>And if you’re able, <a href="https://www.patreon.com/MamiyaOtaru" target="_blank" rel="nofollow">support the author of this mod on Patreon</a>, and maybe I’ll see you on <a href="https://myminecraft.com" target="_blank" rel="nofollow">MyMinecraft</a>!</p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Fupgrading-voxelmap-and-keeping-your-waypoints-in-minecraft.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dupgrading-voxelmap-and-keeping-your-waypoints-in-minecraft&amp;action_name=%3Cspan+class%3D%27p-name%27%3EUpgrading+Voxelmap+and+Keeping+Your+Waypoints+in+%23Minecraft%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/12/upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft.html?pk_campaign=feed&#038;pk_kwd=upgrading-voxelmap-and-keeping-your-waypoints-in-minecraft/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/12/minecraft-3609241_1920.jpg" length="105527" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/12/minecraft-3609241_1920.jpg" width="1200" height="675" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103551</post-id>	</item>
+		<item>
+		<title>Featured Texture Pack: Have A &#8220;Smartwatch&#8221; In Minecraft With Mi Mined</title>
+		<link>https://ideatrash.net/2019/12/featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined.html?pk_campaign=feed&#038;pk_kwd=featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined</link>
+				<comments>https://ideatrash.net/2019/12/featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined.html?pk_campaign=feed&#038;pk_kwd=featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined#respond</comments>
+				<pubDate>Thu, 19 Dec 2019 00:53:13 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[minecraft]]></category>
+		<category><![CDATA[texture pack]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103524</guid>
+				<description><![CDATA[Let your Minecraft clock give you even more information with this texture pack!]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined.html?pk_campaign=feed&pk_kwd=featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined"><img width="300" height="169" src="https://ideatrash.net/wp-content/uploads/2019/12/desktop-wallpaper-landscape-minecraft-682766-300x169.jpg" alt="Featured Texture Pack: Have A &#8220;Smartwatch&#8221; In Minecraft With Mi Mined" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p><a href="https://www.curseforge.com/minecraft/texture-packs/mi-mined" target="_blank" rel="nofollow" class="broken_link">Mi Mined</a> is a pretty simple – and <em>clever</em> – texture pack to help make the clock even more useful in Minecraft (versions 1.13 through 1.15 as of writing this).  </p>
+
+
+
+<p>It’s an addon texture pack that just changes the clock face so that it gives you even more information.  It works in the hotbar <em>and</em> when mounted in an item frame:</p>
+
+
+
+<figure class="wp-block-gallery columns-2 is-cropped"><ul class="blocks-gallery-grid"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-18_18.35.53.jpg" alt="" data-id="103526" data-link="https://ideatrash.net/?attachment_id=103526" class="wp-image-103526" width="434" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/2019-12-18_18.35.39-1.jpg" alt="" data-id="103527" data-link="https://ideatrash.net/?attachment_id=103527" class="wp-image-103527" width="90" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul></figure><ul><li>Shows when players can sleep.</li><li>When light level reaches it’s maximum in surface or when it decreases.</li><li>When villagers sleep/socialise/start working.</li><li>When hostile mobs start spawning or burning.</li></ul><figure class="wp-block-gallery columns-3 is-cropped"><ul class="blocks-gallery-grid"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_12.png" alt="" data-id="103530" data-link="https://ideatrash.net/?attachment_id=103530" class="wp-image-103530" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_24.png" alt="" data-id="103532" data-link="https://ideatrash.net/?attachment_id=103532" class="wp-image-103532" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_26.png" alt="" data-id="103533" data-link="https://ideatrash.net/?attachment_id=103533" class="wp-image-103533" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_29.png" alt="" data-id="103534" data-link="https://ideatrash.net/?attachment_id=103534" class="wp-image-103534" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_71.png" alt="" data-id="103537" data-link="https://ideatrash.net/?attachment_id=103537" class="wp-image-103537" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/12/clock_80.png" alt="" data-id="103539" data-link="https://ideatrash.net/?attachment_id=103539" class="wp-image-103539" width="32" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul></figure><p>It definitely adds something to the entire clock experience!  Check this texture pack out at:</p>
+
+
+
+<p><a href="https://www.curseforge.com/minecraft/texture-packs/mi-mined" target="_blank" rel="nofollow" class="broken_link">https://www.curseforge.com/minecraft/texture-packs/mi-mined</a></p>
+
+
+
+<p>Featured  Photo by <strong> <a href="https://www.pexels.com/@evenecer-andujar-207487?utm_content=attributionCopyText&amp;utm_medium=referral&amp;utm_source=pexels" target="_blank" rel="nofollow"> Evenecer Andujar </a> </strong> from <strong> <a href="https://www.pexels.com/photo/desktop-wallpaper-landscape-minecraft-682766/?utm_content=attributionCopyText&amp;utm_medium=referral&amp;utm_source=pexels" target="_blank" rel="nofollow"> Pexels </a> </strong></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Ffeatured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dfeatured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined&amp;action_name=%3Cspan+class%3D%27p-name%27%3EFeatured+Texture+Pack%3A+Have+A+%26%238220%3BSmartwatch%26%238221%3B+In+Minecraft+With+Mi+Mined%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/12/featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined.html?pk_campaign=feed&#038;pk_kwd=featured-texture-pack-have-a-smartwatch-in-minecraft-with-mi-mined/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/12/desktop-wallpaper-landscape-minecraft-682766.jpg" length="66974" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/12/desktop-wallpaper-landscape-minecraft-682766.jpg" width="1200" height="675" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103524</post-id>	</item>
+		<item>
+		<title>Automatically Shape Bandwidth On Linux</title>
+		<link>https://ideatrash.net/2019/12/automatically-shape-bandwidth-on-linux.html?pk_campaign=feed&#038;pk_kwd=automatically-shape-bandwidth-on-linux</link>
+				<comments>https://ideatrash.net/2019/12/automatically-shape-bandwidth-on-linux.html?pk_campaign=feed&#038;pk_kwd=automatically-shape-bandwidth-on-linux#respond</comments>
+				<pubDate>Tue, 17 Dec 2019 18:24:29 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[internet]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[networking]]></category>
+		<category><![CDATA[programming]]></category>
+		<category><![CDATA[command line]]></category>
+		<category><![CDATA[traffic shaping]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103508</guid>
+				<description><![CDATA[Automatic traffic shaping for when you change networks frequently (like with a laptop).]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/automatically-shape-bandwidth-on-linux.html?pk_campaign=feed&pk_kwd=automatically-shape-bandwidth-on-linux"><img width="300" height="196" src="https://ideatrash.net/wp-content/uploads/2019/12/carbon-300x196.png" alt="Automatically Shape Bandwidth On Linux" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>I’ve written about <a href="https://ideatrash.net/2014/07/making-wondershaper-play-nice-on-lan.html">wondershaper</a> before (though ignore the tweaks I mention there – <a href="https://github.com/magnific0/wondershaper" target="_blank" rel="nofollow">wondershaper <em>is</em> updated and is available at GitHub</a>) ; it’s a handy little tool that will keep any one application from hogging all the available bandwidth from your computer.  While it doesn’t create miracles on its own, combining it with Quality of Service (QoS) rules on your router can make everything run a bit more smoothly.</p>
+
+
+
+<p>To use a metaphor, QoS on your router is like a traffic cop between a highway onramp (the internet) and the surface streets (your LAN), waving high-priority traffic through more quickly than low-priority traffic.  Wondershaper is a <em>different</em> traffic cop doing the same job, but only handling traffic in a neighborhood (your computer) going onto the main surface streets (your LAN).  Having one helps, having both can help make things run a <em>lot</em> more smoothly.  </p>
+
+
+
+<figure class="wp-block-image size-full"><img src="https://ideatrash.net/wp-content/uploads/2019/12/LAN-560x439.jpg" alt="Graph demonstrating where QoS and wondershaper work." class="wp-image-103512" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p><a href="https://www.howtogeek.com/75660/the-beginners-guide-to-qos-on-your-router/" target="_blank" rel="nofollow">Setting up QoS rules is a little tricksy</a> (and beyond the scope of this post), but is worth it.  <a href="https://github.com/magnific0/wondershaper" target="_blank" rel="nofollow">Wondershaper</a> is a lot simpler, since it’s cleverly written and is just handling traffic from a single computer.  But what if your computer is a laptop (like mine) and different places you work from have different bandwidth amounts?  That’s where  my <code>automatic_wondershaper_wombat</code> script comes in.</p>
+
+
+
+<p>The “normal” installation results in the script being called every time you connect or disconnect from a network.  When you connect, it waits until your computer isn’t under high load, then uses <code>speedtest-cli </code>to determine the available bandwidth <em>to that computer</em> from the router.  It then automatically determines and sets the bandwidth limits, all behind the scenes.  When you disconnect from the network, it clears all the settings it put in place.   Optionally, you can run it manually to have it re-examine and re-apply its limits.</p>
+
+
+
+<p>It logs to <code>syslog</code> as well as creating a simple text file at <code>/tmp/bandwidthqueues</code> listing the interface used, the downspeed limit, and the upspeed limit.</p>
+
+
+
+<p>You can check it out on <a href="https://github.com/uriel1998/automatic_wondershaper_wombat" target="_blank" rel="nofollow">GitHub</a>, <a href="https://gitlab.com/uriel1998/automatic_wondershaper_wombat" target="_blank" rel="nofollow">GitLab</a>, or <a href="https://git.faithcollapsing.com/automatic_wondershaper_wombat/" target="_blank" rel="nofollow" class="broken_link">my private git repository</a>, which includes detailed step-by-step installation instructions, tested on Debian Buster.</p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Fautomatically-shape-bandwidth-on-linux.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dautomatically-shape-bandwidth-on-linux&amp;action_name=%3Cspan+class%3D%27p-name%27%3EAutomatically+Shape+Bandwidth+On+Linux%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/12/automatically-shape-bandwidth-on-linux.html?pk_campaign=feed&#038;pk_kwd=automatically-shape-bandwidth-on-linux/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/12/carbon.png" length="85349" type="image/png"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/12/carbon.png" width="1008" height="657" medium="image" type="image/png"/><post-id xmlns="com-wordpress:feed-additions:1">103508</post-id>	</item>
+		<item>
+		<title>Grunkle Steven&#8217;s Bees (for Minecraft 1.15)</title>
+		<link>https://ideatrash.net/2019/12/grunkle-stevens-bees-for-minecraft-1-15.html?pk_campaign=feed&#038;pk_kwd=grunkle-stevens-bees-for-minecraft-1-15</link>
+				<comments>https://ideatrash.net/2019/12/grunkle-stevens-bees-for-minecraft-1-15.html?pk_campaign=feed&#038;pk_kwd=grunkle-stevens-bees-for-minecraft-1-15#respond</comments>
+				<pubDate>Sat, 14 Dec 2019 15:05:09 +0000</pubDate>
+		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
+				<category><![CDATA[minecraft]]></category>
+		<category><![CDATA[uncategorized]]></category>
+		<category><![CDATA[mod]]></category>
+		<category><![CDATA[multimc]]></category>
+		<category><![CDATA[technic]]></category>
+
+		<guid isPermaLink="false">https://ideatrash.net/?p=103497</guid>
+				<description><![CDATA[This week saw the release of version 1.15 of Minecraft, and that means it's time for a new modpack!  Introducing Grunkle Steven's Bees!  ]]></description>
+								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/grunkle-stevens-bees-for-minecraft-1-15.html?pk_campaign=feed&pk_kwd=grunkle-stevens-bees-for-minecraft-1-15"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/12/GrunkleStevensBees-300x200.jpg" alt="Grunkle Steven&#8217;s Bees (for Minecraft 1.15)" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
+<p>This week saw the release of version 1.15 of Minecraft, and that means it’s time for a new modpack!  Introducing Grunkle Steven’s Bees!  </p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://senorwombat.com/images/GrunkleStevensBees.jpg" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure><p>I’ve not only created a <a href="https://www.technicpack.net/modpack/grunkle-stevens-bees.1583107" target="_blank" rel="nofollow">Technic modpack</a>, but I’ve also been playing around with MultiMC, so you can import the modpack as a <a href="https://multimc.org/" target="_blank" rel="nofollow">MultiMC</a> instance (or download the zip) from here:  <a href="https://git.faithcollapsing.com/GSBees/blob/master/GSBees.zip" target="_blank" rel="nofollow">https://git.faithcollapsing.com/GSBees/blob/master/GSBees.zip</a></p>
+
+
+
+<p>I’ll be updating both versions simultaneously, so for example, when Optifine/Optifabric are updated, it will be added to both versions at the same time.  You can find the full list of my modpacks at the <a href="https://senorwombat.com" target="_blank" rel="nofollow">Senor Wombat page</a>.  The full list of tweaks, mods, etc <em>as of this time of writing</em> is below!</p>
+
+
+
+<p>And as always, join us online at <a href="http://myminecraft.com" target="_blank" rel="nofollow">MyMinecraft</a>!  (server: play.myminecraft.com)</p>
+
+
+
+<h1>Mods</h1>
+
+
+
+<h2>Gameplay</h2>
+
+
+
+<p><strong>Amecs: Alt-Meta-Escape-Control-Shift</strong><br>
+Amecs is a mod that tries to improve your keyboard immersion. Therefore 
+it introduces several modifier keys (alt, control and shift) for now to 
+give you a larger variety to chose from when making keybindings.<br><a href="https://www.curseforge.com/minecraft/mc-mods/amecs" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/amecs</a> </p>
+
+
+
+<p><strong>ChatPing</strong><br>
+A mod that makes a sound when phrases are said in chat.<br><a href="https://github.com/professorg/ChatPing" target="_blank" rel="nofollow">https://github.com/professorg/ChatPing </a> </p>
+
+
+
+<p><strong>Command Macros</strong><br>
+Have a command you commonly use? Tired of repeatedly typing it in over 
+and over? Wouldn’t it be easier to press a key on your keyboard to run 
+the command?<br><a href="https://www.curseforge.com/minecraft/mc-mods/command-macros" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/command-macros</a> </p>
+
+
+
+<p><strong>EasierChests</strong><br>
+A Mod to easier move stuff between inventory and chests<br><a href="https://minecraft.curseforge.com/projects/easierchests?gameCategorySlug=mc-mods&amp;amp;projectID=279501" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/easierchests?gameCategorySlug=mc-mods&amp;projectID=279501</a> </p>
+
+
+
+<p><strong>EasierVillagerTrading</strong><br>
+This is a mod for people who trade with villagers a lot. It does not add
+ any functioniality to villagers, and it doesn’t allow you to do 
+anything you can’t do in vanilla Minecraft, but it allows you to do the 
+same things with a lot less clicks and mouse movements.<br><a href="https://www.curseforge.com/minecraft/mc-mods/easiervillagertrading" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/easiervillagertrading</a> </p>
+
+
+
+<p><strong>Enchanted ToolTips</strong><br>
+Display information about the enchant in an item’s ToolTip. Works for 
+any enchanted item, including Books. Enchanted ToolTips is highly 
+customizable, you can modify everything to what information is display 
+in the tooltip, to adjusting the descriptions of the enchant.<br><a href="https://www.curseforge.com/minecraft/mc-mods/enchanted-tooltips" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/enchanted-tooltips </a> </p>
+
+
+
+<p><strong>Grid</strong><br>
+This mod displays a grid-like overlay over the world, with configurable 
+spacing, so the blocks you’re interested in get highlighted 
+automatically.<br><a href="https://www.curseforge.com/minecraft/mc-mods/grid" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/grid </a> </p>
+
+
+
+<p><strong>Light Overlay</strong><br>
+A simple mod to provide users with NEI-like light overlay.<br><a href="https://www.curseforge.com/minecraft/mc-mods/light-overlay" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/light-overlay</a> </p>
+
+
+
+<p><strong>Tooltip Autowrap</strong><br>
+Does what it says on the tin.<br><a href="https://www.curseforge.com/minecraft/mc-mods/tooltip-autowrap" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/tooltip-autowrap</a> </p>
+
+
+
+<h2>Aesthetic</h2>
+
+
+
+<p><strong>Mambience</strong><br>
+MAmbience adds a large amount of dynamic ambient sounds.<br><a href="https://www.curseforge.com/minecraft/mc-mods/mambience" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/mambience</a> </p>
+
+
+
+<p><strong>Presence Footsteps</strong><br>
+Expect to see a more rich and immersive Minecraft world, one where Presence<br>
+Footsteps adds new and more dynamic sounds for every block the player walks on.<br><a href="https://www.curseforge.com/minecraft/mc-mods/presence-footsteps" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/presence-footsteps</a> </p>
+
+
+
+<p><strong>Runorama</strong><br>
+runorama allows you to replace your title screen menu’s background with the panoramic screenshots you take in game!<br><a href="https://www.curseforge.com/minecraft/mc-mods/runorama" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/runorama</a> </p>
+
+
+
+<p><strong>Smoke Extender</strong><br>
+This is a simple clientside mod that does a simple thing: Change the 
+default behaviour of campfire emitted smoke to last longer. It only 
+changes the one made with a hay bale, not the default one.<br><a href="https://www.curseforge.com/minecraft/mc-mods/smoke-extender/files/2840979" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/smoke-extender/files/2840979</a> </p>
+
+
+
+<h2>Utility</h2>
+
+
+
+<p><strong>Fabric API</strong><br>
+Core API library for the Fabric toolchain<br><a href="https://minecraft.curseforge.com/projects/fabric?gameCategorySlug=mc-mods&amp;amp;projectID=306612subscribe" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/fabric?gameCategorySlug=mc-mods&amp;projectID=306612subscribe</a> </p>
+
+
+
+<p><strong>Fat Experience Orbs</strong><br>
+This mod makes it so that nearby experience orbs merge together<br><a href="https://www.curseforge.com/minecraft/mc-mods/fat-experience-orbs" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/fat-experience-orbs</a> </p>
+
+
+
+<p><strong>Mod Menu (Fabric)</strong><br>
+Adds a mod menu to view the list of mods you have installed.<br><a href="https://minecraft.curseforge.com/projects/modmenu?gameCategorySlug=mc-mods&amp;amp;projectID=308702" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/modmenu?gameCategorySlug=mc-mods&amp;projectID=308702</a> </p>
+
+
+
+<h1>Data Packs:</h1>
+
+
+
+<p><strong>Disable Hostile Grief</strong><br>
+This data pack was created to allow Villagers to harvest crops, and Snow
+ Golems to place snow layers, while also retaining the desirable 
+features of gamerule mobGriefing = false. Note that this data pack sets 
+the mobGriefing gamerule to true.<br><a href="https://www.curseforge.com/minecraft/customization/disable-hostile-grief-data-pack" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/customization/disable-hostile-grief-data-pack</a> </p>
+
+
+
+<h1>Texture Packs Modifying Theme:</h1>
+
+
+
+<p><strong>Jerm’s Better Leaves Add-on</strong><br><a href="https://www.curseforge.com/minecraft/texture-packs/better-leaves-add-on-2-0" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/better-leaves-add-on-2-0</a><br>
+This pack retextures the leaves to look a little more realistic, and adds a custom model to them to look a little more bushy. </p>
+
+
+
+<p><strong>Open Lower Grass</strong><br><a href="https://www.curseforge.com/minecraft/texture-packs/open-lower-grass" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/open-lower-grass</a> </p>
+
+
+
+<p><strong>HD Font – Roboto</strong><br>
+The Material font, now on Minecraft – 1.13 and up.<br><a href="https://minecraft.curseforge.com/projects/hd-font-roboto?gameCategorySlug=texture-packs&amp;amp;projectID=298082" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/hd-font-roboto?gameCategorySlug=texture-packs&amp;projectID=298082</a> </p>
+
+
+
+<p><strong>Round Trees</strong><br>
+Do you want Round Trees in Minecraft without a mod? Well, I created a pack that brings these cool ROUND TREES!<br><a href="https://www.curseforge.com/minecraft/texture-packs/round-trees-mc-vanilla-1-8-1-13" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/round-trees-mc-vanilla-1-8-1-13</a> </p>
+
+
+
+<p><strong>Dark GUI theme</strong><br>
+Updated by me, based on https://www.planetminecraft.com/texture_pack/dark-theme-4253588/ </p>
+
+
+
+<p><strong>Glass Doors</strong><br><a href="https://www.curseforge.com/minecraft/texture-packs/glass-doors" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/glass-doors </a> </p>
+
+
+
+<p><strong>Jappa 1.14 Glass with Connected Textures! [16x]</strong><br>
+Clean Glass! Remove those line streaks from Default Glass, Stained Glass, and Ice!<br><a href="https://www.curseforge.com/minecraft/texture-packs/new-glass" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/new-glass</a> </p>
+
+
+
+<h1>Recommended But Not Included Due To License:</h1>
+
+
+
+<p><strong>New Default +</strong><br>
+New Default+ stays faithful to the default textures while also improving
+ them with more optimized, detailed, and refined textures.<br><a href="https://www.curseforge.com/minecraft/texture-packs/newdefaultplus" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/newdefaultplus </a> </p>
+
+
+
+<p><strong>Pixel Reality – Luminance</strong><br>
+Realistic lighting with vanilla textures or any other pack, a perfect 
+alternative to shaders if your machine just can’t handle them!
+<a href="https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance</a> </p>
+
+
+
+<p><strong>Pixel Reality – Atmosphere</strong><br>
+Add a realistic sky to vanilla Minecraft or any pack! Needs Optifine.<br><a href="https://minecraft.curseforge.com/projects/pixel-reality-atmosphere?gameCategorySlug=texture-packs&amp;amp;projectID=227812" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/pixel-reality-atmosphere?gameCategorySlug=texture-packs&amp;projectID=227812</a> </p>
+
+
+
+<h1>Waiting for updates/conflicts</h1>
+
+
+
+<p>The following crashed my game every time or haven’t updated; I’m waiting for new versions. </p>
+
+
+
+<p><strong>VoxelMap</strong><br>
+Minimap and Worldmap. Have an overview of your surroundings, or view the entire world. Create waypoints.<br><a href="https://minecraft.curseforge.com/projects/voxelmap?gameCategorySlug=mc-mods&amp;amp;projectID=225179" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/voxelmap?gameCategorySlug=mc-mods&amp;projectID=225179</a> </p>
+
+
+
+<p><strong>Dynamic FPS</strong><br>
+Dynamic FPS automatically reduces the speed at which minecraft renders when<br>
+it’s not focused (to 1 FPS) or hidden (no renders at all).<br><a href="https://www.curseforge.com/minecraft/mc-mods/dynamic-fps" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/dynamic-fps</a> </p>
+
+
+
+<p><strong>Enchanted Tooltip</strong><br>
+Display information about the enchant in an item’s ToolTip. Works for any enchanted item, including Books.<br><a href="https://www.curseforge.com/minecraft/mc-mods/enchanted-tooltips" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/enchanted-tooltips</a> </p>
+
+
+
+<p><strong>FoamFix for Minecraft</strong><br>
+Simple, targeted optimizations for 1.8+ Minecraft<br><a href="https://minecraft.curseforge.com/projects/foamfix-for-minecraft?gameCategorySlug=mc-mods&amp;amp;projectID=278494" target="_blank" rel="nofollow">https://minecraft.curseforge.com/projects/foamfix-for-minecraft?gameCategorySlug=mc-mods&amp;projectID=278494</a> </p>
+
+
+
+<p><strong>Optifine</strong><br><a href="https://www.optifine.net/" target="_blank" rel="nofollow">https://www.optifine.net/</a> </p>
+
+
+
+<p><strong>Optifabric</strong><br>
+A mod that can be used to run Optifine on the Fabric Mod Loader. It does
+ this by taking the official optifine mod and making it compatible with 
+the Fabric Mod Loader at runtime.<br><a href="https://www.curseforge.com/minecraft/mc-mods/optifabric/files/2744943" target="_blank" rel="nofollow">https://www.curseforge.com/minecraft/mc-mods/optifabric/files/2744943</a></p>
+</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Fgrunkle-stevens-bees-for-minecraft-1-15.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dgrunkle-stevens-bees-for-minecraft-1-15&amp;action_name=%3Cspan+class%3D%27p-name%27%3EGrunkle+Steven%26%238217%3Bs+Bees+%28for+Minecraft+1.15%29%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
+							<wfw:commentRss>https://ideatrash.net/2019/12/grunkle-stevens-bees-for-minecraft-1-15.html?pk_campaign=feed&#038;pk_kwd=grunkle-stevens-bees-for-minecraft-1-15/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/12/GrunkleStevensBees.jpg" length="232086" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/12/GrunkleStevensBees.jpg" width="900" height="600" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103497</post-id>	</item>
+		<item>
 		<title>Proxies, TT-RSS, and Newsboat (Or Newsbeuter), Oh My</title>
 		<link>https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my</link>
 				<comments>https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my#respond</comments>
@@ -41,7 +446,7 @@
 		<category><![CDATA[rss]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103485</guid>
-				<description><![CDATA[If Newsboat and Newsbeuter don't authenticate with a nginx proxy to Apache, this post is for you. <div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&#038;pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Proxies, TT-RSS, and Newsboat (Or Newsbeuter), Oh My&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F12%2Fproxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dproxies-tt-rss-and-newsboat-or-newsbeuter-oh-my&amp;action_name=%3Cspan+class%3D%27p-name%27%3EProxies%2C+TT-RSS%2C+and+Newsboat+%28Or+Newsbeuter%29%2C+Oh+My%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[If Newsboat and Newsbeuter don't authenticate with a nginx proxy to Apache, this post is for you. ]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/12/proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my.html?pk_campaign=feed&pk_kwd=proxies-tt-rss-and-newsboat-or-newsbeuter-oh-my"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/12/markus-spiske-qjnAnF0jIGk-unsplash-300x200.jpg" alt="Proxies, TT-RSS, and Newsboat (Or Newsbeuter), Oh My" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>Offered here as a solve for anyone else who finds this problem (everyone else will probably not understand this, and that’s okay):</p>
 
@@ -83,7 +488,6 @@
 		<item>
 		<title>Inequality In The Work Week</title>
 		<link>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467</link>
-				<comments>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467#respond</comments>
 				<pubDate>Wed, 27 Nov 2019 22:34:19 +0000</pubDate>
 		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
 				<category><![CDATA[sociology]]></category>
@@ -92,7 +496,7 @@
 		<category><![CDATA[systemic inequality]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103467</guid>
-				<description><![CDATA[The work week was a great progressive triumph. It's also an example of structural inequality.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Inequality In The Work Week&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F103467.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D103467&amp;action_name=%3Cspan+class%3D%27p-name%27%3EInequality+In+The+Work+Week%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[The work week was a great progressive triumph. It's also an example of structural inequality.]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&pk_kwd=103467"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash-300x200.jpg" alt="Inequality In The Work Week" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>Sometimes it’s difficult to see inequality. Particularly when it’s the structural kind.  (Previously discussed in <a href="https://ideatrash.net/2015/08/you-might-be-acting-like-bigot-and.html">You might be acting like a bigot – and never mean to</a>, <a href="https://ideatrash.net/2017/08/the-cowardly-way-to-address-racism-and.html">The Cowardly Way To Address Racism (and other bigotry)</a>, and <a href="https://ideatrash.net/2009/11/structures-of-power-vignette-six.html">Structures of Power (Vignette Six)</a>. </p>
 
@@ -132,13 +536,10 @@
 
 <p>Featured Photo by <a href="https://unsplash.com/@1walter2?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Johann Walter Bantz</a> on <a href="https://unsplash.com/s/photos/parent-teacher-organization?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
 </div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F103467.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D103467&amp;action_name=%3Cspan+class%3D%27p-name%27%3EInequality+In+The+Work+Week%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/103467.html?pk_campaign=feed&#038;pk_kwd=103467/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" length="66905" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" width="1200" height="799" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103467</post-id>	</item>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" length="66905" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/johann-walter-bantz-woE5G6zzFQo-unsplash.jpg" width="1200" height="799" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103467</post-id>	</item>
 		<item>
 		<title>So You&#8217;re Anti-Glasses?: Dismantling Right Wing Arguments</title>
 		<link>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments</link>
-				<comments>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments#respond</comments>
 				<pubDate>Wed, 27 Nov 2019 22:17:13 +0000</pubDate>
 		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
 				<category><![CDATA[education]]></category>
@@ -146,7 +547,7 @@
 		<category><![CDATA[systemic inequality]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103458</guid>
-				<description><![CDATA[Trying to close the empathy gap, one example at a time.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;So You&#8217;re Anti-Glasses?: Dismantling Right Wing Arguments&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fso-youre-anti-glasses-dismantling-right-wing-arguments.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dso-youre-anti-glasses-dismantling-right-wing-arguments&amp;action_name=%3Cspan+class%3D%27p-name%27%3ESo+You%26%238217%3Bre+Anti-Glasses%3F%3A+Dismantling+Right+Wing+Arguments%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[Trying to close the empathy gap, one example at a time.]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash-300x200.jpg" alt="So You&#8217;re Anti-Glasses?: Dismantling Right Wing Arguments" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>Sometimes it’s difficult to see inequality. Particularly when it’s the structural kind.  (Previously discussed in <a href="https://ideatrash.net/2015/08/you-might-be-acting-like-bigot-and.html">You might be acting like a bigot – and never mean to</a>, <a href="https://ideatrash.net/2017/08/the-cowardly-way-to-address-racism-and.html">The Cowardly Way To Address Racism (and other bigotry)</a>, and <a href="https://ideatrash.net/2009/11/structures-of-power-vignette-six.html">Structures of Power (Vignette Six)</a>. </p>
 
@@ -182,13 +583,10 @@
 
 <p>Featured Photo by <a href="https://unsplash.com/@ugodly?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Ugo °</a> on <a href="https://unsplash.com/s/photos/glasses?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
 </div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fso-youre-anti-glasses-dismantling-right-wing-arguments.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dso-youre-anti-glasses-dismantling-right-wing-arguments&amp;action_name=%3Cspan+class%3D%27p-name%27%3ESo+You%26%238217%3Bre+Anti-Glasses%3F%3A+Dismantling+Right+Wing+Arguments%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/so-youre-anti-glasses-dismantling-right-wing-arguments.html?pk_campaign=feed&#038;pk_kwd=so-youre-anti-glasses-dismantling-right-wing-arguments/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" length="73617" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103458</post-id>	</item>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" length="73617" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/ugo-4EDJgGj419U-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103458</post-id>	</item>
 		<item>
 		<title>Prosperity Theology: Things To NOT Be Thankful For</title>
 		<link>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for</link>
-				<comments>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for#respond</comments>
 				<pubDate>Tue, 26 Nov 2019 01:30:15 +0000</pubDate>
 		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
 				<category><![CDATA[religion]]></category>
@@ -196,7 +594,7 @@
 		<category><![CDATA[faith]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103447</guid>
-				<description><![CDATA[Prosperity theology is entirely made up of dupes and the greedy who prey upon them.  BAR NONE.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Prosperity Theology: Things To NOT Be Thankful For&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fprosperity-theology-things-to-not-be-thankful-for.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dprosperity-theology-things-to-not-be-thankful-for&amp;action_name=%3Cspan+class%3D%27p-name%27%3EProsperity+Theology%3A+Things+To+NOT+Be+Thankful+For%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[Prosperity theology is entirely made up of dupes and the greedy who prey upon them.  BAR NONE.]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&pk_kwd=prosperity-theology-things-to-not-be-thankful-for"><img width="300" height="199" src="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash-300x199.jpg" alt="Prosperity Theology: Things To NOT Be Thankful For" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>As we head into Thanksgiving (for USAians), lots of people are focusing on things to be thankful for. There’s nothing wrong with that – not at all!  But there’s also a <em>lot</em> of crap that we <em>shouldn’t</em> be thankful for.</p>
 
@@ -272,13 +670,10 @@
 
 <p>[1] There’s issues with the way that God “answers” Job’s questions about why this happened to him – and it paints God as a bit of a dick.  I mean, if nothing else, “Hey, I killed your old wife and kids, so here’s a new wife and kids,” (Job 42:12-17) is <em>amazingly</em> clueless.</p>
 </div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fprosperity-theology-things-to-not-be-thankful-for.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dprosperity-theology-things-to-not-be-thankful-for&amp;action_name=%3Cspan+class%3D%27p-name%27%3EProsperity+Theology%3A+Things+To+NOT+Be+Thankful+For%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/prosperity-theology-things-to-not-be-thankful-for.html?pk_campaign=feed&#038;pk_kwd=prosperity-theology-things-to-not-be-thankful-for/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" length="74876" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" width="1200" height="797" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103447</post-id>	</item>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" length="74876" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/stephen-radford-86QxYjwq8LU-unsplash.jpg" width="1200" height="797" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103447</post-id>	</item>
 		<item>
 		<title>16 Quick Movie Reviews!</title>
 		<link>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews</link>
-				<comments>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews#respond</comments>
 				<pubDate>Mon, 18 Nov 2019 23:48:35 +0000</pubDate>
 		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
 				<category><![CDATA[movie review]]></category>
@@ -286,7 +681,7 @@
 		<category><![CDATA[review]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103429</guid>
-				<description><![CDATA[Sixteen movies! One paragraph reviews!  What do you think about these picks and pans?<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;16 Quick Movie Reviews!&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F16-quick-movie-reviews.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D16-quick-movie-reviews&amp;action_name=%3Cspan+class%3D%27p-name%27%3E16+Quick+Movie+Reviews%21%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[Sixteen movies! One paragraph reviews!  What do you think about these picks and pans?]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&pk_kwd=16-quick-movie-reviews"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash-300x200.jpg" alt="16 Quick Movie Reviews!" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>The title says it all; quick encapsulated reviews of stuff to help you guide your way through the murky world of ALL THE MEDIA.  They are presented in no particular order, and while I’ve frequently linked to Amazon, you can find them on other streaming services as well.  (Check out <a href="https://www.justwatch.com/" target="_blank" rel="nofollow">JustWatch.com</a> for finding them elsewhere!)</p>
 
@@ -398,13 +793,10 @@
 
 <p>Featured Photo by <a href="https://unsplash.com/@ewitsoe?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Erik Witsoe</a> on <a href="https://unsplash.com/s/photos/movies?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
 </div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2F16-quick-movie-reviews.html%3Fpk_campaign%3Dfeed%26pk_kwd%3D16-quick-movie-reviews&amp;action_name=%3Cspan+class%3D%27p-name%27%3E16+Quick+Movie+Reviews%21%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/16-quick-movie-reviews.html?pk_campaign=feed&#038;pk_kwd=16-quick-movie-reviews/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" length="30185" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103429</post-id>	</item>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" length="30185" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/erik-witsoe-GF8VvBgcJ4o-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103429</post-id>	</item>
 		<item>
 		<title>Your Musical Movie Soundtrack</title>
 		<link>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack</link>
-				<comments>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack#respond</comments>
 				<pubDate>Fri, 15 Nov 2019 21:07:14 +0000</pubDate>
 		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
 				<category><![CDATA[movies]]></category>
@@ -412,7 +804,7 @@
 		<category><![CDATA[survey]]></category>
 
 		<guid isPermaLink="false">https://ideatrash.net/?p=103419</guid>
-				<description><![CDATA[I want to know what songs you want for a movie soundtrack. Fill out my survey at https://stevensaus.com/s/soundtrk <div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Your Musical Movie Soundtrack&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fyour-musical-movie-soundtrack.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dyour-musical-movie-soundtrack&amp;action_name=%3Cspan+class%3D%27p-name%27%3EYour+Musical+Movie+Soundtrack%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
+				<description><![CDATA[I want to know what songs you want for a movie soundtrack. Fill out my survey at https://stevensaus.com/s/soundtrk ]]></description>
 								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&pk_kwd=your-musical-movie-soundtrack"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash-300x200.jpg" alt="Your Musical Movie Soundtrack" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
 <p>This is pretty simple, and something that I’ve been thinking about for a while.  </p>
 
@@ -444,345 +836,6 @@
 
 <p>Featured Photo by <a href="https://unsplash.com/@felixmooneeram?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Felix Mooneeram</a> on <a href="https://unsplash.com/s/photos/movie-soundtrack?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
 </div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fyour-musical-movie-soundtrack.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dyour-musical-movie-soundtrack&amp;action_name=%3Cspan+class%3D%27p-name%27%3EYour+Musical+Movie+Soundtrack%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/your-musical-movie-soundtrack.html?pk_campaign=feed&#038;pk_kwd=your-musical-movie-soundtrack/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" length="28234" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103419</post-id>	</item>
-		<item>
-		<title>Are We People or Parts?: Chronic Illness and Employer Wellness Programs</title>
-		<link>https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&#038;pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs</link>
-				<comments>https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&#038;pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs#respond</comments>
-				<pubDate>Tue, 12 Nov 2019 21:46:52 +0000</pubDate>
-		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
-				<category><![CDATA[health]]></category>
-		<category><![CDATA[healthcare]]></category>
-		<category><![CDATA[society]]></category>
-		<category><![CDATA[status]]></category>
-		<category><![CDATA[employment]]></category>
-		<category><![CDATA[restless legs]]></category>
-		<category><![CDATA[rls]]></category>
-		<category><![CDATA[Willis-Ekbom Disease]]></category>
-
-		<guid isPermaLink="false">https://ideatrash.net/?p=87407</guid>
-				<description><![CDATA[The corporate focus on "wellness choices" is a shiny polish on a toxic attitude.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&#038;pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Are We People or Parts?: Chronic Illness and Employer Wellness Programs&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fare-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dare-we-people-or-parts-chronic-illness-and-employer-wellness-programs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EAre+We+People+or+Parts%3F%3A+Chronic+Illness+and+Employer+Wellness+Programs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
-								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash-300x200.jpg" alt="Are We People or Parts?: Chronic Illness and Employer Wellness Programs" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
-<p>It’s difficult for me to concentrate today.  And it would have been impossible for me to work.</p>
-
-
-
-<p>But my situation – and so many others – are at risk of being inhumanly shoved to the side by corporate trends in Human Resources.  </p>
-
-
-
-<p>The current arctic cold snap has graciously gifted me with <a href="https://ideatrash.net/2010/02/restless-legs-suck-ass.html">the worst RLS (officially Willis-Ekbom Disease) pain</a> I’ve had since August. </p>
-
-
-
-<p>The variants of treatments that my doc and I have been working on have been helping.  When I first <a href="https://ideatrash.net/2018/09/protecting-you-and-your-job-from-chronic-illness.html">got FMLA for this</a>, I was missing work at least a day or three a month, every month.  Since we’ve tweaked my medications, before this week I’d not missed due to the RLS for several months.  </p>
-
-
-
-<p>Unfortunately, I’d gotten <em>conventionally</em> sick earlier this month and missed several days.  So I’ve been gone a lot in the last thirty-odd days.</p>
-
-
-
-<p>Which brings us back to my point.  Right now, I’ve been pretty much awake for three days, with a few hours of sleep sprinkled in there in one to two hour long sections.  I was somewhat incoherent yesterday; today I don’t trust myself to drive.  <strong><em>I’ve fallen asleep twice standing up while writing this blog post, and made SOOOOO many errors while writing, ranging from typos to leaving out words and sentences, or typing gibberish.</em></strong>  <strong><em>Nobody</em></strong> would want me starting an IV, updating sensitive records, or handling radioactive materials today.  </p>
-
-
-
-<p>In these cases – whether from an upper respiratory infection or from a documented chronic illness – if I’d tried to force myself to work it would be a <em>net loss for everyone</em>.  The person who is ill will recover more slowly, or even make themselves worse, like I did after I tried to force myself to work <a href="https://ideatrash.net/2016/02/why-ive-not-been-to-work-lately-or.html">after my hypertensive crisis a few years back.  (Warning – that post has some grody pics.</a>)  And if it’s an infectious illness, the workplace will suffer more, because other employees (and perhaps even customers) will get ill later.  Even if it’s not infectious, the ill employee simply can’t be as productive and will have more errors due to pain, discomfort, or just plain fatigue.</p>
-
-
-
-<p>If directly quizzed, most people will recognize that forcing people to come to work sick is a <em>bad idea</em>.  <a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow">The CDC, for example, estimates that the flu </a><em><a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow">alone</a></em><a href="https://www.cdc.gov/niosh/topics/flu/activities.html" target="_blank" rel="nofollow"> causes over $7 billion in lost productivity</a>.  Any method – such as letting sick people <em>stay home</em> and away from the rest of the office – that would reduce those costs seems reasonable.  </p>
-
-
-
-<p>Even if the sick worker doesn’t infect the rest of the office, <a href="http://hrcsuite.com/reduce-sick-leave/" target="_blank" rel="nofollow">more than half the estimated $576 billion of lost productivity from illness comes when sick employers turn up to work but are unable to perform at their best.</a>  And with liberal sick day policies – <a href="https://www.theguardian.com/commentisfree/2017/nov/16/working-four-day-week-hours-labour" target="_blank" rel="nofollow">or even something like a four-day work week</a> (seriously, read that article) – we could reduce illness while increasing overall productivity and quality of life.</p>
-
-
-
-<p>Sadly, that doesn’t seem to be the focus of our current workplace culture as a while.  Rather than recognizing that illness <em>happens</em>, and making greater accommodations for that fact, it seems that most articles about workplace illness in the last few years focus instead on how to <s>force</s> – I mean, <em>encourage</em> – employees to be healthy.  This excerpt is pretty representative:</p>
-
-
-
-<blockquote class="wp-block-quote"><p>The biggest way you can make an impact  on the health of your employees is to promote exercise. A lack of  regular physical activity is one of the leading causes of preventable  death worldwide ahead of poor sanitation and alcohol abuse. It doesn’t  have to cost a fortune either. Many gyms offer a range of discounts for  local businesses, allowing them to provide discounted, part or full  payment of memberships to their employees, allowing businesses to choose  how much input to have.<br><br>But financial incentives are not the only way to help staff lead  healthy lifestyles – a healthy culture needs to be promoted too. That  might include organising lunch time gym sessions, providing secure bike  parking, and ensuring staff are offered healthy meal choices.</p><cite>http://hrcsuite.com/reduce-sick-leave/</cite></blockquote>
-
-
-
-<p>This kind of attitude is awful in a few ways.</p>
-
-
-
-<ol><li>It treats people as widgets, or maybe as parts in a machine. </li><li>It further stigmatizes those with illnesses – chronic or otherwise – by framing “health” as a <em>choice</em>.  Believe me, I’d <strong>much</strong> rather be at work – rested and pain free – than at home and in pain right now.  It’s the kind of mindset that leads to <a href="https://ideatrash.net/2019/07/invisible-illness-invisible-empathy.html">discounting invisible illnesses</a>, or even the toxic attitude I saw <a href="https://ideatrash.net/2015/02/trainees-my-experience-treating.html">in the military toward trainees who went on sick call</a>.</li><li>It puts the whole burden on the worker. Not only are you expected to devote the largest part of your life to your employer, but you’re supposed to spend additional time and resources in order to fulfill these wellness programs.</li><li>This attitude is <em>horribly</em> toxic and counterproductive.  It frames illness (and needing sick leave) as something voluntary.  </li></ol><p>It’s like telling a religious child that their pet died because they 
-didn’t pray hard enough for God to save them.  This attitude – that if 
-companies just <s>make</s> encourage workers to do enough “wellness” 
-programs like eating better or going to the gym, then they won’t get 
-sick.  Clearly, if they <em>do</em> get sick… well, that’s the employee’s fault, isn’t it?</p>
-
-
-
-<p>There’s nothing <em>wrong</em> with encouraging healthy choices.  I’d love it if, say, the healthy food choices cost less than the unhealthy ones at work.  </p>
-
-
-
-<p>That’s where the proof is in the … ahem… pudding.  Because to continue this example, I’ll bet that if your employer has a “wellness program” of this sort, it’s still cheaper to buy cheap junk food at your cafeteria than a healthy meal… and that’s if healthy food options exist for you at work at all.</p>
-
-
-
-<p>If that $576 billion or so of lost wages was <em>so strongly</em> effected by “wellness choices”, you’d think some of that money could be put into subsidizing (or providing) healthy food choices. Or maybe <em>paying</em> for part or all of gym memberships instead of relying on the gyms’ generosity …or even making it so that workers don’t have to choose between time at the gym or the time they need to work to pay the bills.</p>
-
-
-
-<p>Maybe the toxicity of this attitude is so blatant to me because my chronic medical condition has <strong>NOTHING</strong> to do with my wellness choices.  I had <a href="https://ideatrash.net/2010/02/restless-legs-suck-ass.html">the first symptoms as a child</a>, and have had symptoms continually since, including when I was active duty military and in the best physical shape of my life [1]. </p>
-
-
-
-<p>Maybe this attitude toward illness will change as more and more of the people in charge of these areas get older and start having inevitable degenerative illnesses of their own.</p>
-
-
-
-<p>Or maybe they’ll just find themselves at the wrong end of some corporate wellness program.</p>
-
-
-
-<p>Featured Photo by <a href="https://unsplash.com/@armin_lotfi?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Armin Lotfi</a> on <a href="https://unsplash.com/s/photos/pain?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
-
-
-
-<div class="wp-block-image"><figure class="aligncenter"><img src="https://ideatrash.net/wp-content/uploads/2019/11/black-divider-no-background-hi-560x59.png" alt="" class="wp-image-103409" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></div>
-
-
-
-<p>[1] For those interested: I’ve had a few people suggest that my RLS is due to my obesity. While there’s one study showing a correlation between RLS and weight gain, there’s no causation shown.  Reviews of the literature show either <a href="https://www.sciencedirect.com/science/article/abs/pii/S1389945711001614" target="_blank" rel="nofollow">that there’s not enough real research</a>, that <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow">the lack of sleep caused by RLS might </a><em><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow">contribute</a></em><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630986/" target="_blank" rel="nofollow"> to weight gain</a>, or <a href="https://n.neurology.org/content/72/14/1255" target="_blank" rel="nofollow">that both obesity and RLS might be caused by the same lack of production of dopamine </a>(not really something you can control with a “wellness program”), or:</p>
-
-
-
-<blockquote class="wp-block-quote"><p>A comprehensive analysis of RLS epidemiological studies finds the prevalence rate of RLS to be 5–15% in the general population with 2.5% of adults having symptoms severe enough to require medical intervention. Some of the risk factors for RLS include female gender, pregnancy, low iron levels, lower socioeconomic status, poor health, elderly age, comorbidity with Parkinson’s disease, positive family history of RLS, and comorbidity with psychiatric disorders.</p><cite>https://link.springer.com/article/10.1007/s11325-011-0606-x</cite></blockquote>
-
-
-
-<p>Additionally, there’s a preponderance of evidence that dopamine agonists – the main treatment used in the West – can <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1525-1497.2006.00593.x" target="_blank" rel="nofollow">cause symptoms to become worse over time (augmentation)</a> and are associated with new compulsive behaviors – including overeating – to the point where one paper concludes: </p>
-
-
-
-<blockquote class="wp-block-quote"><p>Physicians should be aware that compulsive eating resulting in significant weight gain may occur in [patients] as a side‐effect of dopamine agonist medications.</p><cite>https://onlinelibrary.wiley.com/doi/abs/10.1002/mds.20757</cite></blockquote>
-
-
-
-<p>Whoops.</p>
-</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fare-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dare-we-people-or-parts-chronic-illness-and-employer-wellness-programs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EAre+We+People+or+Parts%3F%3A+Chronic+Illness+and+Employer+Wellness+Programs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-							<wfw:commentRss>https://ideatrash.net/2019/11/are-we-people-or-parts-chronic-illness-and-employer-wellness-programs.html?pk_campaign=feed&#038;pk_kwd=are-we-people-or-parts-chronic-illness-and-employer-wellness-programs/feed</wfw:commentRss>
-		<slash:comments>0</slash:comments>
-						<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash.jpg" length="55958" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/armin-lotfi-ywFt817vu3Q-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87407</post-id>	</item>
-		<item>
-		<title>Improve Your Minecraft With These Texture Packs</title>
-		<link>https://ideatrash.net/2019/11/improve-your-minecraft-with-these-texture-packs.html?pk_campaign=feed&#038;pk_kwd=improve-your-minecraft-with-these-texture-packs</link>
-				<pubDate>Thu, 07 Nov 2019 19:48:08 +0000</pubDate>
-		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
-				<category><![CDATA[minecraft]]></category>
-		<category><![CDATA[uncategorized]]></category>
-		<category><![CDATA[games]]></category>
-		<category><![CDATA[video games]]></category>
-
-		<guid isPermaLink="false">https://ideatrash.net/?p=87382</guid>
-				<description><![CDATA[Resource packs can do a lot, and are really easy to install.  There's several great resource packs that do a lot to tweak the experience, and I want to highlight a few here.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/improve-your-minecraft-with-these-texture-packs.html?pk_campaign=feed&#038;pk_kwd=improve-your-minecraft-with-these-texture-packs">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Improve Your Minecraft With These Texture Packs&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fimprove-your-minecraft-with-these-texture-packs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dimprove-your-minecraft-with-these-texture-packs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EImprove+Your+Minecraft+With+These+Texture+Packs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
-								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/improve-your-minecraft-with-these-texture-packs.html?pk_campaign=feed&pk_kwd=improve-your-minecraft-with-these-texture-packs"><img width="300" height="155" src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34-300x155.jpg" alt="Improve Your Minecraft With These Texture Packs" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
-<p><a href="https://ideatrash.net/2019/07/playing-minecraft-i-have-recommendations-for-you.html">I like Minecraft</a>.  I especially like “vanilla plus” Minecraft – where there’s little tweaks to remove some annoyances and present some small enhancements.  I even made up an <a href="https://www.technicpack.net/modpack/grunkle-stevens-villagers.1433528" target="_blank" rel="nofollow">entire Technic modpack that reflects that idea</a>.  I’ve also usually played on PCs that aren’t “gaming” computers, so keeping optimizations in mind has also been a significant focus of mine.  (<a href="https://www.technicpack.net/modpack/grunkles-lite-villagers.1545281" target="_blank" rel="nofollow">There’s even a low-end modpack I made as well.</a>)</p>
-
-
-
-<p>But what if you don’t want to deal with modpacks (or use other ones)?  Resource packs can do a lot, <a href="https://minecraft.gamepedia.com/Tutorials/Loading_a_resource_pack" target="_blank" rel="nofollow">and are really easy to install</a>.  There’s several great resource packs that do a <em>lot</em> to tweak the experience, and I want to highlight a few here.   (You will probably <a href="https://www.optifine.net/home" target="_blank" rel="nofollow">have to use Optifine</a> to get the best – or sometimes <em>any</em> – results.)</p>
-
-
-
-<p><a href="https://www.curseforge.com/minecraft/texture-packs/glass-doors" target="_blank" rel="nofollow"><strong>Glass Doors</strong></a> does exactly what it says on the tin: It replaces the default doors with ones with glass in them.</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.28.38.jpg" alt="" data-id="87383" data-link="https://ideatrash.net/?attachment_id=87383" class="wp-image-87383" width="403" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.28.59.jpg" alt="" data-id="87384" data-link="https://ideatrash.net/?attachment_id=87384" class="wp-image-87384" width="358" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/better-leaves-add-on-2-0" target="_blank" rel="nofollow">Jerm’s Better Leaves Add-on</a></strong> can be used with any texture/resource pack. It does a <em>lot</em> to make the “fancy” leaves actually <em>look</em> fancy…</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://i2.wp.com/ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.31.23.jpg?fit=1024%2C520&amp;ssl=1" alt="" data-id="87385" data-link="https://ideatrash.net/?attachment_id=87385" class="wp-image-87385" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.31.37-560x334.jpg" alt="" data-id="87386" data-link="https://ideatrash.net/?attachment_id=87386" class="wp-image-87386" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/round-trees-mc-vanilla-1-8-1-13" target="_blank" rel="nofollow">Round Trees</a></strong> is quite frankly impressive as hell; it creates a huge atmospheric change with just a resource pack.</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.32.46-560x220.jpg" alt="" data-id="87387" data-link="https://ideatrash.net/?attachment_id=87387" class="wp-image-87387" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.33.01-560x223.jpg" alt="" data-id="87388" data-link="https://ideatrash.net/?attachment_id=87388" class="wp-image-87388" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p><strong><a href="https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance" target="_blank" rel="nofollow">Pixel Reality – Luminance</a></strong><a href="https://www.curseforge.com/minecraft/texture-packs/pixel-reality-luminance" target="_blank" rel="nofollow"> </a>provides realistic lighting with vanilla textures or any other pack, a perfect  alternative to shaders if your machine just can’t handle them!</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.05-560x364.jpg" alt="" data-id="87390" data-link="https://ideatrash.net/?attachment_id=87390" class="wp-image-87390" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.33.53-1-560x370.jpg" alt="" data-id="87391" data-link="https://ideatrash.net/?attachment_id=87391" class="wp-image-87391" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>And then last – but <em>definitely </em>not least – there’s <strong><a href="https://www.planetminecraft.com/texture_pack/overlay-textures-1-14/" target="_blank" rel="nofollow">Overlay Textures</a></strong>.  It takes “connected textures” to  a whole new level.  It’s easiest to just show the results:</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.25-560x378.jpg" alt="" data-id="87392" data-link="https://ideatrash.net/?attachment_id=87392" class="wp-image-87392" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.40-560x368.jpg" alt="" data-id="87393" data-link="https://ideatrash.net/?attachment_id=87393" class="wp-image-87393" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://i0.wp.com/ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.34.44.jpg?fit=1024%2C528&amp;ssl=1" alt="" data-id="87394" data-link="https://ideatrash.net/?attachment_id=87394" class="wp-image-87394" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>It also means that your stone brick walls can suddenly get a <em>lot</em> more texture to them:</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.36.53-560x434.jpg" alt="" data-id="87395" data-link="https://ideatrash.net/?attachment_id=87395" class="wp-image-87395" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.36.38-560x446.jpg" alt="" data-id="87396" data-link="https://ideatrash.net/?attachment_id=87396" class="wp-image-87396" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>As can your grass areas.  There are <em>some</em> buggy parts to it – for example, you can see where concrete isn’t included in the screens below – but even with its relatively few bugs, it makes the world a <em>lot</em> more organic.</p>
-
-
-
-<ul class="wp-block-gallery columns-2 is-cropped"><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.41.56-560x328.jpg" alt="" data-id="87397" data-link="https://ideatrash.net/?attachment_id=87397" class="wp-image-87397" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li><li class="blocks-gallery-item"><figure><img src="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_16.41.58-560x340.jpg" alt="" data-id="87398" data-link="https://ideatrash.net/?attachment_id=87398" class="wp-image-87398" width="560" style="display:block;margin:10px auto;max-width:560px;max-width:100%;"></figure></li></ul><p>If you like any of these, give them a try on your singleplayer instance, or come join us at <a href="https://myminecraft.com" target="_blank" rel="nofollow">MyMinecraft</a> to have a nice survival multiplayer experience!</p>
-</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fimprove-your-minecraft-with-these-texture-packs.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dimprove-your-minecraft-with-these-texture-packs&amp;action_name=%3Cspan+class%3D%27p-name%27%3EImprove+Your+Minecraft+With+These+Texture+Packs%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34.jpg" length="104285" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/2019-11-06_18.35.34.jpg" width="1200" height="618" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87382</post-id>	</item>
-		<item>
-		<title>Three Litanies For Life From Sci-Fi</title>
-		<link>https://ideatrash.net/2019/11/three-litanies-for-life-from-sci-fi.html?pk_campaign=feed&#038;pk_kwd=three-litanies-for-life-from-sci-fi</link>
-				<pubDate>Wed, 06 Nov 2019 14:49:56 +0000</pubDate>
-		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
-				<category><![CDATA[science fiction]]></category>
-		<category><![CDATA[status update]]></category>
-		<category><![CDATA[quotations]]></category>
-		<category><![CDATA[quotes]]></category>
-
-		<guid isPermaLink="false">https://ideatrash.net/?p=87371</guid>
-				<description><![CDATA[These are three quotations from science fiction that kept me going.  (Spoiler free)<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/three-litanies-for-life-from-sci-fi.html?pk_campaign=feed&#038;pk_kwd=three-litanies-for-life-from-sci-fi">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;Three Litanies For Life From Sci-Fi&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthree-litanies-for-life-from-sci-fi.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthree-litanies-for-life-from-sci-fi&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThree+Litanies+For+Life+From+Sci-Fi%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
-								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/three-litanies-for-life-from-sci-fi.html?pk_campaign=feed&pk_kwd=three-litanies-for-life-from-sci-fi"><img width="300" height="164" src="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse-300x164.jpg" alt="Three Litanies For Life From Sci-Fi" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
-<p>When I was younger, I focused on the Litany Against Fear from the <em><a href="https://amzn.to/2WKVecO" target="_blank" rel="nofollow">Dune</a></em> novels. </p>
-
-
-
-<blockquote class="wp-block-quote"><p>“I must not fear.<br>Fear is the mind-killer.<br>Fear is the little-death that brings total obliteration.<br>I will face my fear.<br>I will permit it to pass over me and through me.<br>And when it has gone past I will turn the inner eye to see its path.<br>Where the fear has gone there will be nothing. <br>Only I will remain.”</p></blockquote>
-
-
-
-<p>Not only was I exposed to it at an early age, but it also reflected a lot of the challenges in my life at the time. They were fear inducing – whether because of physical or emotional or social peril, they were things I feared. </p>
-
-
-
-<p>Then I ran across this from <em><a href="https://amzn.to/2WOug3M" target="_blank" rel="nofollow">The Handmaid’s Tale</a></em><em>:</em></p>
-
-
-
-<blockquote class="wp-block-quote"><p>Nolite te bastardes carborundorum</p></blockquote>
-
-
-
-<p>It isn’t about fear so much as perseverance.  Of making it through the tough times and horrid people to get to somewhere better, something better. About being strong enough to endure.</p>
-
-
-
-<p>That held me in good stead for quite a while. </p>
-
-
-
-<p>Now, though, I’ve been having a different problem. It’s not been fear, and it’s not been strength.  I’ve been struggling with straight up nihilism.  </p>
-
-
-
-<p>Not the <a rel="noreferrer noopener" aria-label="cheerful nihilism I've written about before (opens in a new tab)" href="https://ideatrash.net/2018/12/nihilism-existentialism-and-me.html" target="_blank">cheerful nihilism I’ve written about before</a>. This has been a struggle with pure “nothing means anything” grey-colored nihilism.  The kind where you’re just going through the motions.  Where any effort is futile, and entropy has the final laugh. </p>
-
-
-
-<p>And into that space strides Gunny Draper from <em><a href="https://amzn.to/2CoD07j" target="_blank" rel="nofollow">The Expanse</a></em>.  Though not formally named, she too has a litany.  </p>
-
-
-
-<p>Gunny Draper’s litany is perhaps far more relevant for both me at this time in my life, and perhaps for the world as a whole right now.  </p>
-
-
-
-<blockquote class="wp-block-quote"><p>There are people I love. There are people who have loved me. I fought for what I believed, protected those I could, and stood my ground against the encroaching darkness.  Good enough.</p></blockquote>
-
-
-
-<p>Good enough indeed. </p>
-
-
-
-<p>Thank you, Gunny. </p>
-</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthree-litanies-for-life-from-sci-fi.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthree-litanies-for-life-from-sci-fi&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThree+Litanies+For+Life+From+Sci-Fi%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse.jpg" length="59766" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/Draper-The-Expanse.jpg" width="640" height="350" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87371</post-id>	</item>
-		<item>
-		<title>The Validity of Libido as a Love Language</title>
-		<link>https://ideatrash.net/2019/11/the-validity-of-libido-as-a-love-language.html?pk_campaign=feed&#038;pk_kwd=the-validity-of-libido-as-a-love-language</link>
-				<pubDate>Tue, 05 Nov 2019 20:41:09 +0000</pubDate>
-		<dc:creator><![CDATA[<span class='p-author h-card'>steven</span>]]></dc:creator>
-				<category><![CDATA[advice]]></category>
-		<category><![CDATA[relationships]]></category>
-		<category><![CDATA[sex]]></category>
-		<category><![CDATA[love languages]]></category>
-		<category><![CDATA[relationship]]></category>
-		<category><![CDATA[sexuality]]></category>
-
-		<guid isPermaLink="false">https://ideatrash.net/?p=87354</guid>
-				<description><![CDATA[When "physical touch" gets called "libido", a whole different set of assumptions and judgements gets pulled into the mix.<div class="more-link-wrapper"><a class="more-link" href="https://ideatrash.net/2019/11/the-validity-of-libido-as-a-love-language.html?pk_campaign=feed&#038;pk_kwd=the-validity-of-libido-as-a-love-language">Read the post<span class="screen-reader-text">&#60;span class=&#039;p-name&#039;&#62;The Validity of Libido as a Love Language&#60;/span&#62;</span></a></div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthe-validity-of-libido-as-a-love-language.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthe-validity-of-libido-as-a-love-language&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThe+Validity+of+Libido+as+a+Love+Language%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" style="border:0;width:0;height:0" width="0" height="0" alt="" />]]></description>
-								<content:encoded><![CDATA[<a href="https://ideatrash.net/2019/11/the-validity-of-libido-as-a-love-language.html?pk_campaign=feed&pk_kwd=the-validity-of-libido-as-a-love-language"><img width="300" height="200" src="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash-300x200.jpg" alt="The Validity of Libido as a Love Language" align="center" style="display: block;margin: 0 auto 20px;max-width:100%;" /></a><div class="e-content">
-<p>You have <em>probably</em> heard about “love languages”.  If you are <em>completely</em> unfamiliar, there’s <a href="https://www.sheknows.com/health-and-wellness/articles/1059295/what-are-the-5-love-languages/" target="_blank" rel="nofollow">a quick primer at this website</a>; the short form is this:  People tend to show affection in five different ways, largely summed up as “Words of Affirmation”, “Quality Time”, “Receiving Gifts”, “Acts of Service”, and “Physical Touch”.  </p>
-
-
-
-<p>The point of the “love languages” model is that different people express – and receive – love in different ways.  If you typically only “hear” acts of service as showing love, but the other person is used to expressing love by giving gifts, it can appear that the other person does <em>not</em> love you, even as they’re screaming it as loud as they can.  It’s just in a different love language.</p>
-
-
-
-<p>You can find more about love languages all over the place (<a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow">including a whole </a><em><a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow">series</a></em><a href="https://amzn.to/2K4UASr" target="_blank" rel="nofollow"> of books addressing specific situations</a>), but I want to focus on “physical touch”.</p>
-
-
-
-<p>But I’m going to call it by a different name.</p>
-
-
-
-<p>Libido.</p>
-
-
-
-<p>When “physical touch” gets rebranded “libido”, a whole <em>different</em> set of assumptions and judgements gets pulled into the mix.  That’s why – for just one example – Dan Savage (a sex and relationship advice columnist) routinely gets questions about mismatched libidos.  A recent example is in this column: “<a href="https://www.thestranger.com/slog/2019/10/16/41701896/the-relationship-is-lovely-and-loving-but-entirely-sexless" target="_blank" rel="nofollow">The Relationship Is Lovely and Loving But Entirely Sexless and Can You Guess What Dan’s Advice Will Be?</a>“</p>
-
-
-
-<p>I’m not going to disagree with Dan’s advice here, but I want to clarify and reinforce something: <strong>Libido is incorporated in one of the five love languages, and should get the same respect and consideration the rest of them do</strong>.</p>
-
-
-
-<p>Too often in cases of mismatched libido, the person with the high libido is treated as if they’re a glutton.  It’s as if the high-libido person eats too much chocolate or drinks too much. The requirements of their libido is treated as a luxury… or worse, as someone who abuses a luxury. </p>
-
-
-
-<p>But that isn’t how it feels to the high-libido person in that relationship.</p>
-
-
-
-<p>It’s <em>just</em> like any of the other love languages being ignored.</p>
-
-
-
-<p>The high libido person hears the words “I love you” and “I’m attracted to you”… at the same time that their partner is rejecting you, even literally turning away from you while they say those things.  </p>
-
-
-
-<p>As with any case of mismatched love languages, it’s not JUST the feeling of near-constant low grade rejection from the person you love. It’s that feeling of near-constant low grade rejection… from someone who is simultaneously telling you they are not rejecting you.  </p>
-
-
-
-<p>All the things the “lower libido” person wants are damn near automatic, because the “higher libido” person desperately wants that physical connection <em>with the person they love</em>.</p>
-
-
-
-<p>I’m not shaming or condemning the person with a lower libido.  I don’t think it is on <em>purpose</em> or anything.  </p>
-
-
-
-<p>But I <em>am</em> saying that it gets treated differently than the other love languages.  In our relationships, we <em>must</em> remember that sexual expression <em>is</em> an important way of showing love. For some – even many – it is an <em>extremely important</em>, if not <em>the most important</em> way of showing love.</p>
-
-
-
-<p>If there’s a mismatch, there are <em>lots</em> of ways and resources to work together so that you each can “speak” the love language the other <em>needs</em> to hear.  Some starting points: </p>
-
-
-
-<ul><li><a href="https://www.5lovelanguages.com/2017/11/couples-different-love-languages/" target="_blank" rel="nofollow">https://www.5lovelanguages.com/2017/11/couples-different-love-languages/</a> </li><li><a href="https://www.bustle.com/articles/161169-how-to-cope-when-you-your-partner-have-different-love-languages" target="_blank" rel="nofollow">https://www.bustle.com/articles/161169-how-to-cope-when-you-your-partner-have-different-love-languages</a></li><li><a href="https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928" target="_blank" rel="nofollow">https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928</a> </li></ul><p>If that’s not enough or doesn’t work?  Just like with any love language miscommunication, psychologist Jennifer  Rhodes points out:</p>
-
-
-
-<blockquote class="wp-block-quote"><p>Still, if you aren’t feeling taken care of by your partner after you’ve expressed [what love languages you speak and how you need to experience love], then Rhodes also suggests that it might be time to end things or dive deeper. “If after several attempts to communicate your needs, your partner is still not getting it, then you can think about whether this is the right relationship for both of you,” she says. </p><cite>https://www.elitedaily.com/p/if-you-your-partner-have-different-love-languages-dont-freak-out-try-this-instead-15738928</cite></blockquote>
-
-
-
-<p>Featured Photo by <a href="https://unsplash.com/@pabloheimplatz?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Pablo Heimplatz</a> on <a href="https://unsplash.com/s/photos/sex?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="nofollow">Unsplash</a></p>
-</div><img src="https://stevensaus.com/matomo/piwik.php?idsite=2&amp;rec=1&amp;url=https%3A%2F%2Fideatrash.net%2F2019%2F11%2Fthe-validity-of-libido-as-a-love-language.html%3Fpk_campaign%3Dfeed%26pk_kwd%3Dthe-validity-of-libido-as-a-love-language&amp;action_name=%3Cspan+class%3D%27p-name%27%3EThe+Validity+of+Libido+as+a+Love+Language%3C%2Fspan%3E&amp;urlref=https%3A%2F%2Fideatrash.net%2Ffeed" width="0" alt="" style="display:block;margin:10px auto;max-width:560px;max-width:100%;">]]></content:encoded>
-									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash.jpg" length="72859" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/pablo-heimplatz-252c3DVk6gk-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">87354</post-id>	</item>
+									<enclosure url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" length="28234" type="image/jpeg"/><media:content url="https://ideatrash.net/wp-content/uploads/2019/11/felix-mooneeram-evlkOfkQ5rE-unsplash.jpg" width="1200" height="800" medium="image" type="image/jpeg"/><post-id xmlns="com-wordpress:feed-additions:1">103419</post-id>	</item>
 	</channel>
 </rss>

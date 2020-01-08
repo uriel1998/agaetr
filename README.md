@@ -16,7 +16,8 @@ available.
  7. [Feed Preprocessing](#7-feed-preprocessing)
  8. [Feed Options](#8-feed-options)
  9. [Usage](#9-usage)
- 10. [TODO](#10-todo)
+ 10. [Other Files](#10-other-files)
+ 11. [TODO](#11-todo)
 
 ***
 
@@ -59,13 +60,15 @@ This project is licensed under the Apache License. For the full license, see `LI
 
 ## 3. Prerequisites
 
-These are probably already installed or are easily available from your distro:
-* [python3]
-* [bash]
-* [wget](https://www.gnu.org/software/wget/)
-* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)
-* [grep](http://en.wikipedia.org/wiki/Grep)
-* [curl](http://en.wikipedia.org/wiki/CURL)
+These are probably already installed or are easily available from your distro on
+linux-like distros:  
+
+* [python3](https://www.python.org)  
+* [bash](https://www.gnu.org/software/bash/)  
+* [wget](https://www.gnu.org/software/wget/)  
+* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)  
+* [grep](http://en.wikipedia.org/wiki/Grep)  
+* [curl](http://en.wikipedia.org/wiki/CURL)  
 
 You will need some variety of posting mechanism and optionally an URL 
 shortening mechanism. See [Services Setup](#5-services-setup) for details.
@@ -133,19 +136,19 @@ more complex; I've not updated/fixed this yet.
 
 If you are using bit.ly, you will need a username and bit.ly API key.
 Place the values of your login and API key into `agaetr.ini`.
-bitly_login = 
-bitly_api = 
+
+`bitly_login =`
+`bitly_api =`
 
 #### YOURLS  
 
 Go to your already functional YOURLS instance.  Get the API key from 
-Place the URL of your instance and API key into `agaetr.ini`.
-yourls_api=
-yourls_site = 
+Place the URL of your instance and API key into `agaetr.ini`.  
+
+`yourls_api =`  
+`yourls_site =`  
 
 ### Outbound parsers
-
-
 
 * Mastodon:
 * Twitter  - **IMPORTANT- SEE BELOW**
@@ -153,50 +156,46 @@ yourls_site =
 * Shaarli 
 * Wallabag                 
 
+Note that each service has its own line in `agaetr.ini`.  Leave blank any 
+you are not using; adding additional services should follow the pattern shown.  
 
 #### Twitter via Oysttyer  
 
-[oysttyer](https://github.com/oysttyer/oysttyer)
-
-Download the script and follow its setup instructions
-Place the location of the binary into `agaetr.ini`.
+Install and set up [oysttyer](https://github.com/oysttyer/oysttyer). Place the 
+location of the binary into `agaetr.ini`.
 
 ### Shaarli (output)
 
-https://github.com/shaarli/python-shaarli-client
-Make sure you set up the configuration file!
+Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). 
+Make sure you set up the configuration file for the client properly. Place the 
+location of the binary into `agaetr.ini`.
 
 #### Wallabag (output)
 
-Get the appropriate binary release and install 
-https://github.com/Nepochal/wallabag-cli/blob/master/docs/installation.md
-https://github.com/Nepochal/wallabag-cli/releases
-https://github.com/Nepochal/wallabag-cli
-run wallabag config
+Install and set up [Wallabag-cli](https://github.com/Nepochal/wallabag-cli). 
+Place the location of the binary into `agaetr.ini`.
 
 Note that shorteners and wallabag don't get along all the time.
 
-
 #### Mastodon via toot  
 
- [toot](https://github.com/ihabunek/toot/)
-
-`pip3 install toot`
-Place the location of the binary into `agaetr.ini`.
+Install and set up [toot](https://github.com/ihabunek/toot/).  Place the 
+location of the binary into `agaetr.ini`.
 
 #### Twitter using twython 
 
-[twython](https://github.com/ryanmcgrath/twython) and [twython-tools](https://github.com/adversary-org/twython-tools)
+This one is a little more complicated, but this is the Twitter client that 
+will post images directly to Twitter.  If this is too complicated, use 
+`oysttyer` above.
 
-* `pip install -U twython --user`
-
+Install [twython](https://github.com/ryanmcgrath/twython) - preferably in your 
+virtual environment that `agaetr` is in via `pip install -U twython`.
 
 In this archive are two files - `tweet.py` and `tweet.patch` - that require a 
-little explanation. I did not need the full functionality of twython-tools, 
-and in fact, had a bit of a problem getting the gpg encoding of my app keys 
-to work. Further, the functionality I *did* want, that is posting an 
-image to Twitter, was always *interactive* when I wanted to enter the 
-file on the command line. 
+little explanation. I did not need the full functionality of [twython-tools](https://github.com/adversary-org/twython-tools), 
+and in fact, had a bit of a problem getting it working properly. Further, the 
+functionality I *did* want - posting an image to Twitter - was always 
+*interactive* when I wanted to enter the file on the command line. 
 
 So I (thank you Apache2 license) ripped out the authentication portions and 
 hardcoded them, ripped out all the interactive bits, and remade the Twython-tools 
@@ -208,16 +207,12 @@ my changes to the code.
 You must register a [Twitter application](https://apps.twitter.com) and get 
 **user** API codes and type them manually into `tweet.py`.
 
+`APP_KEY = ""`
+`APP_SECRET = ""`
+`OAUTH_TOKEN = ""`
+`OAUTH_TOKEN_SECRET = ""`
+
 Place the location of the binary into `agaetr.ini`.
-
-*Optional* - Put the full path to the virtual environment's python interpreter 
-in for the shebang for `tweet.py`, as in: `#!/path/to/home/agaeter_venv/bin/python` . I had no luck with this;
-I ended up having to install it globally.
-
-APP_KEY = ""
-APP_SECRET = ""
-OAUTH_TOKEN = ""
-OAUTH_TOKEN_SECRET = ""
 
 ## 6. Feeds Setup
 
@@ -227,6 +222,8 @@ header line `[Feed#]` with a different number for each feed.
 If a feed is being preprocessed (see below) or you have the RSS as an 
 XML file, you can put the filename directly into `agaetr.ini`.  The options 
 are explained in [Feed Options](#8-feed-options) below.
+
+For example:
 
 ```
 [Feed1]
@@ -247,6 +244,10 @@ GlobalCW = ideatrash
 
 While RSS is *supposed* to be a standard... it isn't. Too often there are 
 unusual or irregular elements in an RSS feed.
+
+While I've tried to make some of the more popular "odd" feeds - like YouTube 
+and DeviantArt - work properly inside of `agaetr_parse.py`, I cannot check 
+or code for every possibility. 
 
 If you have a feed with some unruly elements - such as the "Read more..." that 
 Wordpress loves to put in my own feed, or how the "published articles" feed from 
@@ -274,7 +275,7 @@ In the default block, you can define the (duh) default options. For
 social media accounts that support content warnings and sensitive image 
 markers (like Mastodon) you can configure if images are "sensitive" by 
 default, whether the posts from `agaetr` are marked with content warning 
-by default, and what strings (in the post title or tag) will *always* 
+by default, and what strings (in the post title or tags) will *always* 
 trigger the content warning.
 
 If you need ideas for what tags/terms make good content warnings, the file 
@@ -309,6 +310,7 @@ In *Feed3* below, images are only marked sensitive if they are triggered by a
 content warning (from the "filter" line in the *Default* section), otherwise 
 there are no content warnings and images are presented normally.
 
+```
 [Feed1]
 url = /home/steven/agaetr/ideatrash_parsed.xml
 sensitive = yes
@@ -327,7 +329,16 @@ sensitive = no
 ContentWarning = yes
 GlobalCW = 
 
+```
+
 ## 9. Usage
+
+### IMPORTANT NOTE ABOUT CRON
+
+**If you run `agaetr` as a cron job, ensure that the cron job is 
+run as the user (and with the environment) you used to set up the 
+online services.**  
+
 
 * (Optional) Call `rss_preprocessor.sh`.
 * `agaetr_parse.py` to pull down new articles from feeds.
@@ -336,7 +347,14 @@ GlobalCW =
 Seriously, once everything is set up, that's it. You'll probably want to 
 put these into cronjobs. 
 
-## 10. TODO
+## 10. Other files
+
+There are other files in this repository:
+
+* `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.
+* `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.  
+
+## 11. TODO
 
 * Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
