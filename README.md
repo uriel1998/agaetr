@@ -55,7 +55,7 @@ found and (relatively) easily swapped in without changing your whole setup.
 
 ## 2. License
 
-This project is licensed under the MIT license. For the full license, see `LICENSE`.
+This project is licensed under the Apache License. For the full license, see `LICENSE`.
 
 ## 3. Prerequisites
 
