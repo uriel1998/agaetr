@@ -359,15 +359,20 @@ There are other files in this repository:
 
 ## 11. TODO
 
+### Roadmap:
+
+* Archive of sent links - 0.9
+
+### Someday/Maybe:
+
 * Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
 * test INBOUND wallabag - seems to be broken?
 * In and out - Instagram? 
-* Archive of sent links
 * Per feed output selectors (though that's gonna be a pain)
 * Test CW without a global CW
-* Ensure that send exits cleanly if there's no articles !!
-* Ensure parser doesn't choke if there's a newline at the end of the posts.db file
+* Check that send exits cleanly if there's no articles !!
+* Check parser doesn't choke if there's a newline at the end of the posts.db file
 * Add "wobble" to time of sending with `agaetr_send`.  (e.g. +- 5min)
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
