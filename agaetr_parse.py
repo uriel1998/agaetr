@@ -18,7 +18,7 @@ from os.path import expanduser
 from appdirs import *
 from pathlib import Path
 import shutil
-import urllib.parse
+import requests
 
 ########################################################################
 # Defining configuration locations and such
@@ -165,7 +165,11 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 for item in post.media_content:
                     amgurl = item['url'].split('?')
                     if amgurl[0].endswith("jpg"):
-                        imgurl = amgurl[0]
+                        r = requests.head(amgurl[0])
+                        if (int(r.status_code) == 200):
+                            imgurl = amgurl[0]
+                        else:
+                            imgurl = item['url']
                         imgalt = post.title
                         break
             else:
@@ -173,6 +177,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 if 'content' in post:
                     soup = BeautifulSoup((post.content[0]['value']), 'html.parser')
                     imgtag = soup.find("img")
+                    print(imgtag)
                 else:
                     soup = BeautifulSoup(urllib.parse.unquote(post.description), 'html.parser')
                     imgtag = soup.find("img")
@@ -212,7 +217,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
             #put post in db?
             #how bring down img? at posting time?
             print("Adding " + post.title)
-            print("adding" + str(post_description))
+            #print("adding" + str(post_description))
             #print(post.link)
             #print (str.lower(''.join(hashtags))
             
