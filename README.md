@@ -137,8 +137,8 @@ more complex; I've not updated/fixed this yet.
 If you are using bit.ly, you will need a username and bit.ly API key.
 Place the values of your login and API key into `agaetr.ini`.
 
-`bitly_login =`
-`bitly_api =`
+`bitly_login =`  
+`bitly_api =`  
 
 #### YOURLS  
 
@@ -162,7 +162,10 @@ you are not using; adding additional services should follow the pattern shown.
 #### Twitter via Oysttyer  
 
 Install and set up [oysttyer](https://github.com/oysttyer/oysttyer). Place the 
-location of the binary into `agaetr.ini`.
+location of the binary into `agaetr.ini`.  
+
+While `Oysttyer` is by far the easier to set up, it does *not* allow you to 
+specify the image that is tweeted.  For that, you need `twython`, below.  
 
 ### Shaarli (output)
 
@@ -207,10 +210,10 @@ my changes to the code.
 You must register a [Twitter application](https://apps.twitter.com) and get 
 **user** API codes and type them manually into `tweet.py`.
 
-`APP_KEY = ""`
-`APP_SECRET = ""`
-`OAUTH_TOKEN = ""`
-`OAUTH_TOKEN_SECRET = ""`
+`APP_KEY = ""`  
+`APP_SECRET = ""`  
+`OAUTH_TOKEN = ""`  
+`OAUTH_TOKEN_SECRET = ""`  
 
 Place the location of the binary into `agaetr.ini`.
 
@@ -363,10 +366,9 @@ There are other files in this repository:
 * Archive of sent links
 * Per feed output selectors (though that's gonna be a pain)
 * Test CW without a global CW
-* Clean up documentation
 * Ensure that send exits cleanly if there's no articles !!
 * Ensure parser doesn't choke if there's a newline at the end of the posts.db file
 * Add "wobble" to time of sending with `agaetr_send`.  (e.g. +- 5min)
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
-* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Insta
+* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram
