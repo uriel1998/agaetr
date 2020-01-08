@@ -33,9 +33,13 @@ script is also available (with examples) for fixing a few things with WordPress
 and TT-RSS "published articles" feeds.  It can also *deobfuscate* incoming 
 links and optionally shorten outgoing links.
 
+This was created because pay services are expensive, and other options are 
+either limited or subject to frequent bitrot.
+
 The modular structure is specifically designed so that it should be easy to 
 create a new module for additional services, as it relies on other programs 
-to do most of the posting.
+to do most of the posting. Therefore, if one posting tool dies, another can be 
+found and (relatively) easily swapped in without changing your whole setup.
 
 `agaetr` is an anglicization of ágætr, meaning "famous".
 
@@ -322,11 +326,16 @@ put these into cronjobs.
 
 ## 10. TODO
 
-* Create a requirements.txt for pip to simplify installation.
+* Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
-* test INBOUND trakt.tv, deviant art
-* Wallabag in RSS seems to be broken, not sure why.
-* Archive of sent links?
+* test INBOUND trakt.tv https://trakt.tv/users/senorwombat/history.atom?slurm=6b7f4787dd51232f6b752757f8b10969
+* test INBOUND pintrest - https://www.pinterest.com/StevenSaus/cool-stuff.rss/
+* test INBOUND deviant art http://backend.deviantart.com/rss.xml?q=favby%3Auriel1998%2F9804716&type=deviation
+* test INBOUND wallabag - seems to be broken?
+* test INBOUND YouTube - https://www.youtube.com/feeds/videos.xml?playlist_id=FLf3CItkSnt1c0zN_nxzQ2tg
+* In and out - Instagram? 
+* Archive of sent links
+* Per feed output selectors (though that's gonna be a pain)
 * Test CW without a global CW
 * Clean up documentation
 * Ensure that send exits cleanly if there's no articles !!
