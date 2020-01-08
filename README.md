@@ -74,10 +74,15 @@ virtualenv henceforth.
 * `sudo chmod +x $PWD/agaetr_parse.py`
 * `sudo chmod +x $PWD/agaetr_send.sh`
 * (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
-* `pip install appdirs`
-* `pip install configparser`
-* `pip install beautifulsoup4`
-* `pip install feedparser`
+
+* `pip install -r requirements.txt` 
+
+OR
+
+* `pip install appdirs`  
+* `pip install configparser`  
+* `pip install beautifulsoup4`  
+* `pip install feedparser`  
 
 Any service you would like to use needs to have a symlink made from the "avail" 
 directory to the "enabled" directory. For example:
