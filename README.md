@@ -35,6 +35,7 @@ Tested with feeds from:
 * [TT-RSS](https://tt-rss.org/) (with preprocessing script)
 * [Trakt.tv](https://trakt.tv) 
 * [DeviantArt](https://www.deviantart.com)
+* [YouTube](https://youtube.com) (particularly public playlists, like favorites)
 
 The preprocessing script is available (with examples) for fixing a few things 
 with WordPress and TT-RSS "published articles" feeds.  
@@ -340,7 +341,6 @@ put these into cronjobs.
 * Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
 * test INBOUND wallabag - seems to be broken?
-* test INBOUND YouTube - https://www.youtube.com/feeds/videos.xml?playlist_id=FLf3CItkSnt1c0zN_nxzQ2tg
 * In and out - Instagram? 
 * Archive of sent links
 * Per feed output selectors (though that's gonna be a pain)

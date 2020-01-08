@@ -19,6 +19,7 @@ from appdirs import *
 from pathlib import Path
 import shutil
 import requests
+import urllib.parse
 
 ########################################################################
 # Defining configuration locations and such
@@ -40,6 +41,7 @@ if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
 ini = os.path.join(configdir,'agaetr.ini')
 db = os.path.join(datadir,'posts.db')
+posteddb = os.path.join(datadir,'posts.db')         
 tmp = os.path.join(cachedir,'posts.db')
 
 Path(db).touch()
@@ -62,7 +64,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
     feed = feedparser.parse(url)
 
     for post in feed.entries:
-
+            
         # if post is already in the database, skip it
         # TODO check the time
 
@@ -161,30 +163,33 @@ def parse_that_feed(url,sensitive,CW,GCW):
             imgurl=None
             # Look for image in media content first
             if 'media_content' in post:
+        
+                # Trying the sleep function here in case there's flood protection on 
+                # the server we're checking images from
+
+                time.sleep(2)
                 mediaContent=post.media_content
                 for item in post.media_content:
                     # making sure it's not flash/video from Youtube/Vimeo
                     if 'type' in item:
                         if "flash" in (item['type']): 
-                            print(item['type'])
+                            #print(item['type'])
                             if 'media_thumbnail' in post:
                                 mediaContent=post.media_thumbnail
                                 for item in post.media_thumbnail:
                                     amgurl = item['url'].split('?')
                     
                                     if amgurl[0].endswith("jpg"):
-                                        r = requests.head(amgurl[0])
+                                        r = requests.head(amgurl[0], timeout=10)
                                         if (int(r.status_code) == 200):
                                             imgurl = amgurl[0]
                                         else:
                                             imgurl = item['url']
                                         imgalt = post.title
                                         break
-                            
                     amgurl = item['url'].split('?')
-                    
                     if amgurl[0].endswith("jpg"):
-                        r = requests.head(amgurl[0])
+                        r = requests.head(amgurl[0], timeout=10)
                         if (int(r.status_code) == 200):
                             imgurl = amgurl[0]
                         else:
@@ -196,11 +201,11 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 if 'content' in post:
                     soup = BeautifulSoup((post.content[0]['value']), 'html.parser')
                     imgtag = soup.find("img")
-                    print(imgtag)
+                    #print(imgtag)
                 else:
                     soup = BeautifulSoup(urllib.parse.unquote(post.description), 'html.parser')
                     imgtag = soup.find("img")
-                    print(imgtag)
+                    #print(imgtag)
                 # checking for tracking images
                 if soup.find("img"):
                     if imgtag.has_attr('width'):
@@ -235,7 +240,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             imgalt = imgalt.strip()
             #put post in db?
             #how bring down img? at posting time?
-            print("Adding " + post.title)
+            print("# Adding " + post.title)
             #print("adding" + str(post_description))
             #print(post.link)
             #print (str.lower(''.join(hashtags))
@@ -247,7 +252,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
             
             f.close
         else:
-            print("We've already got one")
+            print("## Already have " + post.title)
     return
 
 
