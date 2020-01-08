@@ -163,7 +163,26 @@ def parse_that_feed(url,sensitive,CW,GCW):
             if 'media_content' in post:
                 mediaContent=post.media_content
                 for item in post.media_content:
+                    # making sure it's not flash/video from Youtube/Vimeo
+                    if 'type' in item:
+                        if "flash" in (item['type']): 
+                            print(item['type'])
+                            if 'media_thumbnail' in post:
+                                mediaContent=post.media_thumbnail
+                                for item in post.media_thumbnail:
+                                    amgurl = item['url'].split('?')
+                    
+                                    if amgurl[0].endswith("jpg"):
+                                        r = requests.head(amgurl[0])
+                                        if (int(r.status_code) == 200):
+                                            imgurl = amgurl[0]
+                                        else:
+                                            imgurl = item['url']
+                                        imgalt = post.title
+                                        break
+                            
                     amgurl = item['url'].split('?')
+                    
                     if amgurl[0].endswith("jpg"):
                         r = requests.head(amgurl[0])
                         if (int(r.status_code) == 200):

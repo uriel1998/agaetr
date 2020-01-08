@@ -34,6 +34,7 @@ Tested with feeds from:
 * [Wordpress](https://wordpress.org/) (with preprocessing script)
 * [TT-RSS](https://tt-rss.org/) (with preprocessing script)
 * [Trakt.tv](https://trakt.tv) 
+* [DeviantArt](https://www.deviantart.com)
 
 The preprocessing script is available (with examples) for fixing a few things 
 with WordPress and TT-RSS "published articles" feeds.  
@@ -338,7 +339,6 @@ put these into cronjobs.
 
 * Create a full on installation script including virtualenv and installing stuff?
 * Better content warning system where series of words can trigger "uspol" for example
-* test INBOUND deviant art http://backend.deviantart.com/rss.xml?q=favby%3Auriel1998%2F9804716&type=deviation
 * test INBOUND wallabag - seems to be broken?
 * test INBOUND YouTube - https://www.youtube.com/feeds/videos.xml?playlist_id=FLf3CItkSnt1c0zN_nxzQ2tg
 * In and out - Instagram? 
