@@ -4,7 +4,7 @@ A modular system to take a list of RSS feeds, process them, and send them to
 social media with images, content warnings, and sensitive image flags when 
 available. 
 
-![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr_logo.png "logo")
+![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr-open-graph.png "logo")
 
 ## Contents
  1. [About](#1-about)
