@@ -17,6 +17,11 @@ tail -n +2 "$HOME/.local/share/agaetr/posts_back.db" > "$HOME/.local/share/agaet
 instring=$(head -1 "$HOME/.local/share/agaetr/posts_back.db")
 rm "$HOME/.local/share/agaetr/posts_back.db"
 
+#Adding string to the "posted" db
+
+echo "$instring" >> "$HOME/.local/share/agaetr/posted.db"
+
+
 OIFS=$IFS
 IFS='|'
 myarr=($(echo "$instring"))

@@ -41,19 +41,25 @@ if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
 ini = os.path.join(configdir,'agaetr.ini')
 db = os.path.join(datadir,'posts.db')
-posteddb = os.path.join(datadir,'posts.db')         
+posteddb = os.path.join(datadir,'posted.db')         
 tmp = os.path.join(cachedir,'posts.db')
 
+Path(posteddb).touch()
 Path(db).touch()
 Path(tmp).touch()
 ########################################################################
 # Have we already posted this? (our "db" is a flat file, btw)
+# Added in check for the posted db
 ########################################################################
 def post_is_in_db(title):
     with open(db, 'r') as database:
         for line in database:
             if title in line:
                 return True
+    with open(posteddb, 'r') as database2:
+        for line1 in database2:
+            if title in line1:
+                return True                                
     return False
 
 ########################################################################
