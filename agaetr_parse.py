@@ -148,6 +148,15 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 cwmarker = 0
             else:
                 cwmarker = 1
+            
+            #TODO
+            #This is where to put our new CW loop from ini
+            #ContentWarningString = str.lower(config['DEFAULT']['filters'])
+            #for x in sections:
+            #    if "cw" in (str.lower(x)):
+            #        keyword=config[x]['keyword']
+            #        CW-ContentWarningString=config[x]['matches']
+                    
 
             if hasattr(post, 'tags'):
                 for d in tags:
