@@ -56,6 +56,16 @@ if [ "$imgalt" = "None" ];then
     imgalt=""
 fi
 
+#Checking the image url before sending it to the client
+imagecheck=$(wget -q --spider $imgurl; echo $?)
+
+if [ $imagecheck -ne 0 ];then
+    echo "Image no longer available; omitting."
+    imgurl=""
+    imgalt=""
+fi
+
+
 #Deshortening, deobfuscating, and unredirecting the URL
 
 url="$link"
