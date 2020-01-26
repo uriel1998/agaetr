@@ -61,7 +61,7 @@ def post_is_in_db(title):
             if title in line1:
                 return True                                
     return False
-
+    
 ########################################################################
 # Parsing that feed!
 ########################################################################
@@ -128,6 +128,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                         if "onetime" not in (str.lower(post.tags[i]['term'])):
                             if "overnight" not in (str.lower(post.tags[i]['term'])):
                                 if "post" not in (str.lower(post.tags[i]['term'])):
+                                    post.tags[i]['term'] = post.tags[i]['term'].replace(':',' ').replace('|', ' ').replace('/',' ').replace('\\',' ').replace('  ',' ').replace(' ','-')
                                     hashtags.append('#%s' % str.lower(post.tags[i]['term']))
                     i += 1
 
@@ -140,40 +141,42 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             if "overnight" not in (str.lower(post.tags[i]['term'])):
                                 if "post" not in (str.lower(post.tags[i]['term'])):
                                     if (str.lower(post.tags[i]['term'])) not in tags: 
+                                        post.tags[i]['term'] = post.tags[i]['term'].replace('|', ' ').replace('/',' ').replace('\\',' ')
                                         tags.append('%s' % str.lower(post.tags[i]['term']))
                     i += 1
 
             #Do we always have CW on this feed?
             if CW == "no":
                 cwmarker = 0
+                ContentWarningString = ""
             else:
                 cwmarker = 1
+                ContentWarningString = feed_GlobalCW
+            
             
             #TODO
             #This is where to put our new CW loop from ini
-            #ContentWarningString = str.lower(config['DEFAULT']['filters'])
-            #for x in sections:
-            #    if "cw" in (str.lower(x)):
-            #        keyword=config[x]['keyword']
-            #        CW-ContentWarningString=config[x]['matches']
-                    
+            #pull in from ini  ( I think I can axe this next line)
+            #hoping to re-loop through ini and pull in cw# sections
+            for x in sections:
+                if "cw" in (str.lower(x)):
+                    ContentWarningList = str.lower(config['DEFAULT']['filters'])
+                    keyword=config[x]['keyword']
+                    ContentWarningList = ContentWarningList + str.lower(config[x]['matches'])
 
-            if hasattr(post, 'tags'):
-                for d in tags:
-                    if d in ContentWarningString:
-                        cwmarker += 1
 
-            # double checking with title as well
-            bob = str.lower((', '.join(tags)) + ' ' + post.title)
-            for d in ContentWarningString.split():
-                if d in bob:
-                    cwmarker += 1
-                    tags.append('%s' % str.lower(d))
-                    
+                    if hasattr(post, 'tags'):
+                        for d in tags:
+                            if d in ContentWarningList.split():
+                                cwmarker += 1
+                                ContentWarningString = ContentWarningString + " " + keyword
+                    # double checking with title as well
+                    bob = str.lower((', '.join(tags)) + ' ' + post.title)
+                    for d in ContentWarningList.split():
+                        if d in bob.split():
+                            cwmarker += 1
+                            ContentWarningString = ContentWarningString + " " + keyword
 
-            #if cwmarker > 0:
-            #    print("cw: " + str.lower(', '.join(tags)))
-            #print(tags)
             imgalt=None
             imgurl=None
             # Look for image in media content first
@@ -253,17 +256,18 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             imgalt = post.title
                         else:
                             imgalt = imgalt.strip()
-            #put post in db?
-            #how bring down img? at posting time?
             print("# Adding " + post.title)
-            #print("adding" + str(post_description))
-            #print(post.link)
-            #print (str.lower(''.join(hashtags))
             
-            if cwmarker > 0:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n") 
+            if cwmarker > 0:  
+                words = ContentWarningString.split()
+                ContentWarningString = (",".join(sorted(set(words), key=words.index)))
+                HashtagsString = str.lower(' '.join(hashtags))
+                words2 = HashtagsString.split()
+                HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
+                #f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n") 
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(ContentWarningString) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n") 
             else:
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n")
+                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
             
             f.close
         else:
@@ -282,8 +286,9 @@ sections=config.sections()
 ########################################################################
 # Begin loop over feedlist
 ########################################################################
+#TODO - fix this
 ContentWarningList = config['DEFAULT']['filters']
-ContentWarningString = str.lower(config['DEFAULT']['filters'])
+ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
 for x in sections:
     if "feed" in (str.lower(x)):
         feed=config[x]['url']

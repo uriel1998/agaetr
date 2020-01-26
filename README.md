@@ -283,7 +283,8 @@ trigger the content warning.
 
 If you need ideas for what tags/terms make good content warnings, the file 
 `cwlist.txt` is included for your convenience. Because of how it matches, a 
-filter of "abuse" should catch "child abuse" and "sexual abuse", etc.
+filter of "abuse" should catch "child abuse" and "sexual abuse", etc. However, 
+it matches whole words, so "war" should *not* catch "bloatware" or "warframe".
 
 *Note*: Keywords searched for **are used as the content warning**. So if 
 you are trying to content warning the word "Trump", it will show up as 
