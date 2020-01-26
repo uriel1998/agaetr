@@ -19,6 +19,12 @@ rm "$HOME/.local/share/agaetr/posts_back.db"
 
 #Adding string to the "posted" db
 
+if [ -z "$instring" ];then 
+
+    echo "Nothing to post."
+    exit
+fi
+
 echo "$instring" >> "$HOME/.local/share/agaetr/posted.db"
 
 
