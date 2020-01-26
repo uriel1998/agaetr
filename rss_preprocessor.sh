@@ -11,4 +11,4 @@ wget -O- "https://ideatrash.net/feed" | sed -e 's/<div class="more-link-wrapper"
 
 
 # <updated> -> <pubDate> (and closing tags)
-wget -O- "https://rss.stevesaus.me/public.php?op=rss&id=-2&view-mode=all_articles&key=9u5pdo5e07852179fb9" | sed 's@<updated>@<pubDate>@g' | sed 's@</updated>@</pubDate>@g' > /home/steven/documents/programming/agaetr/xml_references/ttrss_parsed.xml
+wget -O- "https://my.ttrss.install/public.php?op=rss&id=-2&view-mode=all_articles&key=8293847903" | sed 's@<updated>@<pubDate>@g' | sed 's@</updated>@</pubDate>@g' > /home/steven/documents/programming/agaetr/xml_references/ttrss_parsed.xml
