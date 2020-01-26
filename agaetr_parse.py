@@ -293,8 +293,13 @@ for x in sections:
     if "feed" in (str.lower(x)):
         feed=config[x]['url']
         feed_sensitive=config[x]['sensitive']
-        feed_CW=config[x]['ContentWarning']
-        feed_GlobalCW=config[x]['GlobalCW']
+        if 'y' in config['DEFAULT']['ContentWarning']:
+            feed_CW=config['DEFAULT']['ContentWarning']
+            feed_GlobalCW=config[x]['GlobalCW'] + " " + str.lower(config['DEFAULT']['GlobalCW'])
+        else:
+            feed_CW=config[x]['ContentWarning']
+            feed_GlobalCW=config[x]['GlobalCW']
+            
         parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW)
 
 
