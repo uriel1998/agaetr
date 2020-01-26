@@ -15,9 +15,10 @@ available.
  6. [Feeds Setup](#6-feeds-setup)
  7. [Feed Preprocessing](#7-feed-preprocessing)
  8. [Feed Options](#8-feed-options)
- 9. [Usage](#9-usage)
- 10. [Other Files](#10-other-files)
- 11. [TODO](#11-todo)
+ 9. [Advanced Content Warning](#9-advanced-content-warning)
+ 10. [Usage](#10-usage)
+ 11. [Other Files](#11-other-files)
+ 12. [TODO](#12-todo)
 
 ***
 
@@ -281,22 +282,12 @@ default, whether the posts from `agaetr` are marked with content warning
 by default, and what strings (in the post title or tags) will *always* 
 trigger the content warning.
 
-If you need ideas for what tags/terms make good content warnings, the file 
-`cwlist.txt` is included for your convenience. Because of how it matches, a 
-filter of "abuse" should catch "child abuse" and "sexual abuse", etc. However, 
-it matches whole words, so "war" should *not* catch "bloatware" or "warframe".
-
-*Note*: Keywords searched for **are used as the content warning**. So if 
-you are trying to content warning the word "Trump", it will show up as 
-the content warning. You may wish to use terms like "politics" instead. 
-I hope to create a better automatic content warning system later.
-
 *Note*: Images are marked as sensitive if the content warning is triggered.
 
 ```
 Sensitive = no
 ContentWarning = no
-GlobalCW = From feeds, possibly sensitive
+GlobalCW = RSS-fed
 # These ALWAYS trigger a content warning
 filters =
 #filters = politics blog sex bigot supremacist nazi climate
@@ -335,7 +326,30 @@ GlobalCW =
 
 ```
 
-## 9. Usage
+## 9. Advanced Content Warning
+
+If you need ideas for what tags/terms make good content warnings, the file 
+`cwlist.txt` is included for your convenience. Because of how it matches, a 
+filter of "abuse" should catch "child abuse" and "sexual abuse", etc. However, 
+it matches whole words, so "war" should *not* catch "bloatware" or "warframe".
+
+The advanced content warning system is configured in the `agaetr.ini` as 
+well, following a similar format to the feeds:
+
+```
+[CW9]
+keyword = social-media
+matches = facebook twitter mastodon social-media online
+```
+
+The "keyword" is what is outputted as the content warning, the space-separated 
+line after matches is what strings will trigger that keyword as a content 
+warning.  This will work on *all* feeds where `ContentWarning = yes` is 
+configured. 
+
+### The keyword should **NOT** be a potentially sensitive word itself.
+
+## 10. Usage
 
 ### IMPORTANT NOTE ABOUT CRON
 
@@ -351,14 +365,14 @@ online services.**
 Seriously, once everything is set up, that's it. You'll probably want to 
 put these into cronjobs. 
 
-## 10. Other files
+## 11. Other files
 
 There are other files in this repository:
 
 * `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.
 * `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.  
 
-## 11. TODO
+## 12. TODO
 
 ### Roadmap:
 
