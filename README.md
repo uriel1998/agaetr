@@ -29,7 +29,7 @@ input (particularly RSS feeds) and then share them to various social media outpu
 
 This system is designed for *single user* use, as API keys are required.
 
-Tested with feeds from:
+Tested with a feeds from:
 
 * [dlvr.it](https://dlvrit.com/) 
 * [shaarli](https://github.com/shaarli/Shaarli) instances (see note below)
@@ -38,11 +38,12 @@ Tested with feeds from:
 * [Trakt.tv](https://trakt.tv) 
 * [DeviantArt](https://www.deviantart.com)
 * [YouTube](https://youtube.com) (particularly public playlists, like favorites)
+* [UPI](https://rss.upi.com/news/news.rss)
 
 The preprocessing script is available (with examples) for fixing a few things 
 with WordPress and TT-RSS "published articles" feeds.  
 
-It can also *deobfuscate* incoming links and optionally shorten outgoing links.
+`agaetr` can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
 This was created because pay services are expensive, and other options are 
 either limited or subject to frequent bitrot.
