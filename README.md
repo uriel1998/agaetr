@@ -7,7 +7,6 @@ available.
 ![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr-open-graph.png "logo")
 
 ## Contents
- 0. [Credits](#0-credits)
  1. [About](#1-about)
  2. [License](#2-license)
  3. [Prerequisites](#3-prerequisites)
@@ -22,10 +21,6 @@ available.
  12. [TODO](#12-todo)
 
 ***
-
-## 0. Credits
-
-#https://alvinalexander.com/python/python-script-read-rss-feeds-database
 
 ## 1. About
 
@@ -60,6 +55,7 @@ found and (relatively) easily swapped in without changing your whole setup.
 
 `agaetr` is an anglicization of ágætr, meaning "famous".
 
+Special thanks to Alvin Alexander's [whose post](https://alvinalexander.com/python/python-script-read-rss-feeds-database) got me on the right track.
 
 ## 2. License
 
@@ -395,4 +391,4 @@ There are other files in this repository:
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
-* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram
+* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram, Internet Archive, archivebox

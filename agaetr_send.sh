@@ -63,17 +63,23 @@ link="$url"
 
 if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     shortener=$(ls -lR "$SCRIPT_DIR/short_enabled" | grep ^l | awk '{print $9}')
-    if [ "$shortener" != ".keep" ];then 
-        short_funct=$(echo "${shortener%.*}_shortener")
-        source "$SCRIPT_DIR/short_enabled/$shortener"
-        url="$link"
-        echo "$SCRIPT_DIR/short_enabled/$shortener"
-        eval ${short_funct}
-        link="$shorturl"
-        echo "$shorturl"
-        echo "$link"
+    if [ -z "$shortener" ];then
+        echo "No URL shortening performed."
+    else
+        if [ "$shortener" != ".keep" ];then 
+            echo "FUCKNOW"
+            short_funct=$(echo "${shortener%.*}_shortener")
+            source "$SCRIPT_DIR/short_enabled/$shortener"
+            url="$link"
+            echo "$SCRIPT_DIR/short_enabled/$shortener"
+            eval ${short_funct}
+            link="$shorturl"
+            echo "$shorturl"
+            echo "$link"
+        fi
     fi
 fi
+
     
 # Parsing enabled out systems. Find files in out_enabled, then import 
 # functions from each and running them with variables already established.
