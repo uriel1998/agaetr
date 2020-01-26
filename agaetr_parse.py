@@ -267,6 +267,9 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 #f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n") 
                 f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(ContentWarningString) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n") 
             else:
+                HashtagsString = str.lower(' '.join(hashtags))
+                words2 = HashtagsString.split()
+                HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
                 f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
             
             f.close
