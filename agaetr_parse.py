@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-#https://alvinalexander.com/python/python-script-read-rss-feeds-database
-#super props
-
 import feedparser
 import time
 import string
@@ -47,6 +44,7 @@ tmp = os.path.join(cachedir,'posts.db')
 Path(posteddb).touch()
 Path(db).touch()
 Path(tmp).touch()
+
 ########################################################################
 # Have we already posted this? (our "db" is a flat file, btw)
 # Added in check for the posted db
@@ -72,7 +70,6 @@ def parse_that_feed(url,sensitive,CW,GCW):
     for post in feed.entries:
             
         # if post is already in the database, skip it
-        # TODO check the time
 
         title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
         post.title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
@@ -154,10 +151,6 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 ContentWarningString = feed_GlobalCW
             
             
-            #TODO
-            #This is where to put our new CW loop from ini
-            #pull in from ini  ( I think I can axe this next line)
-            #hoping to re-loop through ini and pull in cw# sections
             for x in sections:
                 if "cw" in (str.lower(x)):
                     ContentWarningList = str.lower(config['DEFAULT']['filters'])
@@ -264,7 +257,6 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 HashtagsString = str.lower(' '.join(hashtags))
                 words2 = HashtagsString.split()
                 HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
-                #f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(', '.join(tags)) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + str.lower(' '.join(hashtags)) + "|" + str(post_description) + "\n") 
                 f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(ContentWarningString) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n") 
             else:
                 HashtagsString = str.lower(' '.join(hashtags))
@@ -289,7 +281,7 @@ sections=config.sections()
 ########################################################################
 # Begin loop over feedlist
 ########################################################################
-#TODO - fix this
+
 ContentWarningList = config['DEFAULT']['filters']
 ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
 for x in sections:
@@ -305,8 +297,6 @@ for x in sections:
             
         parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW)
 
-
-
 shutil.copyfile(db,tmp)
 
 infile = open(tmp,'r')
@@ -319,28 +309,3 @@ out.close
 os.remove(tmp)
 
 exit()
-
-
-# super first - check the url against our "db"
-# first, check the dict of tags against a list
-# determine if sensitive and/or CW based on user preference
-#   Options - by keyword (title, tags)
-#           - always
-#           - never
-# second, create a cachedir (because we need that picture)
-# third, write the posting strings and the image to the cachedir
-            # TODO: Take out null tags like overnight and uncategorized
-
-# WILL NEED AWK/SED PREFILTER, uuugh
-# Still, doing it in python seems to be a pain, and a quick bash script would
-# allow others to fix it to their own satisfaction. Also, it's got to be 
-# feed by feed, etc.  And some of these things needing replaced are multiline,
-# which a python sed implementation isn't able to handle afaik.
-
-# Article Note to summary
-# color : #9a8c59;">Article note: That is a lot of Fresh Air.</div><div>
-
-# summary remove <div class="more-link-wrapper"> until</description>
-# sed -e 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g' ideatrash.xml > filename
-# <updated> -> <pubDate> (and closing tags)
-#cat ttrss.xml | sed 's@<updated>@<pubDate>@g' | sed 's@</updated>@</pubDate>@g' > parsed_ttrss.xml

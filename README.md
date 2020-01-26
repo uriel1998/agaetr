@@ -7,6 +7,7 @@ available.
 ![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr-open-graph.png "logo")
 
 ## Contents
+ 0. [Credits](#0-credits)
  1. [About](#1-about)
  2. [License](#2-license)
  3. [Prerequisites](#3-prerequisites)
@@ -21,6 +22,10 @@ available.
  12. [TODO](#12-todo)
 
 ***
+
+## 0. Credits
+
+#https://alvinalexander.com/python/python-script-read-rss-feeds-database
 
 ## 1. About
 
@@ -379,6 +384,7 @@ There are other files in this repository:
 
 * 1.0 - Full on installation script including venv
 * 1.0 - Per feed prefix string (e.g. "Blogging: $Title")
+* 1.0 - urldecode strings in titles and descriptions
 
 ### Someday/Maybe:
 
