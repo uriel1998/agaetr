@@ -1,9 +1,55 @@
-And also whether or not to shorten the thing needs to go here
-And then once you have all these items, loops through the same way you do with
-agaetr.
+#!/bin/bash
 
-And if you want to put it in "buffer", you can do so by adding it to the 
-posts.db section
+#get install directory
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
+if [ ! -f "$HOME/.config/agaetr/agaetr.ini" ];then
+    echo "INI not located; betcha nothing else is set up."
+    exit 89
+fi
+
+
+
+#So here we need to get
+# 1. today's date and time
+# 2. String to send (title)
+# 3. Image (if any) to send
+# 4. imgalt - from local image? Maybe skip that for the moment
+# 5. CWs if any
+# Perhaps read from image metadata?
+# ADDTL
+# Gotta do this so that the other submodules work just fine
+# Parse out link from string (if any exist)
+# parse out tags from string (if any exist)
+
+#ADDITIONAL:  Should this go in the "buffer" or out immediately?
+# And if you want to put it in "buffer", you can do so by adding it to the posts.db section
+
+
+#20181227091253|Bash shell find out if a variable has NULL value OR not|https://www.cyberciti.biz/faq/bash-shell-find-out-if-a-variable-has-null-value-or-not/||None|None|#bash shell #freebsd #korn shell scripting #ksh shell #linux #unix #bash shell scripting #linux shell scripting #shell script
+
+
+OIFS=$IFS
+IFS='|'
+myarr=($(echo "$instring"))
+IFS=$OIFS
+#pulling array into named variables so they work with sourced functions
+
+# passing published time (from dd MMM)
+posttime=$(echo "${myarr[0]}")
+posttime2=${posttime::-6}
+pubtime=$(date -d"$posttime2" +%d\ %b)
+title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+link=$(echo "${myarr[2]}")
+cw=$(echo "${myarr[3]}")
+imgurl=$(echo "${myarr[5]}")
+imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+hashtags=$(echo "${myarr[6]}")
+description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+
+
+
+
 
 This would be useful for just posting or for perhaps newsboat, etc
 

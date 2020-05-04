@@ -81,7 +81,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
                 splitter = post_description.split()
                 post_description =" ".join(splitter)
-                post_description =BeautifulSoup(post_description, "lxml").text
+                post_description =BeautifulSoup(post_description, 'html.parser').text
             else:
                 post_description = ""
         else:
@@ -91,7 +91,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                     post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
                     splitter = post_description.split()
                     post_description =" ".join(splitter)
-                    post_description =BeautifulSoup(post_description, "lxml").text
+                    post_description =BeautifulSoup(post_description, 'html.parser').text
                 else:
                     post_description = ""
         

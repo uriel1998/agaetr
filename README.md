@@ -371,8 +371,9 @@ put these into cronjobs.
 
 There are other files in this repository:
 
-* `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.
-* `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.  
+* `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
+* `unredirector_old.sh` - The original program/function used by `agaetr` to remove redirections and shortening.  
+* `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.   
 
 ## 12. TODO
 

@@ -83,7 +83,6 @@ if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
         echo "No URL shortening performed."
     else
         if [ "$shortener" != ".keep" ];then 
-            echo "FUCKNOW"
             short_funct=$(echo "${shortener%.*}_shortener")
             source "$SCRIPT_DIR/short_enabled/$shortener"
             url="$link"
