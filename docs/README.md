@@ -220,6 +220,12 @@ You must register a [Twitter application](https://apps.twitter.com) and get
 
 Place the location of the binary into `agaetr.ini`.
 
+#### Submit to the Wayback Machine (output)  
+
+While there is an official client, I wrote this using curl calls and [API Keys](https://archive.org/account/s3.php). 
+You need an account there to get your own API keys.  Place them into `agaeter.ini`.
+
+
 ## 6. Feeds Setup
 
 Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a

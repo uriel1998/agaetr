@@ -23,22 +23,11 @@ display_help(){
     echo "# flatpak run com.stevesaus.agaetr [options] "
     echo "# Info ############################################################"
     echo "# --help:  show help "
-    # --locations: print config and data locations
-    # --readme: display the README on the console
-    # --config-toot  toot login_cli
-    # --config-shaarli [shaarli]
-#url = https://shaarli.stevesaus.me/
-#secret = totallyfakesecret
-# shaarli must be run with --config CONFIG
-# --config-wallabag wallabag config
-   # bash /home/steven/.var/app/org.flatpak.agaetr/config/toot/config.json
+    echo "# --configure: enter configurator"
+    echo "# --locations: print config and data locations"
+    echo "# --readme: display the README on the console"
 
-    echo "# --readme: show README.md"
-    echo "create shaarli config create toot config create wallabag config create email send config create savelocation create rssout location"
-    echo "# Setup ###########################################################"
-    echo "# Setup"
-    echo "# --pico:  Produce pico templates with example htpasswd"
-    echo "# --example: Produce $HOME/.config/orindi/orindi.ini.template"
+#    echo "create shaarli config create toot config create wallabag config create email send config create savelocation create rssout location"
     echo "# Usage ###########################################################"    
     echo "# Running it"
     echo "# --muna [URL]: unredirect a URL "
@@ -76,10 +65,27 @@ check_for_config(){
 
 configurators(){
     echo "Which would you care to configure?"
-    select module in shaarli wallabag mastodon email twitter save quit
+    select module in cookies shaarli wallabag mastodon email twitter wayback save quit
     do
 
     case ${module} in
+        "wayback") 
+            echo "You must register for an API key at https://archive.org/account/s3.php"
+            echo "Please input the access key"
+            read accesskey
+            echo "Please input the secret key"
+            read accesssecret
+            inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"            
+            eval $(printf "sed -i \'/^wayback_access =.*/s/.*/wayback_access = \"${accesskey}\"/' ${inifile}")
+            eval $(printf "sed -i \'/^wayback_secret =.*/s/.*/wayback_secret = \"${accesssecret}\"/' ${inifile}")
+            ;;
+        "cookies") 
+            if [ ! -f "${XDG_CONFIG_HOME}/cookies.txt" ];then
+                echo "Please copy your cookie file to ${XDG_CONFIG_HOME}/cookies.txt"
+            else
+                echo "Cookie file already exists at ${XDG_CONFIG_HOME}/cookies.txt"
+            fi
+            ;;
         "wallabag") /app/wallabag config;;
         "mastodon") /app/toot login_cli;;
         "shaarli") 
@@ -91,7 +97,7 @@ configurators(){
             echo "[shaarli]" > "${shaarli_config}"
             echo "${shaarli_url}" >> "${shaarli_config}"
             echo "${shaarli_secret}" >> "${shaarli_config}"
-        ;;
+            ;;
         "email");;
             echo "Please put the name or address of your SMTP server (NOT port)"
             read smtp_server
@@ -108,18 +114,28 @@ configurators(){
             echo "smtp_port = ${smtp_port}" >> "${inifile}"
             echo "smtp_username = ${smtp_username}" >> "${inifile}"
             echo "smtp_password = ${smtp_password}" >> "${inifile}"
-        "twitter");;
-        
-        eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${bob}\"/' FILENAME OF TWEET.PY")
-        eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${bob}\"/'")
-        eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${bob}\"/'")
-        eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${bob}\"/'")
-        
+            ;;
+        "twitter")
+            echo "You must register a **USER** app at https://apps.twitter.com"
+            echo "and get the **user** API codes for these next prompts."
+            echo "Please input the APP KEY"
+            read appkey
+            echo "Please input the APP SECRET"
+            read appsecret
+            echo "Please input the OAUTH TOKEN"
+            read oauthtoken
+            echo "Please input the OAUTH TOKEN SECRET"
+            read oauthtokensecret
+            eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${appkey}\"/' /app/tweet.py")
+            eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${appsecret}\"/' /app/tweet.py")
+            eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${oauthtoken}\"/' /app/tweet.py")
+            eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${oauthtokensecret}\"/' /app/tweet.py")
+            ;;
         "save")
             echo "All saved files  stored under ${XDG_DATA_HOME}/agaetr"
             echo "If you would like to have a symlink, type"
             echo "ln -s ${XDG_DATA_HOME}/agaetr /desired/path"
-        ;;
+            ;;
         *) echo "Exiting configuration." break ;;
     esac
     done

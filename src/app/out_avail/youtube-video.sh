@@ -2,7 +2,7 @@
 
 function youtube-video_send {
 
-    ionice -c 3 youtube-dl "$link" --netrc --ignore-errors --cookies /home/steven/vault/cookies.txt --write-thumbnail --mark-watched --continue  --write-description --no-playlist --no-overwrites --rate-limit 1M --restrict-filenames --no-check-certificate -o '$/Downloads/videos/%(title)s-%(autonumber)s.%(ext)s'   
+    ionice -c 3 youtube-dl "$link" --netrc --ignore-errors --cookies "${XDG_CONFIG_HOME}/cookies.txt" --write-thumbnail --mark-watched --continue  --write-description --no-playlist --no-overwrites --rate-limit 1M --restrict-filenames --no-check-certificate -o '"${XDG_DATA_HOME}/agaetr/videos/%(title)s-%(autonumber)s.%(ext)s'   
 
 }
 

@@ -12,7 +12,7 @@
 #
 ##############################################################################
 
-RSSSavePath="$HOME/documents/output.xml"
+RSSSavePath="$XDG_DATA_HOME/agaetr/output.xml"
 
 
 

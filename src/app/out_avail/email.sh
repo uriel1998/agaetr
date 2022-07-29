@@ -27,7 +27,7 @@ function email_send {
         email=$(echo "root@localhost")
     fi
 
-    binary=$(grep 'mutt =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'mutt =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     if [ ! -f "$binary" ];then
         binary=$(which mutt)
     fi
