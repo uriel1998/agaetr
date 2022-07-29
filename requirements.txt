@@ -1,6 +1,0 @@
-beautifulsoup4>=4.8.2
-appdirs>=1.4.3
-feedparser>=5.2.1
-configparser>=4.0.2
-requests>=2.22.0
-twython>=3.7.0
