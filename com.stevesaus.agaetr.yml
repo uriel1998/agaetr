@@ -39,6 +39,11 @@ modules:
         url: https://github.com/dharple/detox/releases/download/v1.4.5/detox-1.4.5.tar.gz
         sha256: b8a0ed830f3054fbe09771d2b8ed8ae3667529678c1a73eb8e512693e8c74d3c
   - xmlstarlet.yml
+  - name: imagemagick
+    sources:
+      - type: archive
+        url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-44.tar.gz
+        sha256: 1532c08c4f047aaf04e2717aac23c6d866d7e17d60a5d2c320ae29874285d49f
   - name: pip-install
     buildsystem: simple
     build-options:
