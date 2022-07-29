@@ -1,0 +1,10 @@
+beautifulsoup4>=4.8.2
+appdirs>=1.4.3
+feedparser>=5.2.1
+configparser>=4.0.2
+requests>=2.22.0
+twython>=3.7.0
+shaarli-client>=0.5.0
+wallabag-client>=1.8.5
+toot>=0.28.0
+yt-dlp>=2022.7.18

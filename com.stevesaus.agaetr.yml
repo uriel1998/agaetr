@@ -1,0 +1,122 @@
+app-id: org.flatpak.agaetr
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+command: flatpak_entrypoint.sh
+finish-args:
+  -  --share=network 
+modules:
+  - name: cpython
+    sources:
+      - type: archive
+        url: https://www.python.org/ftp/python/3.10.5/Python-3.10.5.tar.xz
+        sha256: 8437efd5b106ef0a75aabfbf23d880625120a73a86a22ade4d2e2e68d7b74486
+  - name: curl
+    sources:
+      - type: archive
+        url: https://github.com/curl/curl/releases/download/curl-7_84_0/curl-7.84.0.tar.bz2
+        sha256: 702fb26e73190a3bd77071aa146f507b9817cc4dfce218d2ab87f00cd3bc059d
+    config-opts:
+      - --with-openssl        
+  - name: wget
+    sources:
+      - type: archive
+        url: https://ftp.gnu.org/gnu/wget/wget-1.21.3.tar.gz
+        sha256: 5726bb8bc5ca0f6dc7110f6416e4bb7019e2d2ff5bf93d1ca2ffcc6656f220e5
+  - name: gawk
+    sources:
+      - type: archive
+        url: https://ftp.gnu.org/gnu/gawk/gawk-5.1.0.tar.gz
+        sha256: 03a0360edcd84bec156fe211bbc4fc8c78790973ce4e8b990a11d778d40b1a26
+  - name: sed
+    sources:
+      - type: archive
+        url: https://mirrors.kernel.org/gnu/sed/sed-4.8.tar.gz
+        sha256: 53cf3e14c71f3a149f29d13a0da64120b3c1d3334fba39c4af3e520be053982a        
+  - name: detox
+    sources:
+      - type: archive
+        url: https://github.com/dharple/detox/releases/download/v1.4.5/detox-1.4.5.tar.gz
+        sha256: b8a0ed830f3054fbe09771d2b8ed8ae3667529678c1a73eb8e512693e8c74d3c
+  - xmlstarlet.yml
+  - name: pip-install
+    buildsystem: simple
+    build-options:
+        build-args:
+          - --share=network
+    build-commands:
+      - install -D requirements.txt /app/tmp/requirements.txt
+      - pip3 install -U pip --no-build-isolation
+      - pip3 install -U --exists-action=i --prefix=/app -r /app/tmp/requirements.txt --no-build-isolation
+      - rm /app/tmp/requirements.txt
+    sources:
+      - type: file
+        path: src/cfg/requirements.txt
+  - name: lynx
+    sources:
+      - type: archive
+        url: https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.bz2
+        sha256: 387f193d7792f9cfada14c60b0e5c0bff18f227d9257a39483e14fa1aaf79595
+  - name: html-xml-utils
+    sources:
+      - type: archive
+        url: https://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-8.4.tar.gz
+        sha256: 41bb9b14e1f4cd6102e3f8dfb79e7146a24c09693869873165c421769a57d137
+  - name: pandoc
+    buildsystem: simple
+    build-options:
+        build-args:
+          - --share=network
+    build-commands:
+      - install -D ./pandoc/bin/pandoc /app/bin/pandoc
+      - rm -rf ./pandoc
+    sources:
+      - type: archive
+        url: https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-linux-amd64.tar.gz
+        sha256: 103df36dc21081b7205d763ef7705e340eb0ea7e18694239b328a549892cc007
+        dest: ./pandoc        
+
+
+  - name: bin-install
+    buildsystem: simple
+    build-commands:
+      - install -D agaetr_parse.py /app/bin/agaetr_parse.py
+      - install -D tweet.py /app/bin/tweet.py
+      - install -D agaetr_send.sh /app/bin/agaetr_send.sh
+      - install -D muna.sh /app/bin/muna.sh
+      - install -D rss_preprocessor.sh /app/bin/rss_preprocessor.sh
+      - install -D flatpak_entrypoint.sh /app/bin/flatpak_entrypoint.sh      
+    sources:
+      - type: dir
+        path: src/app
+
+  - name: short-install
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin/short_avail
+      - cp -r src/app/short_avail/ /app/bin
+    sources:
+      - type: dir
+        path: src/app/short_avail/
+        dest: src/app/short_avail/        
+  
+  - name: out-install
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin/out_avail
+      - cp -r src/app/out_avail/ /app/bin
+    sources:
+      - type: dir
+        path: src/app/out_avail/
+        dest: src/app/out_avail/
+
+  - name: template-install
+    buildsystem: simple
+    build-commands:
+      - install -D agaetr.ini /cfg/agaetr.ini
+      - install -D cw.ini /cfg/cw.ini
+      - install -D feeds.ini /cfg/feeds.ini
+      - install -D cwlist.txt /cfg/cwlist.ini
+    sources:
+      - type: dir
+        path: src/cfg

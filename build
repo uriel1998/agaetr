@@ -1,0 +1,3 @@
+#!/bin/bash
+
+flatpak-builder build-dir com.stevesaus.agaetr.yml --force-clean
