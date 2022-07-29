@@ -93,20 +93,35 @@ configurators(){
             echo "${shaarli_secret}" >> "${shaarli_config}"
         ;;
         "email");;
-        "twitter");;
-        "save")
-            echo "Please put the path to save files under."
-            read save_path
+            echo "Please put the name or address of your SMTP server (NOT port)"
+            read smtp_server
+            echo "Please input the port of your SMTP server"
+            read smtp_port
+            echo "Please input the SMTP username"
+            read smtp_username
+            echo "Please input the SMTP user password"
+            read smtp_password       
             inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-            TempVar=$(cat "${inifile}" | grep -v save_path)
+            TempVar=$(cat "${inifile}" | grep -v smtp_)
             echo "${TempVar}" > "${inifile}"
-            echo "save_path = ${save_path}" >> "${inifile}"
+            echo "smtp_server = ${smtp_server}" >> "${inifile}"
+            echo "smtp_port = ${smtp_port}" >> "${inifile}"
+            echo "smtp_username = ${smtp_username}" >> "${inifile}"
+            echo "smtp_password = ${smtp_password}" >> "${inifile}"
+        "twitter");;
+        
+        `APP_KEY = ""`  
+`APP_SECRET = ""`  
+`OAUTH_TOKEN = ""`  
+`OAUTH_TOKEN_SECRET = ""`  
+these go into tweet.py
+        
+        "save")
+            echo "All saved files  stored under ${XDG_DATA_HOME}/agaetr"
+            echo "If you would like to have a symlink, type"
+            echo "ln -s ${XDG_DATA_HOME}/agaetr /desired/path"
         ;;
-        "Ubuntu"|"LinuxMint") echo "I also use $os."      ;;
-
-        "Windows8" | "Windows10" | "WindowsXP") echo "Why don't you try Linux?" ;;
-        # Matching with invalid data
-        *) echo "Invalid entry." break ;;
+        *) echo "Exiting configuration." break ;;
     esac
     done
 }
