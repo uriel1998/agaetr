@@ -110,11 +110,10 @@ configurators(){
             echo "smtp_password = ${smtp_password}" >> "${inifile}"
         "twitter");;
         
-        `APP_KEY = ""`  
-`APP_SECRET = ""`  
-`OAUTH_TOKEN = ""`  
-`OAUTH_TOKEN_SECRET = ""`  
-these go into tweet.py
+        eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${bob}\"/' FILENAME OF TWEET.PY")
+        eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${bob}\"/'")
+        eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${bob}\"/'")
+        eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${bob}\"/'")
         
         "save")
             echo "All saved files  stored under ${XDG_DATA_HOME}/agaetr"
