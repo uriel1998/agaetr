@@ -12,6 +12,8 @@
 #
 ##############################################################################
 
+#TODO: multiple outputs?
+
 RSSSavePath="$XDG_DATA_HOME/agaetr/output.xml"
 
 

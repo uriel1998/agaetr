@@ -5,8 +5,15 @@
 #  sending script
 #  (c) Steven Saus 2020
 #  Licensed under the MIT license
-#
+#  
 ##############################################################################
+
+# TODO - REWRITE TO USE CURL
+#https://blog.edmdesigner.com/send-email-from-linux-command-line/
+
+#curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+  --mail-from 'developer@gmail.com' --mail-rcpt 'edm-user@niceperson.com' \
+  --upload-file mail.txt --user 'developer@gmail.com:your-accout-password'
 
 function email_send {
 
