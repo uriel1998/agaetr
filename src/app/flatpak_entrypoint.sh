@@ -36,9 +36,6 @@ display_help(){
     echo "# Input Source ####################################################"
     echo "# --stdin: Input is coming from stdin, not a file"
     echo "# --file [FILENAME]: path to file. Needs to be in user's $HOME"
-    echo "# --dir [DIRECTORY]: A maildir to process, requires [KEYWORD]"
-    echo "  "
-    echo "# stdin file and dir MUST BE THE LAST AND ARE EXCLUSIVE "
     echo "###################################################################"
 }
 
@@ -174,6 +171,14 @@ while [ $# -gt 0 ]; do
                     /app/bin/python3 /app/bin/orindi_parse.py
                     clean_temp_keyword
                     exit
+                    ;;
+                    
+        --pull)
+                    # no special things, just run the program with sane defaults of 
+                    # running the preprocessor if it exists, then pulling in feeds
+                    ;;
+        --push)     # no special things, just run the program with sane defaults of 
+                    # pushing from all queues to all configured outsources
                     ;;
         --file)     shift
                     if [ -f "${1}" ];then

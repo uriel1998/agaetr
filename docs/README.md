@@ -232,14 +232,15 @@ Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a
 header line `[Feed#]` with a different number for each feed. 
 
 If a feed is being preprocessed (see below) or you have the RSS as an 
-XML file, you can put the filename directly into `agaetr.ini`.  The options 
-are explained in [Feed Options](#8-feed-options) below.
+XML file, you can put the filename directly into `agaetr.ini`, **RELATIVE TO `$XDG_CONFIG_HOME/agaetr`**.  
+
+The options are explained in [Feed Options](#8-feed-options) below.
 
 For example:
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /feeds/ideatrash_parsed.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -315,7 +316,7 @@ there are no content warnings and images are presented normally.
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /feeds/ideatrash_parsed.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 

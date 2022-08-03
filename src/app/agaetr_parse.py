@@ -287,6 +287,9 @@ ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
 for x in sections:
     if "feed" in (str.lower(x)):
         feed=config[x]['url']
+        if feed[0] == '/':
+            feed = os.path.join(configdir,feed)
+
         feed_sensitive=config[x]['sensitive']
         if 'y' in config['DEFAULT']['ContentWarning']:
             feed_CW=config['DEFAULT']['ContentWarning']
