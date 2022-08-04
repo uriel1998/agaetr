@@ -26,10 +26,10 @@ display_help(){
     echo "# --configure: enter configurator"
     echo "# --locations: print config and data locations"
     echo "# --readme: display the README on the console"
-
-#    echo "create shaarli config create toot config create wallabag config create email send config create savelocation create rssout location"
     echo "# Usage ###########################################################"    
     echo "# Running it"
+    # pull
+    # push
     echo "# --muna [URL]: unredirect a URL "
     echo "# --keyword: Keyword that applies to all input that follows"
     echo "# --version: report version  "
@@ -165,6 +165,7 @@ while [ $# -gt 0 ]; do
                     ;;
         --version)  echo "${VERSION}"; check_for_flatpak_config; exit ;;
         --stdin)    # I'm not sure how to ensure this passes the stdin stream?
+                    # this would be like for sending a single url 
                     check_for_flatpak_config
                     # This *should* work:
                     # https://unix.stackexchange.com/questions/540094/i-want-to-pass-stdin-to-a-bash-script-to-an-python-script-called-in-that-bash-sc
@@ -180,17 +181,7 @@ while [ $# -gt 0 ]; do
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
                     ;;
-        --file)     shift
-                    if [ -f "${1}" ];then
-                        check_for_flatpak_config
-                        FILENAME="${1}"
-                        /app/bin/python3 /app/bin/orindi_parse.py "${FILENAME}"
-                        clean_temp_keyword
-                        exit
-                    else
-                        echo "Not a filename!"
-                        exit 
-                    fi
+        --file)     # to pull in a specific xml file (from outside flatpak??)
                     ;; 
         *)          shift;;
     esac
