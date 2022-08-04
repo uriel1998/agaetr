@@ -177,6 +177,8 @@ while [ $# -gt 0 ]; do
         --pull)
                     # no special things, just run the program with sane defaults of 
                     # running the preprocessor if it exists, then pulling in feeds
+                    # so this means the preprocessor needs to go into XDG_HOME_CONFIG! 
+                    # OR rewrite it entirely so it pulls from the feed section of the INI file!
                     ;;
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
