@@ -15,8 +15,10 @@ if [ "${INI_URL}" == "" ];then
     exit 90
 else
 
-
+    # TODO - THIS RIGHT HERE
     # Search ini file in XDG_CONFIG_HOME
+    # bob=$(grep --after-context=2 -e "^src=")
+    # 
     # find src/cmd/url trio
     # get commands for those feeds
     # use url for output directories
