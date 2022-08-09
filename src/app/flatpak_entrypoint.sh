@@ -63,7 +63,7 @@ check_for_config(){
 
 configurators(){
     echo "Which would you care to configure?"
-    select module in cookies shaarli wallabag mastodon email twitter wayback save feeds ini quit
+    select module in cookies shaarli wallabag mastodon email twitter wayback save feeds quit
     do
 
     case ${module} in

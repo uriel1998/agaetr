@@ -37,6 +37,7 @@ if not os.path.isdir(cachedir):
 if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
 ini = os.path.join(configdir,'agaetr.ini')
+feeds = os.path.join(configdir,'feeds.ini')
 db = os.path.join(datadir,'posts.db')
 posteddb = os.path.join(datadir,'posted.db')         
 tmp = os.path.join(cachedir,'posts.db')
@@ -278,12 +279,21 @@ config = configparser.ConfigParser()
 config.read(ini)
 sections=config.sections()
 
+ContentWarningList = config['DEFAULT']['filters']
+ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
+
+########################################################################
+# Read feeds ini section
+########################################################################
+
+feedconfig = configparser.ConfigParser()
+feedconfig.read(feeds)
+sections=feedconfig.sections()
+
 ########################################################################
 # Begin loop over feedlist
 ########################################################################
 
-ContentWarningList = config['DEFAULT']['filters']
-ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
 for x in sections:
     if "feed" in (str.lower(x)):
         feed=config[x]['url']
