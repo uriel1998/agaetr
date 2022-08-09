@@ -30,24 +30,27 @@ IFS=$OIFS
     
     len=${#myarr[@]}
     for (( i=0; i<$len; i++ )); do 
-    mysrc=""
-    mycmd=""
-    myurl=""
-    j=i++
-    k=j++
-    echo "${distro[$i]}" 
-    
-    if [[ "${myarr[$i]" == "src"* ]];then
-        mysrc=$(echo "$myarr[$i]" | awk -F ' = ' '{print $2}')
-        if [[ "${myarr[$j]" == "cmd"* ]];then
-            mycmd=$(echo "$myarr[$j]" | awk -F ' = ' '{print $2}')
-            if [[ "${myarr[$k]" == "url"* ]];then
-                myurl=$(echo "$myarr[$k]" | awk -F ' = ' '{print $2}')
-                #time to create the command string
-                # wget -O- "${src}" | "${cmd}" > "${url}"
+        mysrc=""
+        mycmd=""
+        myurl=""
+        thecommand=""
+        j=i++
+        k=j++
+        echo "${distro[$i]}" 
+        
+        if [[ "${myarr[$i]" == "src"* ]];then
+            mysrc=$(echo "$myarr[$i]" | awk -F ' = ' '{print $2}')
+            if [[ "${myarr[$j]" == "cmd"* ]];then
+                mycmd=$(echo "$myarr[$j]" | awk -F ' = ' '{print $2}')
+                if [[ "${myarr[$k]" == "url"* ]];then
+                    myurl=$(echo "$myarr[$k]" | awk -F ' = ' '{print $2}')
+                    #time to create the command string
+                    thecommand=$(printf "wget -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}" "${myurl}")
+                    # wget -O- "${src}" | "${cmd}" > "${url}"
+                    eval "${thecommand}"
+                fi
             fi
         fi
-    fi
     done
     # To clean up and standardize some odd RSS elements from (in my case) from 
     # Wordpress and from TT-RSS.  Also included as examples.
