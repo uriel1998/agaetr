@@ -29,15 +29,13 @@ IFS=$OIFS
     # then do this - printf if I have to in order for escapes to work
     
     len=${#myarr[@]}
-    for (( i=0; i<$len; i++ )); do 
+    for (( i=0; i<$len; i=$(( i+2 )) )); do 
         mysrc=""
         mycmd=""
         myurl=""
         thecommand=""
-        j=i++
-        k=j++
-        echo "${distro[$i]}" 
-        
+        j=$(( i+1 ))
+        k=$(( j+1 ))
         if [[ "${myarr[$i]" == "src"* ]];then
             mysrc=$(echo "$myarr[$i]" | awk -F ' = ' '{print $2}')
             if [[ "${myarr[$j]" == "cmd"* ]];then
@@ -52,6 +50,7 @@ IFS=$OIFS
             fi
         fi
     done
+    
     # To clean up and standardize some odd RSS elements from (in my case) from 
     # Wordpress and from TT-RSS.  Also included as examples.
 
