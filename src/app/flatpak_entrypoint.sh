@@ -14,6 +14,7 @@ VERSION="0.1.0"
 echo "$XDG_CONFIG_HOME"
 echo "$XDG_DATA_HOME"
 echo "$XDG_CACHE_HOME"
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 ##############################################################################
 # Show the Help
@@ -52,7 +53,7 @@ check_for_config(){
         cp /cfg/agaetr.ini "${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
-        cp /cfg/feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+        cp /cfg/empty_feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
         cp /cfg/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
@@ -62,10 +63,12 @@ check_for_config(){
 
 configurators(){
     echo "Which would you care to configure?"
-    select module in cookies shaarli wallabag mastodon email twitter wayback save quit
+    select module in cookies shaarli wallabag mastodon email twitter wayback save feeds ini quit
     do
 
     case ${module} in
+        "feeds") ;;
+        "ini") ;;
         "wayback") 
             echo "You must register for an API key at https://archive.org/account/s3.php"
             echo "Please input the access key"
@@ -174,11 +177,8 @@ while [ $# -gt 0 ]; do
                     exit
                     ;;
                     
-        --pull)
-                    # no special things, just run the program with sane defaults of 
-                    # running the preprocessor if it exists, then pulling in feeds
-                    # so this means the preprocessor needs to go into XDG_HOME_CONFIG! 
-                    # OR rewrite it entirely so it pulls from the feed section of the INI file!
+        --pull)     # run rss_preprocessor
+                    # run agaetr_parse.py
                     ;;
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
