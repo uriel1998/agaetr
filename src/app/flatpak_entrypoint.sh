@@ -68,53 +68,67 @@ configurators(){
 
     case ${module} in
         "feeds") 
+            writefeed=""
             feednum=$(date +%Y%m%d%H%m%S)
+            writefeed=$(printf "%s\n[Feed%s]" "${writefeed}" "${feednum}")
             echo "Does this feed require preprocessing [y/N]?"
             read ans
             if [ "$ans" == "y" ];then
                 echo "Please enter the original source of the feed with leading https://."
                 read src
+                writefeed=$(printf "%s\nsrc = %s" "${writefeed}" "${src}")
                 echo "Please enter the command to use for preprocessing."
                 # IFS change so we can get quotes, I hope
                 OIFS=$IFS
                 IFS=$'\n'
                 read cmd
+                writefeed=$(printf "%s\ncmd = %s" "${writefeed}" "${cmd}")
                 IFS=$OIFS
                 echo "Please enter the *relative* filepath to save the feed at, with leading slash."
                 read url
+                writefeed=$(printf "%s\nurl = %s" "${writefeed}" "${url}")
             else
                 echo "Is this feed from a file? [y/N]?"
                 read ans
                 if [ "$ans" == "y" ];then
                     echo "Please enter the *relative* filepath to save the feed at, with leading slash."
                     read url
-                    # mkdir -p for the filepath and touch the file here
+                    writefeed=$(printf "%s\nurl = %s" "${writefeed}" "${url}")
+                    # mkdir -p for the filepath and touch the file here, if needed?
                 else
                     echo "Please enter the source of the feed, with leading https://"
                     read url
                     # check for starting with http? 
+                    writefeed=$(printf "%s\nurl = %s" "${writefeed}" "${url}")
                 fi
             fi
             echo "Should the feed images be marked sensitive by default? [y/N]?"
             read ans
             if [ "$ans" == "y" ];then
-                sensitive = yes
+                writefeed=$(printf "%s\nsensitive = yes" "${writefeed}")
             else
-                sensitive = no
-
+                writefeed=$(printf "%s\nsensitive = no" "${writefeed}")
+            fi
             echo "What should the content warning on every post from this feed be?"
             echo "Leave blank for no automatic warning on EVERY post from this feed."
             read ans
             if [ "$ans" != "" ];then
-                ContentWarning = yes
-                GlobalCW = "${ans}"
+                writefeed=$(printf "%s\nContentWarning = yes" "${writefeed}")
+                writefeed=$(printf "%s\nGlobalCW = %s" "${writefeed}" "${ans}")
             else
-                #if empty
-                ContentWarning = no
-                    
+                writefeed=$(printf "%s\nContentWarning = no" "${writefeed}")
+                writefeed=$(printf "%s\nGlobalCW = " "${writefeed}")
             fi
-            
-            "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+            echo "This is the proposed configuration:"
+            echo -e "${writefeed}"
+            echo "Is this acceptable? [y/N]"
+            read ans
+            if [ "${ans}" == "y" ];then
+                # write it all to the feed ini file
+                printf "%s\n" >> "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+            else
+                echo "Aborting."
+            fi
             ;;
         "wayback") 
             echo "You must register for an API key at https://archive.org/account/s3.php"
