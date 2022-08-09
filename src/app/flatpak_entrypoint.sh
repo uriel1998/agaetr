@@ -72,22 +72,32 @@ configurators(){
             echo "Does this feed require preprocessing [y/N]?"
             read ans
             if [ "$ans" == "y" ];then
-            
-                src = https://ideatrash.net/feed
-                cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
-                url = /relative/path/to/xml/filename.xml
+                echo "Please enter the original source of the feed with leading https://."
+                read src
+                echo "Please enter the command to use for preprocessing."
+                # IFS change so we can get quotes, I hope
+                OIFS=$IFS
+                IFS=$'\n'
+                read cmd
+                IFS=$OIFS
+                echo "Please enter the *relative* filepath to save the feed at, with leading slash."
+                read url
             else
                 echo "Is this feed from a file? [y/N]?"
                 read ans
                 if [ "$ans" == "y" ];then
-                    url = /relative/path/to/xml/filename.xml
+                    echo "Please enter the *relative* filepath to save the feed at, with leading slash."
+                    read url
+                    # mkdir -p for the filepath and touch the file here
                 else
-                    url = http check
+                    echo "Please enter the source of the feed, with leading https://"
+                    read url
+                    # check for starting with http? 
                 fi
             fi
             echo "Should the feed images be marked sensitive by default? [y/N]?"
             read ans
-            if yes
+            if [ "$ans" == "y" ];then
                 sensitive = yes
             else
                 sensitive = no
@@ -95,6 +105,7 @@ configurators(){
             echo "What should the content warning on every post from this feed be?"
             echo "Leave blank for no automatic warning on EVERY post from this feed."
             read ans
+            if [ "$ans" != "" ];then
                 ContentWarning = yes
                 GlobalCW = "${ans}"
             else
