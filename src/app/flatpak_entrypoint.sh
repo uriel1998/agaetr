@@ -67,8 +67,44 @@ configurators(){
     do
 
     case ${module} in
-        "feeds") ;;
-        "ini") ;;
+        "feeds") 
+            feednum=$(date +%Y%m%d%H%m%S)
+            echo "Does this feed require preprocessing [y/N]?"
+            read ans
+            if [ "$ans" == "y" ];then
+            
+                src = https://ideatrash.net/feed
+                cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+                url = /relative/path/to/xml/filename.xml
+            else
+                echo "Is this feed from a file? [y/N]?"
+                read ans
+                if [ "$ans" == "y" ];then
+                    url = /relative/path/to/xml/filename.xml
+                else
+                    url = http check
+                fi
+            fi
+            echo "Should the feed images be marked sensitive by default? [y/N]?"
+            read ans
+            if yes
+                sensitive = yes
+            else
+                sensitive = no
+
+            echo "What should the content warning on every post from this feed be?"
+            echo "Leave blank for no automatic warning on EVERY post from this feed."
+            read ans
+                ContentWarning = yes
+                GlobalCW = "${ans}"
+            else
+                #if empty
+                ContentWarning = no
+                    
+            fi
+            
+            "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+            ;;
         "wayback") 
             echo "You must register for an API key at https://archive.org/account/s3.php"
             echo "Please input the access key"
