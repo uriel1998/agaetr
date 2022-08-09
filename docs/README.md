@@ -66,12 +66,23 @@ This project is licensed under the Apache License. For the full license, see `LI
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
 
+Or, y'know, they're in the flatpak.
+
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
 * [wget](https://www.gnu.org/software/wget/)  
-* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)  
+* [gawk](http://www.gnu.org/software/gawk/manual/gawk.html)  
 * [grep](http://en.wikipedia.org/wiki/Grep)  
 * [curl](http://en.wikipedia.org/wiki/CURL)  
+* [sed]
+* [detox]
+* [xmlstarlet]
+* [imagemagick]
+lynx
+pandoc
+html-xml-utils
+
+
 
 You will need some variety of posting mechanism and optionally an URL 
 shortening mechanism. See [Services Setup](#5-services-setup) for details.
@@ -254,6 +265,12 @@ GlobalCW = ideatrash
 ```
 
 ## 7. Feed Preprocessing
+
+This is being incorporated into the entire flow of the system. However, if you're 
+using flatpak, please keep in mind that the binaries called by your "cmd" must be 
+accessible either because they're inside the flatpak or because you've given 
+the flatpak permissions (e.g. through flatseal or the like)
+
 
 While RSS is *supposed* to be a standard... it isn't. Too often there are 
 unusual or irregular elements in an RSS feed.
