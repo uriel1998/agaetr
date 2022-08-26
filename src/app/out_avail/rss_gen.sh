@@ -14,11 +14,15 @@
 
 #TODO: multiple outputs?
 
+if [ ! -d "${XDG_DATA_HOME}" ];then
+    export XDG_DATA_HOME="${HOME}/.local/share"
+fi
+
 RSSSavePath="$XDG_DATA_HOME/agaetr/output.xml"
 
 
 
-function rss_gen {
+function rss_gen_send {
 
 if [ ! -f "${RSSSavePath}" ];then
     printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
@@ -42,6 +46,8 @@ if [ ! -f "${RSSSavePath}" ];then
          -s "//item[1]" -t elem -n description -v "$DESC" \
          -s "//item[1]" -t elem -n guid -v "$GUID" \
          -d "//item[position()>10]"  "${RSSSavePath}" ; 
+
+fi
 }
 
 

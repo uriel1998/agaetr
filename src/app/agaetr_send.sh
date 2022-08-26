@@ -39,7 +39,7 @@ IFS=$OIFS
 
 # passing published time (from dd MMM)
 posttime=$(echo "${myarr[0]}")
-posttime2=${posttime::-6}
+posttime2="${posttime::-6}"
 pubtime=$(date -d"$posttime2" +%d\ %b)
 title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 link=$(echo "${myarr[2]}")
@@ -57,16 +57,16 @@ if [ "$imgalt" = "None" ];then
 fi
 
 #Checking the image url before sending it to the client
-imagecheck=$(wget -q --spider $imgurl; echo $?)
+imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
 
-if [ $imagecheck -ne 0 ];then
+if [ "${imagecheck}" -ne 0 ];then
     echo "Image no longer available; omitting."
     imgurl=""
     imgalt=""
 fi
 
 
-#Deshortening, deobfuscating, and unredirecting the URL
+# Deshortening, deobfuscating, and unredirecting the URL
 
 url="$link"
 source "$SCRIPT_DIR/unredirector.sh"
@@ -83,6 +83,7 @@ if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
         echo "No URL shortening performed."
     else
         if [ "$shortener" != ".keep" ];then 
+            echo "FUCKNOW"
             short_funct=$(echo "${shortener%.*}_shortener")
             source "$SCRIPT_DIR/short_enabled/$shortener"
             url="$link"
@@ -105,8 +106,8 @@ for p in $posters;do
     if [ "$p" != ".keep" ];then 
         echo "Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
-        source "$SCRIPT_DIR/out_enabled/$p"
-        echo "$SCRIPT_DIR/out_enabled/$p"
+        source "${SCRIPT_DIR}/out_enabled/${p}"
+        echo "${SCRIPT_DIR}/out_enabled/${p}"
         eval ${send_funct}
         sleep 5
     fi
