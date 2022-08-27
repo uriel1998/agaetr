@@ -33,6 +33,7 @@ if [ ! -f "${RSSSavePath}" ];then
     printf '  </channel>\n' >> "${RSSSavePath}"
     printf '</rss>\n' >> "${RSSSavePath}"    
 
+fi
     TITLE="${title}"
     LINK="${link}"
     DATE="`date`"
@@ -47,7 +48,7 @@ if [ ! -f "${RSSSavePath}" ];then
          -s "//item[1]" -t elem -n guid -v "$GUID" \
          -d "//item[position()>10]"  "${RSSSavePath}" ; 
 
-fi
+
 }
 
 
