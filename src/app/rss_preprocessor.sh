@@ -22,33 +22,32 @@ else
     IFS=$'\n'
     myarr=($(grep --after-context=2 -e "^src =" "${INI_URL}"))
     IFS=$OIFS
-    # myarr=$(grep --after-context=2 -e "^src=")
-    # 
     # find src/cmd/url trio
     # get commands for those feeds
     # use url for output directories
     # then do this - printf if I have to in order for escapes to work
-    
     len=${#myarr[@]}
-    for (( i=0; i<$len; i=$(( i+2 )) )); do 
-        mysrc=""
-        mycmd=""
-        myurl=""
-        thecommand=""
-        j=$(( i+1 ))
-        k=$(( j+1 ))
-        if [[ "${myarr[$i]}" == "src"* ]];then
-            mysrc=$(echo "${myarr[$i]}" | awk -F ' = ' '{print $2}')
-            if [[ "${myarr[$j]}" == "cmd"* ]];then
-                mycmd=$(echo "${myarr[$j]}" | awk -F ' = ' '{print $2}')
-                if [[ "${myarr[$k]}" == "url"* ]];then
-                    myurl=$(echo "${myarr[$k]}" | awk -F ' = ' '{print $2}')
-                    
-                    #time to create the command string
-                    thecommand=$(printf "wget -O- \"%s\" | %s > \"%s/agaetr%s\"" "${mysrc}" "${mycmd}" "${XDG_DATA_HOME}" "${myurl}")
-                    # wget -O- "${src}" | "${cmd}" > "${url}"
-                    echo "${thecommand}"
-                    #eval "${thecommand}"
+    for (( i=0; i<$len; i=$(( i+2 )) )); do         
+        if [[ "${myarr[$i]}" != "--" ]];then
+            mysrc=""
+            mycmd=""
+            myurl=""
+            thecommand=""
+            j=$(( i+1 ))
+            k=$(( j+1 ))
+            if [[ "${myarr[$i]}" == "src"* ]];then
+                mysrc=$(echo "${myarr[$i]}" | awk -F ' = ' '{print $2}')
+                if [[ "${myarr[$j]}" == "cmd"* ]];then
+                    mycmd=$(echo "${myarr[$j]}" | awk -F ' = ' '{print $2}')
+                    if [[ "${myarr[$k]}" == "url"* ]];then
+                        myurl=$(echo "${myarr[$k]}" | awk -F ' = ' '{print $2}')
+                        
+                        #time to create the command string
+                        thecommand=$(printf "wget -O- \"%s\" | %s > \"%s/agaetr%s\"" "${mysrc}" "${mycmd}" "${XDG_DATA_HOME}" "${myurl}")
+                        # wget -O- "${src}" | "${cmd}" > "${url}"
+                        echo "${thecommand}"
+                        #eval "${thecommand}"
+                    fi
                 fi
             fi
         fi
