@@ -5,6 +5,9 @@ function shaarli_send {
     binary=$(grep 'shaarli =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     #outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
+
+    # add check to loop over multiple configs in ini
+
     # No length requirements here!
     tags=$(echo "$hashtags"  | sed 's|#||g' )
     # NEED TO ADD CONFIG FILE EXPLICITLY HERE

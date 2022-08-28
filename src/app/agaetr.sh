@@ -184,16 +184,19 @@ configurators(){
             config_number=$(grep -c 'shaarli_config' "${inifile}")
             # have a config file parameter here set - so binary is one config,
             # and each other config is another.
+            echo "Please give this configuration a name."
+            read shaarli_name
             echo "Please put the URL of your shaarli instance with leading https://"
             read shaarli_url
             echo "Please input the API secret (under Tools, Configure)"
             read shaarli_secret
-            shaarli_config="${XDG_CONFIG_HOME}/shaarli/agaetr_shaarli${config_number}.cfg"
+            shaarli_config="${XDG_CONFIG_HOME}/shaarli/${shaarli_name}.cfg"
             echo "[shaarli]" > "${shaarli_config}"
             echo "${shaarli_url}" >> "${shaarli_config}"
             echo "${shaarli_secret}" >> "${shaarli_config}"
-            echo "shaarli_config${config_number} = ${shaarli_config}" >> "${inifile}"
-# maybe use the URL as well here? for naming it?            
+            echo " " >> "${inifile}"
+            echo "[shaarli ${shaarli_name}]" >> "${inifile}"
+            echo "shaarli_config = ${shaarli_config}" >> "${inifile}"
             ;;
         "email")
             echo "Please put the name or address of your SMTP server (NOT port)"
