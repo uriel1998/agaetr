@@ -1,4 +1,4 @@
-#   !/bin/bash
+#!/bin/bash
 
 ##############################################################################
 #
@@ -182,20 +182,18 @@ configurators(){
                 fi
             fi
             config_number=$(grep -c 'shaarli_config' "${inifile}")
-            # have a config file parameter here set - so binary is one config,
-            # and each other config is another.
             echo "Please give this configuration a name."
             read shaarli_name
             echo "Please put the URL of your shaarli instance with leading https://"
             read shaarli_url
             echo "Please input the API secret (under Tools, Configure)"
             read shaarli_secret
-            shaarli_config="${XDG_CONFIG_HOME}/shaarli/${shaarli_name}.cfg"
+            shaarli_config="${XDG_CONFIG_HOME}/shaarli/agaetr_shaarli${config_number}.cfg"
             echo "[shaarli]" > "${shaarli_config}"
             echo "${shaarli_url}" >> "${shaarli_config}"
             echo "${shaarli_secret}" >> "${shaarli_config}"
             echo " " >> "${inifile}"
-            echo "[shaarli ${shaarli_name}]" >> "${inifile}"
+            echo "[shaarli_config ${shaarli_name}]" >> "${inifile}"
             echo "shaarli_config = ${shaarli_config}" >> "${inifile}"
             ;;
         "email")

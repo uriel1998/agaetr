@@ -11,9 +11,11 @@
 
 function shaarli_send {
     
-    binary=$(grep 'shaarli =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+    
+    binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     #outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-
+    
 
     # add check to loop over multiple configs in ini
 
@@ -21,14 +23,19 @@ function shaarli_send {
     tags=$(echo "$hashtags"  | sed 's|#||g' )
     
     # NEED TO ADD CONFIG FILE EXPLICITLY HERE
-    
-    if [ -z "${description}" ];
-        outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
-    else
-        outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
-    fi
 
-    eval ${outstring} > /dev/null
+    configs=$(grep --after-context=1 "[shaarli_config" "${inifile}" | grep -v -e "[shaarli_config" -e "--")
+    # this isn't in quotation marks so we get the newline, fyi.
+    for cfile in ${configs}
+    do
+        if [ -z "${description}" ];
+            outstring=$(echo "$binary --config ${cfile} post-link --title \"$title\" --url $link ")
+        else
+            outstring=$(echo "$binary --config ${cfile} post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
+        fi
+        eval ${outstring} > /dev/null
+
+    done
 }
 
 
