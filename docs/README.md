@@ -187,6 +187,16 @@ Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarl
 Make sure you set up the configuration file for the client properly. Place the 
 location of the binary into `agaetr.ini`.
 
+If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used. Multiple shaarli configs can be
+specified in `agaetr.ini` using this format:
+
+```
+[shaarli_config NAME]
+shaarli_config = /path/to/config/file
+```
+
+At present, the client will loop through ALL configured shaarli instances.
+
 #### Wallabag (output)
 
 Install and set up [Wallabag-cli](https://github.com/Nepochal/wallabag-cli). 
@@ -409,6 +419,7 @@ There are other files in this repository:
 
 ### Someday/Maybe:
 
+* shaarli selector switch for multiple configs?
 * Bibliogram in
 * change queue types to per file
 * incorporate some from newsbeuter-dangerzone

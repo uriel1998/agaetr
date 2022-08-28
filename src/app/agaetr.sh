@@ -167,8 +167,35 @@ configurators(){
                 echo "Cookie file already exists at ${XDG_CONFIG_HOME}/cookies.txt"
             fi
             ;;
-        "wallabag") /app/wallabag config;;
-        "mastodon") /app/toot login_cli;;
+        "wallabag") 
+            binary=$(grep 'wallabag =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+            if [ ! -f "${binary}" ];then
+                binary=$(which shaarli)
+                if [ -f "${binary}" ];then
+                    echo "Replacing default wallabag binary with ${binary} found on $PATH"
+                    eval $(printf "sed -i \'/^wallabag =.*/s/.*/wallabag = \"${binary}\"/' ${inifile}")
+                else
+                    echo "No wallabag binary found!"
+                    exit 99
+                fi
+            fi
+            eval $("${binary}" config)
+            ;;
+
+        "mastodon") 
+            binary=$(grep 'toot =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+            if [ ! -f "${binary}" ];then
+                binary=$(which shaarli)
+                if [ -f "${binary}" ];then
+                    echo "Replacing default toot binary with ${binary} found on $PATH"
+                    eval $(printf "sed -i \'/^toot =.*/s/.*/toot = \"${binary}\"/' ${inifile}")
+                else
+                    echo "No toot binary found!"
+                    exit 99
+                fi
+            fi
+            eval $("${binary}" login_cli)
+            ;;
         "shaarli") 
             binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
             if [ ! -f "${binary}" ];then
@@ -214,6 +241,17 @@ configurators(){
             echo "smtp_password = ${smtp_password}" >> "${inifile}"
             ;;
         "twitter")
+            binary=$(grep 'twython =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+            if [ ! -f "${binary}" ];then
+                binary=$(which tweet)
+                if [ -f "${binary}" ];then
+                    echo "Replacing default tweet binary with ${binary} found on $PATH"
+                    eval $(printf "sed -i \'/^twython =.*/s/.*/twython = \"${binary}\"/' ${inifile}")
+                else
+                    echo "No shaarli twython found!"
+                    exit 99
+                fi
+            fi
             echo "You must register a **USER** app at https://apps.twitter.com"
             echo "and get the **user** API codes for these next prompts."
             echo "Please input the APP KEY"
@@ -224,10 +262,10 @@ configurators(){
             read oauthtoken
             echo "Please input the OAUTH TOKEN SECRET"
             read oauthtokensecret
-            eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${appkey}\"/' /app/tweet.py")
-            eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${appsecret}\"/' /app/tweet.py")
-            eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${oauthtoken}\"/' /app/tweet.py")
-            eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${oauthtokensecret}\"/' /app/tweet.py")
+            eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${appkey}\"/' ${binary}")
+            eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${appsecret}\"/' ${binary}")
+            eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${oauthtoken}\"/' ${binary}")
+            eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${oauthtokensecret}\"/' ${binary}")
             ;;
         "save")
             echo "All saved files  stored under ${XDG_DATA_HOME}/agaetr"
