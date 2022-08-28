@@ -3,12 +3,10 @@
 ##############################################################################
 #
 #  sending script
-#  (c) Steven Saus 2020
+#  (c) Steven Saus 2022
 #  Licensed under the MIT license
 #
 ##############################################################################
-
-# TODO: ensure dependencies are here?
 
 function save_html_send {
 

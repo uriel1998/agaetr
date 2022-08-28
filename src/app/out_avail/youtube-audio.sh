@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#
+#  sending script
+#  (c) Steven Saus 2022
+#  Licensed under the MIT license
+#
+##############################################################################
+
 function youtube-audio_send {
 
     youtube-dl "$link" -x --netrc --ignore-errors --write-description --cookies "${XDG_CONFIG_HOME}/cookies.txt" --no-check-certificate --embed-thumbnail --prefer-ffmpeg --no-playlist --mark-watched --continue --audio-format mp3 -o "${XDG_DATA_HOME}/agaetr/mp3/%(title)s:%(uploader)s:%(upload_date)s.%(ext)s" --rate-limit 1M --restrict-filenames  

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 ##############################################################################
 #
 #  sending script
@@ -14,21 +13,18 @@ function shaarli_send {
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
     
     binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    #outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-    
-
-    # add check to loop over multiple configs in ini
-
     # No length requirements here!
     tags=$(echo "$hashtags"  | sed 's|#||g' )
-    
-    # NEED TO ADD CONFIG FILE EXPLICITLY HERE
 
+    #outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+
+    # Check to loop over multiple configs in ini
     configs=$(grep --after-context=1 "[shaarli_config" "${inifile}" | grep -v -e "[shaarli_config" -e "--")
     # this isn't in quotation marks so we get the newline, fyi.
     for cfile in ${configs}
     do
         if [ ! -f ${cfile} ];then
+            # The above is both for backwards compatibility and for continuing even after errors
             if [ -z "${description}" ];
                 outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
             else
