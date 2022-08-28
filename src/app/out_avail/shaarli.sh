@@ -28,13 +28,21 @@ function shaarli_send {
     # this isn't in quotation marks so we get the newline, fyi.
     for cfile in ${configs}
     do
-        if [ -z "${description}" ];
-            outstring=$(echo "$binary --config ${cfile} post-link --title \"$title\" --url $link ")
+        if [ ! -f ${cfile} ];then
+            if [ -z "${description}" ];
+                outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
+            else
+                outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
+            fi
         else
-            outstring=$(echo "$binary --config ${cfile} post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
+            if [ -z "${description}" ];
+                outstring=$(echo "$binary --config ${cfile} post-link --title \"$title\" --url $link ")
+            else
+                outstring=$(echo "$binary --config ${cfile} post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
+            fi
         fi
-        eval ${outstring} > /dev/null
 
+        eval ${outstring} > /dev/null
     done
 }
 
