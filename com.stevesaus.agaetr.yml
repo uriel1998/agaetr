@@ -2,7 +2,7 @@ app-id: org.flatpak.agaetr
 runtime: org.freedesktop.Platform
 runtime-version: '21.08'
 sdk: org.freedesktop.Sdk
-command: flatpak_entrypoint.sh
+command: agaetr.sh
 finish-args:
   -  --share=network 
 modules:
@@ -90,7 +90,7 @@ modules:
       - install -D agaetr_send.sh /app/bin/agaetr_send.sh
       - install -D muna.sh /app/bin/muna.sh
       - install -D rss_preprocessor.sh /app/bin/rss_preprocessor.sh
-      - install -D flatpak_entrypoint.sh /app/bin/flatpak_entrypoint.sh      
+      - install -D agaetr.sh /app/bin/agaetr.sh   
     sources:
       - type: dir
         path: src/app

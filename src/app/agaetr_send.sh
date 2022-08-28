@@ -3,12 +3,8 @@
 #get install directory
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
-if [ -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
-    INI_URL="${XDG_CONFIG_HOME}/agaetr/feeds.ini"
-    else
-    if [ -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-        INI_URL="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    fi
+if [ ! -d "${XDG_DATA_HOME}" ];then
+    export XDG_DATA_HOME="${HOME}/.local/share"
 fi
 
 
