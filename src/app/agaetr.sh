@@ -8,28 +8,48 @@
 #
 ##############################################################################
 
+
+
+
+###############################################################################
+# Establishing XDG directories, or creating them if needed.
+#
+# Likewise with initial INI files
+###############################################################################
 VERSION="0.1.0"
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 # I want to check if it's using the $HOME or flatpak ones here,
 echo "$XDG_CONFIG_HOME"
 echo "$XDG_DATA_HOME"
 echo "$XDG_CACHE_HOME"
-export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 
-###############################################################################
-# Establishing XDG directories, or creating them if needed.
-###############################################################################
 if [ -z "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
     export XDG_CONFIG_HOME="${HOME}/.config"
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
 
-if [ ! -d "${XDG_DATA_HOME}" ];then
-    echo "Your XDG_DATA_HOME variable is not properly set and does not exist."
+if [ ! -d "${XDG_CONFIG_HOME}" ];then
+    echo "Your XDG_CONFIG_HOME variable is not properly set and does not exist."
     exit 99
 fi
+
+check_for_config(){
+    if [ ! -d "${XDG_CONFIG_HOME}/agaetr" ];then
+        mkdir -p "${XDG_CONFIG_HOME}/agaetr"
+    fi
+    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
+        cp /cfg/agaetr.ini "${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+    fi
+    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
+        cp /cfg/empty_feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+    fi
+    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
+        cp /cfg/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
+    fi        
+}
 
 ##############################################################################
 # Show the Help
@@ -56,29 +76,28 @@ display_help(){
     echo "###################################################################"
 }
 
+##############################################################################
+# Show the README
+##############################################################################
+
 display_readme(){
-    ${PAGER:-more} < /app/bin/cfg/README.md
+    if [ -f /app/bin/cfg/README.md ];then
+        ${PAGER:-more} < /app/bin/cfg/README.md
+    else
+        if [ -f "${SCRIPT_DIR}/README.md" ];then
+            ${PAGER:-more} < /app/bin/cfg/README.md
+        else
+            echo "README.md not found!"
+            exit 99
+        fi
+    fi
+    exit
 }
 
 
-check_for_config(){
-    if [ ! -d "${XDG_CONFIG_HOME}/agaetr" ];then
-        mkdir -p "${XDG_CONFIG_HOME}/agaetr"
-    fi
-    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-        cp /cfg/agaetr.ini "${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    fi
-    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
-        cp /cfg/empty_feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
-    fi
-    if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
-        cp /cfg/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
-    fi        
-}
-
-#TODO - Check agaetr.ini config for binfile, if not exist, do "which", and then overwrite ini
-#TODO - remove other arbitrary /app/bin things? Or test if flatpak
-
+##############################################################################
+# Invoke the configurators
+##############################################################################
 
 configurators(){
     echo "Which would you care to configure?"
@@ -287,7 +306,6 @@ while [ $# -gt 0 ]; do
     option="$1"
     case $option in
         --init)     display_help
-                    echo "W@OO"
                     check_for_config
                     exit
         --help)     display_help
@@ -302,10 +320,10 @@ while [ $# -gt 0 ]; do
                     /app/bin/muna.sh "${URL}"
                     exit    
                     ;;
-        --version)  echo "${VERSION}"; check_for_flatpak_config; exit ;;
+        --version)  echo "${VERSION}"; check_for_config; exit ;;
         --stdin)    # I'm not sure how to ensure this passes the stdin stream?
                     # this would be like for sending a single url 
-                    check_for_flatpak_config
+                    check_for_config
                     # This *should* work:
                     # https://unix.stackexchange.com/questions/540094/i-want-to-pass-stdin-to-a-bash-script-to-an-python-script-called-in-that-bash-sc
                     /app/bin/python3 /app/bin/orindi_parse.py
@@ -319,7 +337,8 @@ while [ $# -gt 0 ]; do
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
                     ;;
-        --file)     # to pull in a specific xml file (from outside flatpak??)
+        --file)     # to pull in a specific xml file (from outside flatpak??) it 
+                    # would have to be via stdin then, right?
                     ;; 
         *)          shift;;
     esac
