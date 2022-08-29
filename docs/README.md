@@ -360,6 +360,14 @@ sensitive = no
 ContentWarning = yes
 GlobalCW = 
 
+# If a path, it must be relative to $XDG_DATA_HOME/agaetr and begin with a slash
+# $XDG_DATA_HOME *is* different if you're using Flatpak!
+# note the source and command. 
+[Feed4]
+src = https://ideatrash.net/feed
+cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+url = /relative/path/to/xml/filename.xml
+
 ```
 
 ## 9. Advanced Content Warning

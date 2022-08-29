@@ -45,6 +45,9 @@ else
                         #time to create the command string
                         thecommand=$(printf "wget -O- \"%s\" | %s > \"%s/agaetr%s\"" "${mysrc}" "${mycmd}" "${XDG_DATA_HOME}" "${myurl}")
                         # wget -O- "${src}" | "${cmd}" > "${url}"
+                        
+                        # CHECK FOR PATH OF where it writes to!
+                        
                         echo "${thecommand}"
                         #eval "${thecommand}"
                     fi
