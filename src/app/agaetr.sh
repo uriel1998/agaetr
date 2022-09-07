@@ -133,7 +133,6 @@ configurators(){
                     echo "Please enter the *relative* filepath to save the feed at, with leading slash."
                     read url
                     writefeed=$(printf "%s\nurl = %s" "${writefeed}" "${url}")
-                    # mkdir -p for the filepath and touch the file here, if needed?
                 else
                     echo "Please enter the source of the feed, with leading https://"
                     read url
@@ -267,7 +266,7 @@ configurators(){
                     echo "Replacing default tweet binary with ${binary} found on $PATH"
                     eval $(printf "sed -i \'/^twython =.*/s/.*/twython = \"${binary}\"/' ${inifile}")
                 else
-                    echo "No shaarli twython found!"
+                    echo "No twython binary found!"
                     exit 99
                 fi
             fi
@@ -317,7 +316,7 @@ while [ $# -gt 0 ]; do
         *muna)     # Just running muna, nothing to see here.
                     shift
                     URL="${1}"
-                    /app/bin/muna.sh "${URL}"
+                    "${SCRIPT_DIR}"/muna.sh "${URL}"
                     exit    
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
@@ -326,7 +325,8 @@ while [ $# -gt 0 ]; do
                     check_for_config
                     # This *should* work:
                     # https://unix.stackexchange.com/questions/540094/i-want-to-pass-stdin-to-a-bash-script-to-an-python-script-called-in-that-bash-sc
-                    /app/bin/python3 /app/bin/orindi_parse.py
+                    python_bin=$(which python3)
+                    "${python_bin}" "${SCRIPT_DIR}"/orindi_parse.py
                     clean_temp_keyword
                     exit
                     ;;
