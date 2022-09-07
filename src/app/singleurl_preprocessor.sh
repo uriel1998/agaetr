@@ -18,42 +18,49 @@ if [ ! -d "${XDG_DATA_HOME}" ];then
 fi
 
 INI_URL=""
+INI_URL="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 
-if [ -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
-    INI_URL="${XDG_CONFIG_HOME}/agaetr/feeds.ini"
-    else
-    if [ -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-        INI_URL="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    fi
+# TODO
+# check for exported variables and/or switches, if that's workable.
+
+URL=""
+# get the url that has been piped in
+    URL="$1"
+    shift
 fi
 
-# get the url that has been piped in
-# run through muna
+if [ "$URL" == "" ];then
+    echo "No URL passed."
+    exit 99
+fi
 
-"${SCRIPT_DIR}"/muna.sh "${URL}"
+# everything else...? 
+# title="${@:2}"
+
+# passing published time (from dd MMM)
+posttime=$(date +%Y%m%d%H%M%S)
 # If no title, get one
 # from https://unix.stackexchange.com/questions/103252/how-do-i-get-a-websites-title-using-command-line
 if [ -z "$title" ]; then
-    title=$(wget -qO- "$link" | awk -v IGNORECASE=1 -v RS='</title' 'RT{gsub(/.*<title[^>]*>/,"");print;exit}' | recode html.. )
+    title=$(wget -qO- "$link" | awk -v IGNORECASE=1 -v RS='</title' 'RT{gsub(/.*<title[^>]*>/,"");print;exit}' | sed 's|["]|“|g' | sed 's|['\'']|’|g'| recode html.. )
+fi
+link=$("${SCRIPT_DIR}"/muna.sh "${URL}")
+#cw=$(echo "${myarr[3]}")
+#imgurl=$(echo "${myarr[5]}")
+#imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+#hashtags=$(echo "${myarr[6]}")
+if [ -z "$description" ]; then
+    description=$(wget -qO- "$link" | grep -e 'name="description"' | awk -F 'content=' '{ print $2 }' | awk -F '"' '{print $2}'| sed 's|["]|“|g' | sed 's|['\'']|’|g'| recode html..)
 fi
 
-# get what info you can (see newsbeuter_dangerzone)
-# optionally prompt for more
+
 # write it out as a string
 # hook into agaetr_send.sh (add a function in there so that if it's got a $1 then skip the db file)
 
 #20181227091253|Bash shell find out if a variable has NULL value OR not|https://www.cyberciti.biz/faq/bash-shell-find-out-if-a-variable-has-null-value-or-not/||None|None|#bash shell #freebsd #korn shell scripting #ksh shell #linux #unix #bash shell scripting #linux shell scripting #shell script
 
-#pulling array into named variables so they work with sourced functions
+#f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
 
-# passing published time (from dd MMM)
-posttime=$(echo "${myarr[0]}")
-posttime2="${posttime::-6}"
-pubtime=$(date -d"$posttime2" +%d\ %b)
-title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-link=$(echo "${myarr[2]}")
-cw=$(echo "${myarr[3]}")
-imgurl=$(echo "${myarr[5]}")
-imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-hashtags=$(echo "${myarr[6]}")
-description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+
+
+outstring=$(printf "%s|%s|%s||||||%s" "${posttime}" "${title}" "${link}" "${description}")

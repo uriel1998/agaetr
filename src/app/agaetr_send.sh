@@ -16,6 +16,9 @@ if [ ! -f "$HOME/.local/share/agaetr/posts.db" ];then
     echo "Post database not located, exiting."
     exit 99
 fi
+# TODO
+# if $1 exists, it's from the single processor, and use that instead of rotating the db
+# but add it to the posted list
 
 mv "$HOME/.local/share/agaetr/posts.db" "$HOME/.local/share/agaetr/posts_back.db"
 tail -n +2 "$HOME/.local/share/agaetr/posts_back.db" > "$HOME/.local/share/agaetr/posts.db"
@@ -23,7 +26,7 @@ instring=$(head -1 "$HOME/.local/share/agaetr/posts_back.db")
 rm "$HOME/.local/share/agaetr/posts_back.db"
 
 #Adding string to the "posted" db
-
+# TODO - QUIET THIS
 if [ -z "$instring" ];then 
 
     echo "Nothing to post."
