@@ -57,10 +57,10 @@ fi
 # write it out as a string
 # hook into agaetr_send.sh (add a function in there so that if it's got a $1 then skip the db file)
 
-#20181227091253|Bash shell find out if a variable has NULL value OR not|https://www.cyberciti.biz/faq/bash-shell-find-out-if-a-variable-has-null-value-or-not/||None|None|#bash shell #freebsd #korn shell scripting #ksh shell #linux #unix #bash shell scripting #linux shell scripting #shell script
 
 #f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
 
 
 
 outstring=$(printf "%s|%s|%s||||||%s" "${posttime}" "${title}" "${link}" "${description}")
+"${SCRIPT_DIR}"/agaetr_send.sh "${outstring}"
