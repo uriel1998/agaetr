@@ -6,34 +6,40 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
+if [ ! -d "${XDG_CONFIG_HOME}" ];then
+    export XDG_CONFIG_HOME="${HOME}/.local/share"
+fi
 
-
-if [ ! -f "$HOME/.config/agaetr/agaetr.ini" ];then
+if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     echo "INI not located; betcha nothing else is set up."
     exit 89
 fi
-if [ ! -f "$HOME/.local/share/agaetr/posts.db" ];then
+if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
     echo "Post database not located, exiting."
     exit 99
 fi
-# TODO
-# if $1 exists, it's from the single processor, and use that instead of rotating the db
-# but add it to the posted list
 
-mv "$HOME/.local/share/agaetr/posts.db" "$HOME/.local/share/agaetr/posts_back.db"
-tail -n +2 "$HOME/.local/share/agaetr/posts_back.db" > "$HOME/.local/share/agaetr/posts.db"
-instring=$(head -1 "$HOME/.local/share/agaetr/posts_back.db")
-rm "$HOME/.local/share/agaetr/posts_back.db"
+if [ "$1" != "" ];then
+    # if $1 exists, it's from the single processor, and use that 
+    # instead of rotating the db but add it to the posted list
+    instring="${@}"
+else
+    mv "${XDG_DATA_HOME}/agaetr/posts.db" "${XDG_DATA_HOME}/agaetr/posts_back.db"
+    tail -n +2 "${XDG_DATA_HOME}/agaetr/posts_back.db" > "${XDG_DATA_HOME}/agaetr/posts.db"
+    instring=$(head -1 "${XDG_DATA_HOME}/agaetr/posts_back.db")
+    rm "${XDG_DATA_HOME}/agaetr/posts_back.db"
+fi
 
-#Adding string to the "posted" db
-# TODO - QUIET THIS
+
+
 if [ -z "$instring" ];then 
-
+# TODO - QUIET THIS
     echo "Nothing to post."
     exit
 fi
 
-echo "$instring" >> "$HOME/.local/share/agaetr/posted.db"
+#Adding string to the "posted" db
+echo "$instring" >> "${XDG_DATA_HOME}/agaetr/posted.db"
 
 
 OIFS=$IFS
