@@ -427,6 +427,11 @@ There are other files in this repository:
 
 ### Someday/Maybe:
 
+single url 
+--queue
+--url
+defaults to VALUE of url as LAST passed var
+
 * shaarli selector switch for multiple configs?
 * Bibliogram in
 * change queue types to per file

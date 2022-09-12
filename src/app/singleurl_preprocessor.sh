@@ -20,14 +20,25 @@ fi
 INI_URL=""
 INI_URL="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 
-# TODO
-# check for exported variables and/or switches, if that's workable.
+QUEUE=0
 
 URL=""
-# get the url that has been piped in
-    URL="$1"
-    shift
-fi
+
+while [ $# -gt 0 ]; do
+    option="$1"
+    case $option in
+        --url)
+                shift
+                URL="${1}"
+                ;;
+        --queue)
+                QUEUE=1
+                ;;
+        *)      URL="${1}" 
+                ;;
+    esac
+done
+    
 
 if [ "$URL" == "" ];then
     echo "No URL passed."
@@ -55,7 +66,7 @@ fi
 
 
 # write it out as a string
-# hook into agaetr_send.sh (add a function in there so that if it's got a $1 then skip the db file)
+
 
 
 #f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
@@ -63,4 +74,15 @@ fi
 
 
 outstring=$(printf "%s|%s|%s||||||%s" "${posttime}" "${title}" "${link}" "${description}")
-"${SCRIPT_DIR}"/agaetr_send.sh "${outstring}"
+
+if [ $QUEUE -eq 0 ];then
+    # hook into agaetr_send.sh 
+    "${SCRIPT_DIR}"/agaetr_send.sh "${outstring}"
+else
+    if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
+        echo "Post database not located, exiting."
+        exit 99
+    else
+        echo "${outstring}" >> "${XDG_DATA_HOME}/agaetr/posts.db"
+    fi
+fi
