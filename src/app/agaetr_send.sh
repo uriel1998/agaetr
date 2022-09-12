@@ -84,16 +84,14 @@ fi
 imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
 
 if [ "${imagecheck}" -ne 0 ];then
-    echo "Image no longer available; omitting."
+    loud "Image no longer available; omitting."
     imgurl=""
     imgalt=""
 fi
 
-
-# Deshortening, deobfuscating, and unredirecting the URL
-
+# Deshortening, deobfuscating, and unredirecting the URL with muna
 url="$link"
-source "$SCRIPT_DIR/unredirector.sh"
+source "$SCRIPT_DIR/muna.sh"
 unredirector
 link="$url"
 
@@ -104,17 +102,17 @@ link="$url"
 if [ "$(ls -A "$SCRIPT_DIR/short_enabled")" ]; then
     shortener=$(ls -lR "$SCRIPT_DIR/short_enabled" | grep ^l | awk '{print $9}')
     if [ -z "$shortener" ];then
-        echo "No URL shortening performed."
+        loud "No URL shortening performed."
     else
         if [ "$shortener" != ".keep" ];then 
             short_funct=$(echo "${shortener%.*}_shortener")
             source "$SCRIPT_DIR/short_enabled/$shortener"
             url="$link"
-            echo "$SCRIPT_DIR/short_enabled/$shortener"
+            loud "$SCRIPT_DIR/short_enabled/$shortener"
             eval ${short_funct}
             link="$shorturl"
-            echo "$shorturl"
-            echo "$link"
+            loud "$shorturl"
+            loud "$link"
         fi
     fi
 fi
@@ -127,14 +125,11 @@ posters=$(ls -A "$SCRIPT_DIR/out_enabled")
 
 for p in $posters;do
     if [ "$p" != ".keep" ];then 
-        echo "Processing ${p%.*}..."
+        loud "Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
         source "${SCRIPT_DIR}/out_enabled/${p}"
-        echo "${SCRIPT_DIR}/out_enabled/${p}"
+        loud "${SCRIPT_DIR}/out_enabled/${p}"
         eval ${send_funct}
         sleep 5
     fi
 done
-
-
-
