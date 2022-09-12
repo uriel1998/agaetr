@@ -18,6 +18,13 @@
 ###############################################################################
 VERSION="0.1.0"
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+LOUD=0
+
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
 
 # I want to check if it's using the $HOME or flatpak ones here,
 echo "$XDG_CONFIG_HOME"
@@ -304,6 +311,9 @@ configurators(){
 while [ $# -gt 0 ]; do
     option="$1"
     case $option in
+        --loud)     export LOUD=1
+                    shift
+                    ;;
         --init)     display_help
                     check_for_config
                     exit
