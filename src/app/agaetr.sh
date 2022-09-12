@@ -9,8 +9,6 @@
 ##############################################################################
 
 
-
-
 ###############################################################################
 # Establishing XDG directories, or creating them if needed.
 #
@@ -330,7 +328,8 @@ while [ $# -gt 0 ]; do
                     exit    
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
-        --stdin)    # I'm not sure how to ensure this passes the stdin stream?
+        --stdin)    # TODO
+                    # I'm not sure how to ensure this passes the stdin stream?
                     # this would be like for sending a single url 
                     check_for_config
                     # This *should* work:
@@ -340,12 +339,28 @@ while [ $# -gt 0 ]; do
                     clean_temp_keyword
                     exit
                     ;;
-                    
-        --pull)     # run rss_preprocessor
-                    # run agaetr_parse.py
+        --pull)     # perform a pull run. can be combined with other inputs
+                    "${SCRIPT_DIR}"/rss_preprocessor.sh
+                    python_bin=$(which python3)
+                    "${python_bin}" "${SCRIPT_DIR}"/orindi_parse.py                    
                     ;;
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
+                    "${SCRIPT_DIR}"/agaetr_send.sh
+                    ;;
+        --url)      # running a single url. Positional arguments
+                    # --url [--queue] URL
+                    shift
+                    queue=0
+                    if [ "${1}" == "--queue" ];then
+                        shift
+                        URL="${1}"
+                        "${SCRIPT_DIR}"/singleurl_preprocessor.sh --queue --url "${URL}"
+                    else
+                        URL="${1}"
+                        "${SCRIPT_DIR}"/singleurl_preprocessor.sh --queue --url "${URL}"
+                    fi
+                    exit
                     ;;
         --file)     # to pull in a specific xml file (from outside flatpak??) it 
                     # would have to be via stdin then, right?

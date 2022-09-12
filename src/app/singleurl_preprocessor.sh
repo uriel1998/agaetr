@@ -27,12 +27,12 @@ URL=""
 while [ $# -gt 0 ]; do
     option="$1"
     case $option in
+        --queue)
+                QUEUE=1
+                ;;
         --url)
                 shift
                 URL="${1}"
-                ;;
-        --queue)
-                QUEUE=1
                 ;;
         *)      URL="${1}" 
                 ;;
