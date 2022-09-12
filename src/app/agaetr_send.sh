@@ -8,7 +8,6 @@ function loud() {
     if [ $LOUD -eq 1 ];then
         echo "$@"
     fi
-    
 }
 
 if [ ! -d "${XDG_DATA_HOME}" ];then
