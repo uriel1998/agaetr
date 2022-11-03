@@ -29,10 +29,8 @@ function email_send {
     smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
+    raw_emails=$(grep 'email_to =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
 
-#TODO: get list of email addresses to send to from ini, put in an array, loop 
-#over that to send the email.
-email_to = 
     tmpfile=$(mktemp)
     loud "Obtaining text of HTML..."
     echo "${link}" > ${tmpfile}
@@ -43,7 +41,18 @@ email_to =
     
     # Removed addressbook bit since that doesn't make sense here.
 
-#curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+    # Split raw CSV of of emails into actual email addresses
+    OIFS="$IFS"
+    IFS=';' read -ra email_addresses <<< "${raw_emails}"
+    IFS="$OIFS"
+
+    for email_addy in "${email_addresses[@]}"
+    do
+        echo $i
+    done
+
+
+    #curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
   --mail-from 'developer@gmail.com' --mail-rcpt 'edm-user@niceperson.com' \
   --upload-file mail.txt --user 'developer@gmail.com:your-accout-password'
 
