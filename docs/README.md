@@ -29,7 +29,7 @@ input (particularly RSS feeds) and then share them to various social media outpu
 
 This system is designed for *single user* use, as API keys are required.
 
-Tested with a feeds from:
+Tested with feeds from:
 
 * [dlvr.it](https://dlvrit.com/) 
 * [shaarli](https://github.com/shaarli/Shaarli) instances (see note below)
@@ -39,9 +39,6 @@ Tested with a feeds from:
 * [DeviantArt](https://www.deviantart.com)
 * [YouTube](https://youtube.com) (particularly public playlists, like favorites)
 * [UPI](https://rss.upi.com/news/news.rss)
-
-The preprocessing script is available (with examples) for fixing a few things 
-with WordPress and TT-RSS "published articles" feeds.  
 
 `agaetr` can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
@@ -78,11 +75,17 @@ Or, y'know, they're in the flatpak.
 * [detox]
 * [xmlstarlet]
 * [imagemagick]
-lynx
-pandoc
-html-xml-utils
+* lynx
+* pandoc
+* html-xml-utils
+
+## 4. Installation
+
+The easiest way is to use the flatpak. *Seriously.* There's lots of fiddly bits 
+here. If you are using the flatpak, skip to Configuration.
 
 
+### Manual installation
 
 You will need some variety of posting mechanism and optionally an URL 
 shortening mechanism. See [Services Setup](#5-services-setup) for details.
@@ -95,7 +98,6 @@ of python dependencies.  Instructions on how to do that are beyond the scope of
 this document.  It is assumed that you have created and activated the 
 virtualenv henceforth.
 
-## 4. Installation
 
 * `mkdir -p $HOME/.config/agaetr`
 * `mkdir -p $HOME/.local/agaetr`
@@ -402,6 +404,15 @@ run as the user (and with the environment) you used to set up the
 online services.**  
 
 
+#TODO - REWRITE ALL THIS 
+- need to have 
+single url 
+--queue
+--url
+defaults to VALUE of url as LAST passed var
+--dry-run
+
+
 * (Optional) Call `rss_preprocessor.sh`.
 * `agaetr_parse.py` to pull down new articles from feeds.
 * `agaetr_send.sh` to send *a* post to the activated social media services
@@ -427,10 +438,6 @@ There are other files in this repository:
 
 ### Someday/Maybe:
 
-single url 
---queue
---url
-defaults to VALUE of url as LAST passed var
 
 * shaarli selector switch for multiple configs?
 * Bibliogram in
