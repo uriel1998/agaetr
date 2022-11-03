@@ -11,28 +11,42 @@
 # TODO - REWRITE TO USE CURL
 #https://blog.edmdesigner.com/send-email-from-linux-command-line/
 
-#curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
-  --mail-from 'developer@gmail.com' --mail-rcpt 'edm-user@niceperson.com' \
-  --upload-file mail.txt --user 'developer@gmail.com:your-accout-password'
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
+
+# should have been passed in, but just in case...
+    
+if [ ! -d "${XDG_DATA_HOME}" ];then
+    export XDG_DATA_HOME="${HOME}/.local/share"
+fi
+inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini" 
 
 function email_send {
+    smtp_server=$(grep 'smtp_server =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
 
+#TODO: get list of email addresses to send to from ini, put in an array, loop 
+#over that to send the email.
+email_to = 
     tmpfile=$(mktemp)
-    echo "Obtaining text of HTML..."
+    loud "Obtaining text of HTML..."
     echo "${link}" > ${tmpfile}
     echo "  " >> ${tmpfile}
     #wget --connect-timeout=2 --read-timeout=10 --tries=1 -e robots=off -O - "${link}" | pandoc --from=html --to=gfm >> ${tmpfile}
     
     wget --connect-timeout=2 --read-timeout=10 --tries=1 -e robots=off -O - "${link}" | sed -e 's/<img[^>]*>//g' | sed -e 's/<div[^>]*>//g' | hxclean | hxnormalize -e -L -s 2>/dev/null | tidy -quiet -omit -clean 2>/dev/null | hxunent | iconv -t utf-8//TRANSLIT - | sed -e 's/\(<em>\|<i>\|<\/em>\|<\/i>\)/&🞵/g' | sed -e 's/\(<strong>\|<b>\|<\/strong>\|<\/b>\)/&🞶/g' |lynx -dump -stdin -display_charset UTF-8 -width 140 | sed -e 's/\*/•/g' | sed -e 's/Θ/🞵/g' | sed -e 's/Φ/🞯/g' >> ${tmpfile}
     
-    # This is from https://github.com/uriel1998/ppl_virdirsyncer_addysearch
-    addressbook=$(which pplsearch)
-    if [ -f "$addressbook" ];then
-        email=$(eval "$addressbook" -m)
-    fi
-    if [ -z ${email} ];then
-        email=$(echo "root@localhost")
-    fi
+    # Removed addressbook bit since that doesn't make sense here.
+
+#curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+  --mail-from 'developer@gmail.com' --mail-rcpt 'edm-user@niceperson.com' \
+  --upload-file mail.txt --user 'developer@gmail.com:your-accout-password'
+
 
     binary=$(grep 'mutt =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     if [ ! -f "$binary" ];then
