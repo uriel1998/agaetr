@@ -8,7 +8,7 @@
 #
 ##############################################################################
 
-# TODO - REWRITE TO USE CURL
+# USING CURL credit
 #https://blog.edmdesigner.com/send-email-from-linux-command-line/
 
 function loud() {
@@ -41,7 +41,6 @@ function email_send {
     loud "Obtaining text of HTML..."
     echo "${link}" > ${tmpfile}
     echo "  " >> ${tmpfile}
-    #wget --connect-timeout=2 --read-timeout=10 --tries=1 -e robots=off -O - "${link}" | pandoc --from=html --to=gfm >> ${tmpfile}
     
     wget --connect-timeout=2 --read-timeout=10 --tries=1 -e robots=off -O - "${link}" | sed -e 's/<img[^>]*>//g' | sed -e 's/<div[^>]*>//g' | hxclean | hxnormalize -e -L -s 2>/dev/null | tidy -quiet -omit -clean 2>/dev/null | hxunent | iconv -t utf-8//TRANSLIT - | sed -e 's/\(<em>\|<i>\|<\/em>\|<\/i>\)/&🞵/g' | sed -e 's/\(<strong>\|<b>\|<\/strong>\|<\/b>\)/&🞶/g' |lynx -dump -stdin -display_charset UTF-8 -width 140 | sed -e 's/\*/•/g' | sed -e 's/Θ/🞵/g' | sed -e 's/Φ/🞯/g' >> ${tmpfile}
     
@@ -64,29 +63,11 @@ function email_send {
         cat "${tmpfile}" >> "${tmpfile2}"
         # assemble the command 
         loud "Assembling the command for $email_addy."
-        command_line=$(printf "%s --url \'smtps://%s:%s\' --ssl-reqd --mail-from \'%s\' --mail-rcpt \'%s\' --user \'%s:%s\'"
-        "${curl_bin}" "${smtp_server}" "${smtp_port}" "${email_from}" "${email_addy}" "${smtp_username}" "${smtp_password}")
+        command_line=$(printf "%s --url \'smtps://%s:%s\' --ssl-reqd --mail-from \'%s\' --mail-rcpt \'%s\' --upload-file %s --user \'%s:%s\'"
+        "${curl_bin}" "${smtp_server}" "${smtp_port}" "${email_from}" "${email_addy}" "${tmpfile2}" "${smtp_username}" "${smtp_password}")
         eval "${command_line}"
         rm "${tmpfile2}"
     done
-
-
-    #curl --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
-  --mail-from 'developer@gmail.com' --mail-rcpt 'edm-user@niceperson.com' \
-  --upload-file mail.txt --user 'developer@gmail.com:your-accout-password'
-
-
-    binary=$(grep 'mutt =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    if [ ! -f "$binary" ];then
-        binary=$(which mutt)
-    fi
-    if [ -f "$binary" ];then
-        echo "Sending email..."
-        echo ${tmpfile} | mutt -s "${title}" "${email}"
-    else
-        echo "Mutt not found in order to send email!"
-    fi
-
     rm ${tmpfile}
 }
 
