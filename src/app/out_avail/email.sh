@@ -25,6 +25,11 @@ fi
 inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini" 
 
 function email_send {
+    if [ -z "${1}" ];then
+        title="Automated email from agaetr: ${link}"
+    else
+        title="${1}"
+    fi
     smtp_server=$(grep 'smtp_server =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
@@ -51,14 +56,18 @@ function email_send {
     do
         # assemble the header
         loud "Assembling the header"
-        
-        
-        
+        tmpfile2=$(mktemp)
+        echo "To: ${email_addy}" > "${tmpfile2}"
+        echo "Subject: ${title}" >> "${tmpfile2}"
+        echo "From: ${email_from}" >> "${tmpfile2}"
+        echo -e "\n\n" >> "${tmpfile2}"
+        cat "${tmpfile}" >> "${tmpfile2}"
         # assemble the command 
         loud "Assembling the command for $email_addy."
         command_line=$(printf "%s --url \'smtps://%s:%s\' --ssl-reqd --mail-from \'%s\' --mail-rcpt \'%s\' --user \'%s:%s\'"
         "${curl_bin}" "${smtp_server}" "${smtp_port}" "${email_from}" "${email_addy}" "${smtp_username}" "${smtp_password}")
         eval "${command_line}"
+        rm "${tmpfile2}"
     done
 
 
@@ -104,8 +113,10 @@ else
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"
+        else 
+            title="${1}"
         fi
-        email_send
+        email_send "${title}"
     fi
 fi
 
