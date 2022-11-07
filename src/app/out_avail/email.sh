@@ -29,6 +29,7 @@ function email_send {
     smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
+    email_from=$(grep 'email_from =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
     raw_emails=$(grep 'email_to =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
 
     tmpfile=$(mktemp)
@@ -45,10 +46,19 @@ function email_send {
     OIFS="$IFS"
     IFS=';' read -ra email_addresses <<< "${raw_emails}"
     IFS="$OIFS"
-
+    curl_bin=$(which curl)
     for email_addy in "${email_addresses[@]}"
     do
-        echo $i
+        # assemble the header
+        loud "Assembling the header"
+        
+        
+        
+        # assemble the command 
+        loud "Assembling the command for $email_addy."
+        command_line=$(printf "%s --url \'smtps://%s:%s\' --ssl-reqd --mail-from \'%s\' --mail-rcpt \'%s\' --user \'%s:%s\'"
+        "${curl_bin}" "${smtp_server}" "${smtp_port}" "${email_from}" "${email_addy}" "${smtp_username}" "${smtp_password}")
+        eval "${command_line}"
     done
 
 
