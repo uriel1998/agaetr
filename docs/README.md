@@ -451,3 +451,4 @@ There are other files in this repository:
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
 * Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram, Internet Archive, archivebox
+* XMPP IN AND OUT VIA BOT
