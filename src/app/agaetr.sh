@@ -315,6 +315,7 @@ while [ $# -gt 0 ]; do
         --init)     display_help
                     check_for_config
                     exit
+                    ;;
         --help)     display_help
                     exit
                     ;;
@@ -335,14 +336,14 @@ while [ $# -gt 0 ]; do
                     # This *should* work:
                     # https://unix.stackexchange.com/questions/540094/i-want-to-pass-stdin-to-a-bash-script-to-an-python-script-called-in-that-bash-sc
                     python_bin=$(which python3)
-                    "${python_bin}" "${SCRIPT_DIR}"/orindi_parse.py
+                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py
                     clean_temp_keyword
                     exit
                     ;;
         --pull)     # perform a pull run. can be combined with other inputs
                     "${SCRIPT_DIR}"/rss_preprocessor.sh
                     python_bin=$(which python3)
-                    "${python_bin}" "${SCRIPT_DIR}"/orindi_parse.py                    
+                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
@@ -369,4 +370,4 @@ while [ $# -gt 0 ]; do
     esac
 done   
 
-clean_temp_keyword
+# clean_temp_keyword
