@@ -58,10 +58,6 @@ check_for_config(){
     if [ ! -f "${XDG_DATA_HOME}/agaetr/LICENSE.md" ];then
         cp /app/share/agaetr/LICENSE.md "${XDG_DATA_HOME}/agaetr/LICENSE.md"
     fi        
-
-
-
-
 }
 
 ##############################################################################
