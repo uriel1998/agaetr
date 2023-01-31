@@ -41,13 +41,13 @@ check_for_config(){
         mkdir -p "${XDG_CONFIG_HOME}/agaetr"
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-        cp /cfg/agaetr.ini "${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+        cp /app/etc/agaetr.ini "${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/feeds.ini" ];then
-        cp /cfg/empty_feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
+        cp /app/etc/empty_feeds.ini "${XDG_CONFIG_HOME}/agaetr/feeds.ini"
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
-        cp /cfg/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
+        cp /app/etc/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
     fi        
 }
 
@@ -81,7 +81,7 @@ display_help(){
 ##############################################################################
 
 display_readme(){
-    if [ -f /app/bin/cfg/README.md ];then
+    if [ -f /app/etc/README.md ];then
         ${PAGER:-more} < /app/bin/cfg/README.md
     else
         if [ -f "${SCRIPT_DIR}/README.md" ];then

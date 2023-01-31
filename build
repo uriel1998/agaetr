@@ -1,3 +1,4 @@
 #!/bin/bash
 
 flatpak-builder build-dir com.stevesaus.agaetr.yml --force-clean
+mplayer /home/steven/documents/sounds/#grunkle_sounds/notification/notify-default-1.mp3 

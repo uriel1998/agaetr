@@ -56,7 +56,7 @@ modules:
       - rm /app/tmp/requirements.txt
     sources:
       - type: file
-        path: src/cfg/requirements.txt
+        path: src/etc/requirements.txt
   - name: lynx
     sources:
       - type: archive
@@ -121,10 +121,22 @@ modules:
   - name: template-install
     buildsystem: simple
     build-commands:
-      - install -D agaetr.ini /cfg/agaetr.ini
-      - install -D cw.ini /cfg/cw.ini
-      - install -D feeds.ini /cfg/feeds.ini
-      - install -D cwlist.txt /cfg/cwlist.ini
+      - install -D agaetr.ini /app/etc/agaetr.ini
+      - install -D cw.ini /app/etc/cw.ini
+      - install -D feeds.ini /app/etc/feeds.ini
+      - install -D feeds.ini /app/etc/empty_feeds.ini      
+      - install -D cwlist.txt /app/etc/cwlist.ini
+      - install -D cwlist.txt /app/etc/cwlist.ini
     sources:
       - type: dir
-        path: src/cfg
+        path: src/etc
+        
+  - name: docs-install
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/agaetr
+      - cp -r src/share/agaetr/ /app/share
+    sources:
+      - type: dir
+        path: src/share/agaetr/
+        dest: src/share/agaetr/
