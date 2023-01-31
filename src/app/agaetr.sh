@@ -24,11 +24,6 @@ function loud() {
     fi
 }
 
-# I want to check if it's using the $HOME or flatpak ones here,
-echo "$XDG_CONFIG_HOME"
-echo "$XDG_DATA_HOME"
-echo "$XDG_CACHE_HOME"
-
 
 if [ -z "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -361,6 +356,14 @@ while [ $# -gt 0 ]; do
                         URL="${1}"
                         "${SCRIPT_DIR}"/singleurl_preprocessor.sh --queue --url "${URL}"
                     fi
+                    exit
+                    ;;
+        --locations) 
+                    # I want to check if it's using the $HOME or flatpak ones here,
+                    #check_for_config
+                    echo "$XDG_CONFIG_HOME"
+                    echo "$XDG_DATA_HOME"
+                    echo "$XDG_CACHE_HOME"
                     exit
                     ;;
         --file)     # to pull in a specific xml file (from outside flatpak??) it 
