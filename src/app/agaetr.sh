@@ -49,6 +49,19 @@ check_for_config(){
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
         cp /app/etc/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
     fi        
+    if [ ! -d "${XDG_DATA_HOME}/agaetr" ];then
+        mkdir -p "${XDG_DATA_HOME}/agaetr"
+    fi
+    if [ ! -f "${XDG_DATA_HOME}/agaetr/README.md" ];then
+        cp /app/share/agaetr/README.md "${XDG_DATA_HOME}/agaetr/README.md"
+    fi        
+    if [ ! -f "${XDG_DATA_HOME}/agaetr/LICENSE.md" ];then
+        cp /app/share/agaetr/LICENSE.md "${XDG_DATA_HOME}/agaetr/LICENSE.md"
+    fi        
+
+
+
+
 }
 
 ##############################################################################
@@ -81,11 +94,13 @@ display_help(){
 ##############################################################################
 
 display_readme(){
-    if [ -f /app/etc/README.md ];then
-        ${PAGER:-more} < /app/bin/cfg/README.md
+    if [ -f "${XDG_DATA_HOME}"/agaetr/README.md ];then
+        ${PAGER:-more} < "${XDG_DATA_HOME}"/agaetr/README.md
+        ${PAGER:-more} < "${XDG_DATA_HOME}"/agaetr/LICENSE.md
     else
         if [ -f "${SCRIPT_DIR}/README.md" ];then
-            ${PAGER:-more} < /app/bin/cfg/README.md
+            ${PAGER:-more} < ${SCRIPT_DIR}/README.md
+            ${PAGER:-more} < ${SCRIPT_DIR}/LICENSE.md
         else
             echo "README.md not found!"
             exit 99
@@ -314,7 +329,8 @@ while [ $# -gt 0 ]; do
         --help)     display_help
                     exit
                     ;;
-        --readme)   display_readme
+        --readme)   check_for_config #includes moving README!
+                    display_readme
                     exit
                     ;;                    
         *muna)     # Just running muna, nothing to see here.
