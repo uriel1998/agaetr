@@ -14,7 +14,7 @@ if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
 if [ ! -d "${XDG_CONFIG_HOME}" ];then
-    export XDG_CONFIG_HOME="${HOME}/.local/share"
+    export XDG_CONFIG_HOME="${HOME}/.config"
 fi
 
 if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then

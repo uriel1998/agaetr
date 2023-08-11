@@ -30,12 +30,13 @@ if [ ! -f "${RSSSavePath}" ];then
     printf '  <channel>\n' >> "${RSSSavePath}"
     printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
     printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
+    printf '    <link rel="self" href="https://stevesaus.me/output.xml" />\n' >> "${RSSSavePath}"
     printf '  </channel>\n' >> "${RSSSavePath}"
     printf '</rss>\n' >> "${RSSSavePath}"    
 
 fi
     TITLE="${title}"
-    LINK="${link}"
+    LINK=$(printf "href=\"%s\"" "${link}")
     DATE="`date`"
     DESC="${title}"
     GUID="${link}" 

@@ -8,20 +8,41 @@
 #
 ##############################################################################
 
+
+#get install directory
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+LOUD=0
+
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
+
+
 function toot_send {
 
-    binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(printf "From %s: %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+    if [ "$title" == "$link" ];then
+        title=""
+    fi
+    
+    if [ ${#link} -gt 36 ]; then 
+        loud "Sending to shortener function"
+        yourls_shortener
+    fi
+    
+    binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/cw-bot/${prefix}cw-bot.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
 
     if [ ${#outstring} -gt 500 ]; then
-        outstring=$(printf "From %s: %s - %s %s" "$pubtime" "$title" "$description" "$link")
+        outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
         if [ ${#outstring} -gt 500 ]; then
             outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
             if [ ${#outstring} -gt 500 ]; then
-                outstring=$(printf "From %s: %s %s " "$pubtime" "$title" "$link")
+                outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
                 if [ ${#outstring} -gt 500 ]; then
                     outstring=$(printf "%s %s" "$title" "$link")
                     if [ ${#outstring} -gt 500 ]; then
@@ -39,8 +60,7 @@ function toot_send {
         
         Outfile=$(mktemp)
         curl "$imgurl" -o "$Outfile" --max-time 60 --create-dirs -s
-        echo "Image obtained, resizing."
-        #resize to twitter's size if available
+        loud "Image obtained, resizing."       
         if [ -f /usr/bin/convert ];then
             /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
         fi
@@ -61,9 +81,8 @@ function toot_send {
         cw=""
     fi
     
-    postme=$(printf "%s post \"%s\" %s %s --quiet" "$binary" "$outstring" "$Limgurl" "$cw")
+    postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "$outstring" "$Limgurl" "$cw" "$account_using")
     eval ${postme}
-    
     
     if [ -f "$Outfile" ];then
         rm "$Outfile"
