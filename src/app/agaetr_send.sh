@@ -1,19 +1,17 @@
 #!/bin/bash
 
+##############################################################################
+#  agaetr_send.sh
+#  (c) Steven Saus 2023
+#  Licensed under the Apache license
+#
+##############################################################################
 
-
-# need to restructure this for multiple command line arguments, plus put file 
-# header because I'm cool like that now
-
+# Set defaults
 #get install directory
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
 
-function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
-    fi
-}
 
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -22,6 +20,53 @@ if [ ! -d "${XDG_CONFIG_HOME}" ];then
     export XDG_CONFIG_HOME="${HOME}/.config"
 fi
 
+
+
+
+# need to restructure this for multiple command line arguments, plus put file 
+# header because I'm cool like that now
+
+
+
+while [ $# -gt 0 ]; do
+option="$1"
+    case $option
+    in
+    http*)
+        URL="$1"
+        shift
+        ;;
+    -h) display_help
+        shift 
+        ;;        
+    -c) 
+        URL=$(xclip -o)
+        shift 
+        ;;        
+    -u) shift
+        URL="$1"
+        shift 
+        ;;        
+    -g) GUI=TRUE
+        shift
+        ;;
+    -v) #download video=1
+        ACTION="VIDEO"
+        shift
+        ;;
+    -a) #download audio
+        ACTION="AUDIO"
+        shift 
+        ;;        
+    -p) #play video
+        ACTION="PLAY"
+        shift 
+        ;;                
+    esac
+done
+
+
+# fix to add prefixes
 if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     echo "INI not located; betcha nothing else is set up."
     exit 89
@@ -31,6 +76,16 @@ if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
     exit 99
 fi
 
+
+# turn this into something from the esac statement
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
+
+
+# likewise this bit copying backup posts -- steal from cw-bot
 if [ "$1" != "" ];then
     if [ "$1" == "--verbose" ];then
         shift
