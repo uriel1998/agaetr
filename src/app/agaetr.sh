@@ -36,6 +36,10 @@ if [ ! -d "${XDG_CONFIG_HOME}" ];then
     exit 99
 fi
 
+
+# Need to fix for prefix!!!!  Maybe incorporate this so it gets parsed as well or 
+# make the parsing a function?
+
 check_for_config(){
     if [ ! -d "${XDG_CONFIG_HOME}/agaetr" ];then
         mkdir -p "${XDG_CONFIG_HOME}/agaetr"
@@ -80,8 +84,6 @@ display_help(){
     echo "# --keyword: Keyword that applies to all input that follows"
     echo "# --version: report version  "
     echo "# Input Source ####################################################"
-    echo "# --stdin: Input is coming from stdin, not a file"
-    echo "# --file [FILENAME]: path to file. Needs to be in user's $HOME"
     echo "###################################################################"
 }
 
@@ -111,6 +113,10 @@ display_readme(){
 ##############################################################################
 
 configurators(){
+    
+# TODO -- needs prefix (or all) for each configurator
+# -- chose from existing inis or proffer to make new one
+# TODO -- add in configurator for matrix, etc    
     echo "Which would you care to configure?"
     select module in cookies shaarli wallabag mastodon email twitter wayback save feeds quit
     do
@@ -315,6 +321,9 @@ configurators(){
 while [ $# -gt 0 ]; do
     option="$1"
     case $option in
+    
+# TODO -- needs prefix (or all)  and switch for configurator
+    
         --loud)     export LOUD=1
                     shift
                     ;;
@@ -336,27 +345,22 @@ while [ $# -gt 0 ]; do
                     exit    
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
-        --stdin)    # TODO
-                    # I'm not sure how to ensure this passes the stdin stream?
-                    # this would be like for sending a single url 
-                    check_for_config
-                    # This *should* work:
-                    # https://unix.stackexchange.com/questions/540094/i-want-to-pass-stdin-to-a-bash-script-to-an-python-script-called-in-that-bash-sc
-                    python_bin=$(which python3)
-                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py
-                    clean_temp_keyword
-                    exit
-                    ;;
+
+# TODO -- needs prefix (or all)                     
         --pull)     # perform a pull run. can be combined with other inputs
                     "${SCRIPT_DIR}"/rss_preprocessor.sh
                     python_bin=$(which python3)
                     "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
+
+# TODO -- needs prefix (or all)                     
         --push)     # no special things, just run the program with sane defaults of 
                     # pushing from all queues to all configured outsources
                     "${SCRIPT_DIR}"/agaetr_send.sh
                     ;;
-        --url)      # running a single url. Positional arguments
+                    
+# TODO AND FIX -- needs prefix                    
+        --url)      # ADDING a single url. Positional arguments
                     # --url [--queue] URL
                     shift
                     queue=0
@@ -377,10 +381,6 @@ while [ $# -gt 0 ]; do
                     echo "$XDG_DATA_HOME"
                     echo "$XDG_CACHE_HOME"
                     exit
-                    ;;
-        --file)     # to pull in a specific xml file (from outside flatpak??) it 
-                    # would have to be via stdin then, right?
-                    ;; 
         *)          shift;;
     esac
 done   

@@ -7,76 +7,6 @@
 #
 ##############################################################################
 
-# Set defaults
-#get install directory
-export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-LOUD=0
-
-
-if [ ! -d "${XDG_DATA_HOME}" ];then
-    export XDG_DATA_HOME="${HOME}/.local/share"
-fi
-if [ ! -d "${XDG_CONFIG_HOME}" ];then
-    export XDG_CONFIG_HOME="${HOME}/.config"
-fi
-
-
-
-
-# need to restructure this for multiple command line arguments, plus put file 
-# header because I'm cool like that now
-
-
-
-while [ $# -gt 0 ]; do
-option="$1"
-    case $option
-    in
-    http*)
-        URL="$1"
-        shift
-        ;;
-    -h) display_help
-        shift 
-        ;;        
-    -c) 
-        URL=$(xclip -o)
-        shift 
-        ;;        
-    -u) shift
-        URL="$1"
-        shift 
-        ;;        
-    -g) GUI=TRUE
-        shift
-        ;;
-    -v) #download video=1
-        ACTION="VIDEO"
-        shift
-        ;;
-    -a) #download audio
-        ACTION="AUDIO"
-        shift 
-        ;;        
-    -p) #play video
-        ACTION="PLAY"
-        shift 
-        ;;                
-    esac
-done
-
-
-# fix to add prefixes
-if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-    echo "INI not located; betcha nothing else is set up."
-    exit 89
-fi
-if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
-    echo "Post database not located, exiting."
-    exit 99
-fi
-
-
 # turn this into something from the esac statement
 function loud() {
     if [ $LOUD -eq 1 ];then
@@ -85,12 +15,58 @@ function loud() {
 }
 
 
+##############################################################################
+# 
+# Enter Here
+# 
+##############################################################################
+
+#Set defaults
+
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+LOUD=0
+prefix=""
+
+if [ ! -d "${XDG_DATA_HOME}" ];then
+    export XDG_DATA_HOME="${HOME}/.local/share"
+fi
+if [ ! -d "${XDG_CONFIG_HOME}" ];then
+    export XDG_CONFIG_HOME="${HOME}/.config"
+fi
+
+  -gt 0 ]; do
+option="$1"
+    case $option
+    in
+    --help) 
+        display_help
+        shift 
+        ;;        
+    --verbose) 
+        LOUD=1
+        shift 
+        ;;        
+    --prefix) 
+        shift 
+        prefix="${1}"
+        shift
+        ;;                
+    esac
+done
+
+if [ ! -f "${XDG_CONFIG_HOME}/agaetr/${prefix}agaetr.ini" ];then
+    echo "INI not located; betcha nothing else is set up." >&2
+    exit 89
+fi
+if [ ! -f "$HOME/.local/share/agaetr/${prefix}posts.db" ];then
+    echo "Post database not located, exiting." >&2
+    exit 99
+fi
+
+
 # likewise this bit copying backup posts -- steal from cw-bot
 if [ "$1" != "" ];then
-    if [ "$1" == "--verbose" ];then
-        shift
-        LOUD=1
-    fi
+ 
 
     # if $1 exists, it's from the single processor, and use that 
     # instead of rotating the db but add it to the posted list

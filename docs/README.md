@@ -404,13 +404,6 @@ run as the user (and with the environment) you used to set up the
 online services.**  
 
 
-#TODO - REWRITE ALL THIS 
-- need to have 
-single url 
---queue
---url
-defaults to VALUE of url as LAST passed var
---dry-run
 
 
 * (Optional) Call `rss_preprocessor.sh`.
@@ -450,6 +443,13 @@ blank is default
 
 --verbose -- for loud
 
+#TODO - REWRITE ALL THIS 
+- need to have 
+single url  NO NO NO NO NO.
+--queue ALL JOBS GO TO QUEUE
+--url
+defaults to VALUE of url as LAST passed var
+--dry-run
 
 * shaarli selector switch for multiple configs?
 * Bibliogram in
