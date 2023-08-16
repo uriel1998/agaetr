@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+
+# need to restructure this for multiple command line arguments, plus put file 
+# header because I'm cool like that now
+
 #get install directory
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0

@@ -439,6 +439,18 @@ There are other files in this repository:
 ### Someday/Maybe:
 
 
+
+prefix
+--verbose
+--file
+
+use multiple ini files with a "prefix" for each of the executables (first argument). 
+must set up multiple accounts in toot manually.
+blank is default
+
+--verbose -- for loud
+
+
 * shaarli selector switch for multiple configs?
 * Bibliogram in
 * change queue types to per file
