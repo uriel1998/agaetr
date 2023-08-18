@@ -85,6 +85,19 @@ modules:
       - type: archive
         url: https://github.com/rrthomas/recode/releases/download/v3.7.12/recode-3.7.12.tar.gz
         sha256: 4db1c9076f04dbaa159726f5000847e5e5a83aec8e5c64f8ca04383f6cda12d5
+  - name: sendmail-to-matrix
+    buildsystem: simple
+    build-options:
+      build-args:
+      - --share=network    
+    build-commands:
+      - mv ./sendmail-to-matrix /app/bin/sendmail-to-matrix
+    sources:
+      - type: file
+        dest-filename: sendmail-to-matrix
+        url: https://github.com/tnyeanderson/sendmail-to-matrix/releases/download/v0.1.2/sendmail-to-matrix
+        sha256: 7ece081778f37bde033af4a04b40c9069cd0fb3a7cc7a9ce9dfb6e45affecf57
+    
   - name: bin-install
     buildsystem: simple
     build-commands:
