@@ -18,6 +18,11 @@ modules:
         sha256: 702fb26e73190a3bd77071aa146f507b9817cc4dfce218d2ab87f00cd3bc059d
     config-opts:
       - --with-openssl        
+  - name: pick
+    sources:
+      - type: archive
+        url: https://github.com/mptre/pick/releases/download/v4.0.0/pick-4.0.0.tar.gz
+        sha256: de768fd566fd4c7f7b630144c8120b779a61a8cd35898f0db42ba8af5131edca
   - name: wget
     sources:
       - type: archive
