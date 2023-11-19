@@ -122,7 +122,7 @@ if [[ ! -f "${inifile}" ]]; then
 fi
 # TODO -- add in configurator for matrix, etc    
     echo "Which would you care to configure?"
-    select module in cookies shaarli wallabag mastodon email twitter wayback save feeds quit
+    select module in cookies shaarli wallabag mastodon email wayback save feeds matrix quit
     do
         
     case ${module} in
@@ -278,38 +278,32 @@ fi
             echo "smtp_username = ${smtp_username}" >> "${inifile}"
             echo "smtp_password = ${smtp_password}" >> "${inifile}"
             ;;
-        "twitter")
-            binary=$(grep 'twython =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        "matrix") 
+            binary=$(grep 'sendmail_matrix =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
             if [ ! -f "${binary}" ];then
-                binary=$(which tweet)
+                binary=$(which sendmail-to-matrix)
                 if [ -f "${binary}" ];then
-                    echo "Replacing default tweet binary with ${binary} found on $PATH"
-                    eval $(printf "sed -i \'/^twython =.*/s/.*/twython = \"${binary}\"/' ${inifile}")
+                    echo "Replacing default sendmail-to-matrix binary with ${binary}"
+                    eval $(printf "sed -i \'/^sendmail_matrix =.*/s/.*/sendmail_matrix = \"${binary}\"/' ${inifile}")
                 else
-                    echo "No twython binary found!"
+                    echo "No sendmail-to-matrix binary found!"
                     exit 99
                 fi
             fi
-            echo "You must register a **USER** app at https://apps.twitter.com"
-            echo "and get the **user** API codes for these next prompts."
-            echo "Please input the APP KEY"
-            read appkey
-            echo "Please input the APP SECRET"
-            read appsecret
-            echo "Please input the OAUTH TOKEN"
-            read oauthtoken
-            echo "Please input the OAUTH TOKEN SECRET"
-            read oauthtokensecret
-            eval $(printf "sed -i \'/^APP_KEY =.*/s/.*/APP_KEY = \"${appkey}\"/' ${binary}")
-            eval $(printf "sed -i \'/^APP_SECRET =.*/s/.*/APP_SECRET = \"${appsecret}\"/' ${binary}")
-            eval $(printf "sed -i \'/^OAUTH_TOKEN =.*/s/.*/OAUTH_TOKEN = \"${oauthtoken}\"/' ${binary}")
-            eval $(printf "sed -i \'/^OAUTH_TOKEN_SECRET =.*/s/.*/OAUTH_TOKEN_SECRET = \"${oauthtokensecret}\"/' ${binary}")
-            ;;
-        "save")
-            echo "All saved files  stored under ${XDG_DATA_HOME}/agaetr"
-            echo "If you would like to have a symlink, type"
-            echo "ln -s ${XDG_DATA_HOME}/agaetr /desired/path"
-            ;;
+            
+            echo "Please input the matrix homeserver URL"
+            read mserver
+            echo "Please input the matrix token (get it from Element)"
+            read mtoken
+            echo "Please input the matrix room"
+            read mroom
+            echo "Please input the prefix to the message, if any"
+            read mprefix
+            
+            eval $(printf "sed -i \'/^matrix_server =.*/s/.*/matrix_server = \"${mserver}\"/' ${inifile}")
+            eval $(printf "sed -i \'/^matrix_token =.*/s/.*/matrix_token = \"${mtoken}\"/' ${inifile}")
+            eval $(printf "sed -i \'/^matrix_room =.*/s/.*/matrix_room = \"${mroom}\"/' ${inifile}")
+            eval $(printf "sed -i \'/^matrix_preface =.*/s/.*/matrix_preface = \"${mpreface}\"/' ${inifile}")
         *) echo "Exiting configuration." break ;;
     esac
     done

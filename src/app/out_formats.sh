@@ -286,17 +286,23 @@ function wallabag_send {
 }
 
 
+
 function pdf_capture_send {
-
-
-    # and ffs make the filename timestamped!!
-    #customize outpath!
-    #can also make copy for jpg and png
+    # INCLUDED FOR USE WITH OTHER TOOLS; NOT PART OF AGAETR DUE TO REQUIREMENTS FOR X
+    outdir=$(grep 'pdf_dir =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ -z "${outdir}" ];then
+        outdir="${XDG_DATA_HOME}/agaetr"
+    fi
+    if [ ! -d "${outdir}" ];then
+        mkdir -p "${outdir}"
+    fi
     if [ -f $(which detox) ];then
         dttitle=$(echo "${title}" | detox --inline)
-        outpath="$HOME/${dttitle}.pdf"
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${dttitle}-${dstring}.pdf"
     else
-        outpath="$HOME/${title}.pdf"
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${title}-${dstring}.pdf"
     fi
     
     binary=$(grep 'cutycapt =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
@@ -311,14 +317,23 @@ function pdf_capture_send {
 }
 
 function jpeg_capture_send {
-
+    # INCLUDED FOR USE WITH OTHER TOOLS; NOT PART OF AGAETR DUE TO REQUIREMENTS FOR X
+    outdir=$(grep 'jpg_dir =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ -z "${outdir}" ];then
+        outdir="${XDG_DATA_HOME}/agaetr"
+    fi
+    if [ ! -d "${outdir}" ];then
+        mkdir -p "${outdir}"
+    fi
 
 
     if [ -f $(which detox) ];then
         dttitle=$(echo "${title}" | detox --inline)
-        outpath="$HOME/${dttitle}.jpeg"
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${dttitle}-${dstring}.jpg"
     else
-        outpath="$HOME/${title}.jpeg"
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${title}-${dstring}.jpg"
     fi
     
     binary=$(grep 'cutycapt =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
@@ -331,3 +346,34 @@ function jpeg_capture_send {
         eval ${outstring}
     fi
 }
+
+function png_capture_send {
+    # INCLUDED FOR USE WITH OTHER TOOLS; NOT PART OF AGAETR DUE TO REQUIREMENTS FOR X
+    outdir=$(grep 'png_dir =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ -z "${outdir}" ];then
+        outdir="${XDG_DATA_HOME}/agaetr"
+    fi
+    if [ ! -d "${outdir}" ];then
+        mkdir -p "${outdir}"
+    fi
+    if [ -f $(which detox) ];then
+        dttitle=$(echo "${title}" | detox --inline)
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${dttitle}-${dstring}.png"
+    else
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${title}-${dstring}.png"
+    fi
+    
+    binary=$(grep 'cutycapt =' "$HOME/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ ! -f "$binary" ];then
+        binary=$(which cutycapt)
+    fi
+    if [ -f "$binary" ];then
+        outstring=$(printf "%s" "$link" )
+        outstring=$(echo "$binary --smooth --insecure --url=\"$outstring\" --out=\"${outpath}\"")
+        eval ${outstring}
+    fi
+}
+
+
