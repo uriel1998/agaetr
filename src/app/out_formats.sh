@@ -103,21 +103,24 @@ function shaarli_send {
 
 function save_html_send {
 
-    #THIS IS THE BASE PATH WHERE THIS MODULE WILL SAVE COPIES
-    HtmlSavePath="${XDG_DATA_HOME}/agaetr/save"
-
+    outdir=$(grep 'html_dir =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ -z "${outdir}" ];then
+        outdir="${XDG_DATA_HOME}/agaetr"
+    fi
+    if [ ! -d "${outdir}" ];then
+        mkdir -p "${outdir}"
+    fi
     if [ -f $(which detox) ];then
         dttitle=$(echo "${title}" | detox --inline)
-        outpath="${HtmlSavePath}/${dttitle}"
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${dttitle}-${dstring}"
     else
-        outpath="${HtmlSavePath}/${title}"
-    fi
-    
-    nowdir=$(echo "$PWD")
-    mkdir "${outpath}"
-    cd "${outpath}"
-
-    
+        dstring=$(date +%Y%m%d-%H%M%S)
+        outpath="${outdir}/${title}-${dstring}"
+    fi    
+    nowdir=$(echo "${PWD}")
+    mkdir -p "${outpath}"
+    cd "${outpath}"    
     binary=$(grep 'wget =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     if [ ! -f "$binary" ];then
         binary=$(which wget)
@@ -126,6 +129,7 @@ function save_html_send {
         outstring=$(echo "$binary -H --connect-timeout=2 --read-timeout=10 --tries=1 -p -k --convert-links --restrict-file-names=windows -e robots=off \"${link}\"")
         eval "${outstring}"
     fi
+    cd "${nowdir}"
 }
 
  
