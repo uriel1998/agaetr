@@ -131,12 +131,15 @@ function save_html_send {
  
 function wayback_send {
 
-wayback_access=$(grep wayback_access "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-wayback_secret=$(grep wayback_secret "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    # Get your S3-like keys, following these instructions
+    # or at https://archive.org/account/s3.php
+    # https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit#
 
-curl -X POST -H "Accept: application/json" -H "Authorization: LOW ${wayback_access}:${wayback_secret}" -d"url=${link}&capture_outlinks=1&capture_screenshot=1&skip_first_archive=1&if_not_archived_within=1d'" https://web.archive.org/save
+    wayback_access=$(grep wayback_access "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    wayback_secret=$(grep wayback_secret "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
-#https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit#
+    curl -X POST -H "Accept: application/json" -H "Authorization: LOW ${wayback_access}:${wayback_secret}" -d"url=${link}&capture_outlinks=1&capture_screenshot=1&skip_first_archive=1&if_not_archived_within=1d'" https://web.archive.org/save
+
 }
 
 
@@ -213,45 +216,30 @@ function toot_send {
 
 
 function matrix_send () {
-    use sendmail-matrix
-
-https://github.com/tnyeanderson/sendmail-to-matrix/releases/download/v0.1.2/sendmail-to-matrix
-
-$ sendmail myuser@localhost
-> Subject: THIS IS NOT A TEST
->
-> A song by Bikini Kill
-
-cat email.txt | /path/to/sendmail-to-matrix
-
-
-
-{
-  "server": "https://example.com",
-  "token": "tokenfromelementetc",
-  "room": "!DOESBETTERWITHTHEACTUALNAME:example.com",
-  "preface": "agaetr: "
+    # TODO
+    # Need to write setup 
+    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+    
+    binary=$(grep 'sendmail_matrix =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ ! -f "$binary" ];then
+        binary=$(which sendmail-to-matrix)
+    fi
+    if [ -f "$binary" ];then
+        mserver=$(grep 'matrix_server =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        mtoken=$(grep 'matrix_token =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        mroom=$(grep 'matrix_room =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        mpreface=$(grep 'matrix_preface =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        # No length requirements here!
+        tags=$(echo "$hashtags"  | sed 's|#||g' )
+        if [ ! -z "$imgurl" ];then
+            printf "(%s) %s - %s %s %s %s" "$pubtime" "$title" "$description" "$imgurl" "$link" "$hashtags" | "${binary}" --server "${mserver}" --preface "${mpreface}" --room "${mstring}" --token "${mtoken}" 
+        else
+            printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags" | "${binary}" --server "${mserver}" --preface "${mpreface}" --room "${mstring}" --token "${mtoken}" 
+        fi   
+    fi
 }
 
-}
 
-function irc_send {
-    https://serverfault.com/a/259877
-
- 12
-
-IRC is a simple text and line oriented protocol, so it can be done with the basic linux tools. So, without installing ii:
-
-echo -e 'USER bot guest tolmoon tolsun\nNICK bot\nJOIN #channel\nPRIVMSG #channel :Ahoj lidi!\nQUIT\n' \
-| nc irc.freenode.net 6667
-
-In this command, nc does the network connection, and you send a login info, nick, join a channel named "#channel" amd send a message "Ahoj lidi!" to that channel. And quit the server.
-
-
-    add \nQUIT at the end of the list of commands to quit right after sending the one message – 
-
-
-}
 
 function rss_gen_send {
 

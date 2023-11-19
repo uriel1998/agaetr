@@ -113,15 +113,18 @@ display_readme(){
 ##############################################################################
 
 configurators(){
-    
-# TODO -- needs prefix (or all) for each configurator
-# -- chose from existing inis or proffer to make new one
+
+
+#choose prefix of ini
+inifile=$(ls ${XDG_CONFIG_HOME}/agaetr/*.ini | fzf)
+if [[ ! -f "${inifile}" ]]; then
+    infile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+fi
 # TODO -- add in configurator for matrix, etc    
     echo "Which would you care to configure?"
     select module in cookies shaarli wallabag mastodon email twitter wayback save feeds quit
     do
-    
-    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"  
+        
     case ${module} in
         "feeds") 
             writefeed=""
