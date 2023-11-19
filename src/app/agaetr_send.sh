@@ -183,7 +183,7 @@ if [ ${#link} -gt 36 ]; then
 fi
 
     
-    
+#### TODO URGENTLY MOTHERFUCKER    
 # ack - need to have out determined by the ini files, and haven't sorted that yet.    
     
 # Parsing enabled out systems. Find files in out_enabled, then import 

@@ -246,20 +246,19 @@ function matrix_send () {
 
 
 function rss_gen_send {
+    
+    RSSSavePath=$(grep 'rss_output =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    if [ ! -f "${RSSSavePath}" ];then
+        printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
+        printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
+        printf '  <channel>\n' >> "${RSSSavePath}"
+        printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
+        printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
+        printf '    <link rel="self" href="https://stevesaus.me/output.xml" />\n' >> "${RSSSavePath}"
+        printf '  </channel>\n' >> "${RSSSavePath}"
+        printf '</rss>\n' >> "${RSSSavePath}"    
 
-RSSSavePath="$XDG_DATA_HOME/agaetr/output.xml"
-
-if [ ! -f "${RSSSavePath}" ];then
-    printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
-    printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
-    printf '  <channel>\n' >> "${RSSSavePath}"
-    printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
-    printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
-    printf '    <link rel="self" href="https://stevesaus.me/output.xml" />\n' >> "${RSSSavePath}"
-    printf '  </channel>\n' >> "${RSSSavePath}"
-    printf '</rss>\n' >> "${RSSSavePath}"    
-
-fi
+    fi
     TITLE="${title}"
     LINK=$(printf "href=\"%s\"" "${link}")
     DATE="`date`"
@@ -273,8 +272,6 @@ fi
          -s "//item[1]" -t elem -n description -v "$DESC" \
          -s "//item[1]" -t elem -n guid -v "$GUID" \
          -d "//item[position()>10]"  "${RSSSavePath}" ; 
-
-
 }
 
 

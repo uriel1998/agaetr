@@ -122,11 +122,25 @@ if [[ ! -f "${inifile}" ]]; then
 fi
 # TODO -- add in configurator for matrix, etc    
     echo "Which would you care to configure?"
-    select module in cookies shaarli wallabag mastodon email wayback save feeds matrix quit
+    select module in cookies shaarli wallabag mastodon email wayback save feeds rss matrix quit
     do
         
     case ${module} in
+        "save")
+            echo "What directory should HTML files be saved to?"
+            read savedir
+            eval $(printf "sed -i \'/^html_dir =.*/s/.*/html_dir = \"${savedir}\"/' ${inifile}")
+            ;;
+        "rss")
+            echo "What file should the RSS XML output use?"
+            read savefile
+            eval $(printf "sed -i \'/^rss_output =.*/s/.*/rss_output = \"${savefile}\"/' ${inifile}")
+            ;;            
         "feeds") 
+        
+        
+            # OKAY, FUCK, WHICH WAY IS PYTHON WRITTEN - SRC or OG? DO THAT
+        
             writefeed=""
             feednum=$(date +%Y%m%d%H%m%S)
             writefeed=$(printf "%s\n[Feed%s]" "${writefeed}" "${feednum}")
@@ -338,16 +352,16 @@ while [ $# -gt 0 ]; do
         *muna)     # Just running muna, nothing to see here.
                     shift
                     URL="${1}"
-                    "${SCRIPT_DIR}"/muna.sh "${URL}"
+                    "${SCRIPT_DIR}/muna.sh" "${URL}"
                     exit    
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
 
 # TODO -- needs prefix (or all)                     
         --pull)     # perform a pull run. can be combined with other inputs
-                    "${SCRIPT_DIR}"/rss_preprocessor.sh
+                    "${SCRIPT_DIR}/rss_preprocessor.sh"
                     python_bin=$(which python3)
-                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
+                    "${python_bin}" "${SCRIPT_DIR}/agaetr_parse.py"                    
                     ;;
 
 # TODO -- needs prefix (or all)                     
