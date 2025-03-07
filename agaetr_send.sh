@@ -184,16 +184,24 @@ unredirector
 link="$url"
 
 
-
-
-## THIS IS WHERE WE WILL GET ARCHIVE VERSIONS
+if [ $ARCHIVEIS -eq 1 ];then 
+    source "$SCRIPT_DIR/archivers/archiveis.sh"
+    # this should now set ARCHIVEIS to the Archiveis url
+    archiveis_send
+fi
+if [ $IARCHIVE -eq 1 ];then
+    source "$SCRIPT_DIR/archivers/wayback.sh"
+    # this should now set IARCHIVE to the IARCHIVE url
+    wayback_send
+    # I may need to put in a shortening thing here
+fi
 
 
 # SHORTENING OF URL - moved to function here b/c only yourls is supported.
-
-if [ ${#link} -gt 36 ]; then 
-    loud "Sending to shortener function"
-    # need to know if there's anything in enabled
+if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
+    loud "Sending URL to shortener function"
+    # this will overwrite the link
+    yourls_shortener
 fi
 
     

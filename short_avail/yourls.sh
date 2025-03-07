@@ -35,9 +35,14 @@ if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then
         loud "Shortner failure, using original URL of"
         loud "$link"
     else
-        # may need to add verification that it starts with http here?
-        loud "Using shortened link $shorturl"
-        link=$(echo "$shorturl")
+        #verification that it starts with http here
+        if [[ $shorturl == http* ]];then
+            
+            loud "Using shortened link $shorturl"
+            link=$(echo "$shorturl")
+        else
+            loud "Unknown error from shortener, incorrect url returned"
+        fi
     fi
 else
     # no configuration found, so just passing it back.

@@ -10,16 +10,12 @@
 
 
 function wayback_send {
-
-
-
     binary=$(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-
     outstring=$(echo "$binary -s --url ${link}")
     #echo "$outstring"
-    
     # except we WANT this return -- this returns the archiveis URL, which we need to pass back.
-    eval "${outstring}" | head -n 2 | tail -n 1 
+    # so assign to a GLOBAL variable that gets passed out.
+    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1)
 
 #Archive URL:
 #https://web.archive.org/web/20250307205449/https://ideatrash.net/
