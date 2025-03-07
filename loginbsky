@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+
+export BSKYSHCLI_POST_DEFAULT_LANGUAGES='en'
+export BSKYSHCLI_SELFHOSTED_DOMAIN=sky.example.com
+bsky login --handle example_username --password example_password
+PATH=$PATH:/home/USER/.local/bsky_sh_cli/bin
+export PATH

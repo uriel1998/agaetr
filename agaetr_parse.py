@@ -22,24 +22,28 @@ import urllib.parse
 # Defining configuration locations and such
 ########################################################################
 
+ 
+if len(sys.argv) != 2:
+    prefix = ""
+else:
+    prefix = sys.argv[1]
+ 
 appname = "agaetr"
 appauthor = "Steven Saus"
 #Where to store data, duh
 datadir = user_data_dir(appname)
-cachedir = user_cache_dir(appname)
+cachedir = user_data_dir(appname)
 configdir = user_config_dir(appname)
 if not os.path.isdir(datadir):
     os.makedirs(user_data_dir(appname))
-#local cache
-if not os.path.isdir(cachedir):
-    os.makedirs(user_cache_dir(appname))
-#YUP
 if not os.path.isdir(configdir):
     os.makedirs(user_config_dir(appname))
-ini = os.path.join(configdir,'agaetr.ini')
-db = os.path.join(datadir,'posts.db')
-posteddb = os.path.join(datadir,'posted.db')         
-tmp = os.path.join(cachedir,'posts.db')
+ini = os.path.join(configdir,prefix + 'agaetr.ini')
+
+# This needs to be split
+db = os.path.join(datadir,prefix + 'posts.db')
+posteddb = os.path.join(datadir,prefix + 'posted.db')         
+tmp = os.path.join(datadir,prefix + 'cache_posts.db')
 
 Path(posteddb).touch()
 Path(db).touch()
@@ -63,22 +67,28 @@ def post_is_in_db(title):
 ########################################################################
 # Parsing that feed!
 ########################################################################
-def parse_that_feed(url,sensitive,CW,GCW):
+def parse_that_feed(url,sensitive,CW,GCW,masto,prefix):
 
     feed = feedparser.parse(url)
 
     for post in feed.entries:
             
         # if post is already in the database, skip it
-
-        title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
-        post.title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+        if hasattr(post, 'title'):
+            title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+            post.title = post.title.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+            print(title)
+        else:
+            title = post.link
+            post.title = post.link
+            
+            
         itemurl = post.link
         # cleaning up descriptions and summaries.  Boy, are they trash.
         if hasattr(post, 'description'):
             if "permalink" not in (str.lower(post.description)):
                 post_description = post.description
-                post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+                post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', ' ').replace('</p>', ' ').replace('|', ' ')
                 splitter = post_description.split()
                 post_description =" ".join(splitter)
                 post_description =BeautifulSoup(post_description, 'html.parser').text
@@ -88,12 +98,15 @@ def parse_that_feed(url,sensitive,CW,GCW):
             if hasattr(post, 'summary'):
                 if "permalink" not in (str.lower(post.summary)):
                     post_description = post.summary
-                    post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', '').replace('</p>', '').replace('|', ' ')
+                    post_description = post_description.replace('\n', ' ').replace('\r', '').replace('<p>', ' ').replace('</p>', ' ').replace('|', ' ')
                     splitter = post_description.split()
                     post_description =" ".join(splitter)
                     post_description =BeautifulSoup(post_description, 'html.parser').text
                 else:
                     post_description = ""
+        
+        if len(post_description) > 475:
+            post_description = (post_description[:475] + '...')
         
         # While this avoids errors from the TT-RSS feed, it provides a bad date
         # And since the python module pulls in the feed directly, hence the need
@@ -163,8 +176,11 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             if d in ContentWarningList.split():
                                 cwmarker += 1
                                 ContentWarningString = ContentWarningString + " " + keyword
-                    # double checking with title as well
-                    bob = str.lower((', '.join(tags)) + ' ' + post.title)
+                    # double checking with title and description as well
+                    if hasattr(post, 'description'):
+                        bob = str.lower((', '.join(tags)) + ' ' + post.title + post_description)
+                    else:
+                        bob = str.lower((', '.join(tags)) + ' ' + post.title)
                     for d in ContentWarningList.split():
                         if d in bob.split():
                             cwmarker += 1
@@ -173,11 +189,9 @@ def parse_that_feed(url,sensitive,CW,GCW):
             imgalt=None
             imgurl=None
             # Look for image in media content first
-            if 'media_content' in post:
-        
+            if hasattr(post, 'media_content'):
                 # Trying the sleep function here in case there's flood protection on 
                 # the server we're checking images from
-
                 time.sleep(2)
                 mediaContent=post.media_content
                 for item in post.media_content:
@@ -199,7 +213,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                                         imgalt = post.title
                                         break
                     amgurl = item['url'].split('?')
-                    if amgurl[0].endswith("jpg"):
+                    if amgurl[0].endswith("jpg") or amgurl[0].endswith("jpeg") or amgurl[0].endswith("png"):
                         r = requests.head(amgurl[0], timeout=10)
                         if (int(r.status_code) == 200):
                             imgurl = amgurl[0]
@@ -250,19 +264,31 @@ def parse_that_feed(url,sensitive,CW,GCW):
                         else:
                             imgalt = imgalt.strip()
             print("# Adding " + post.title)
+
+
+        # If coming from a Mastodon source, the hashtags are already in the
+        # post description. Therefore, we will use them above for content warning 
+        # checks and the like, but will not output them.
+        # TODO: however, I need to pull CW tags into hashtags at the end    
             
             if cwmarker > 0:  
                 words = ContentWarningString.split()
                 ContentWarningString = (",".join(sorted(set(words), key=words.index)))
                 HashtagsString = str.lower(' '.join(hashtags))
                 words2 = HashtagsString.split()
-                HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + str.lower(ContentWarningString) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n") 
+                if masto is True:
+                    HashtagsString = (" ")
+                else:
+                    HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
+                f.write(thetime + "|" + prefix + " " + post.title + "|" + post.link + "|" + str.lower(ContentWarningString) + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n") 
             else:
                 HashtagsString = str.lower(' '.join(hashtags))
                 words2 = HashtagsString.split()
-                HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
-                f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
+                if masto is True:
+                    HashtagsString = (" ")
+                else:
+                    HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
+                f.write(thetime + "|" + prefix + " " + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
             
             f.close
         else:
@@ -277,7 +303,6 @@ def parse_that_feed(url,sensitive,CW,GCW):
 config = configparser.ConfigParser()
 config.read(ini)
 sections=config.sections()
-
 ########################################################################
 # Begin loop over feedlist
 ########################################################################
@@ -287,7 +312,16 @@ ContentWarningString = str.lower(config['DEFAULT']['GlobalCW'])
 for x in sections:
     if "feed" in (str.lower(x)):
         feed=config[x]['url']
+        if feed[0] == '/':
+            feed = os.path.join(configdir,feed)
+
         feed_sensitive=config[x]['sensitive']
+        feed_prefix=config[x]['Prefix']      
+        # Necessary because Mastodon feeds also have hashtags in the body description.
+        if 'n' in config[x]['Mastodon']:
+            feed_masto=False
+        else:
+            feed_masto=True
         if 'y' in config['DEFAULT']['ContentWarning']:
             feed_CW=config['DEFAULT']['ContentWarning']
             feed_GlobalCW=config[x]['GlobalCW'] + " " + str.lower(config['DEFAULT']['GlobalCW'])
@@ -295,7 +329,7 @@ for x in sections:
             feed_CW=config[x]['ContentWarning']
             feed_GlobalCW=config[x]['GlobalCW']
             
-        parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW)
+        parse_that_feed(feed,feed_sensitive,feed_CW,feed_GlobalCW,feed_masto,feed_prefix)
 
 shutil.copyfile(db,tmp)
 
