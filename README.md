@@ -62,8 +62,7 @@ This project is licensed under the Apache License. For the full license, see `LI
 
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
-
-Or, y'know, they're in the flatpak.
+ 
 
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
@@ -117,6 +116,10 @@ OR
 * `pip install feedparser`  
 * `pip install requests`
 
+OR 
+
+`sudo apt install python3-appdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
+
 Any service you would like to use needs to have a symlink made from the "avail" 
 directory to the "enabled" directory. For example:
 
@@ -139,22 +142,7 @@ If you create one for another service, please contact me so I can merge it in
 (this repository is mirrored multiple places).
 
 
-### Shorteners
-
-#### murls  
-
-Murls is a free service and does not require an API key. 
-
-#### bit.ly  
-
-**IMPORTANT NOTE** The bit.ly api is changing in March 2020 and is getting 
-more complex; I've not updated/fixed this yet.
-
-If you are using bit.ly, you will need a username and bit.ly API key.
-Place the values of your login and API key into `agaetr.ini`.
-
-`bitly_login =`  
-`bitly_api =`  
+### Shorteners and Archivers
 
 #### YOURLS  
 
@@ -164,24 +152,32 @@ Place the URL of your instance and API key into `agaetr.ini`.
 `yourls_api =`  
 `yourls_site =`  
 
+#### ARCHIVE.IS
+
+Install the `archiveis` cli tool from [https://github.com/palewire/archiveis](https://github.com/palewire/archiveis), 
+or if you have pipx, by `pipx install archiveis`.
+
+Find the location of the binary by typing `which archiveis`, then place that in 
+the ini file. *Placing the binary location turns on archiving all links*.
+
+#### WAYBACK MACHINE
+
+Install the `waybackpy` cli tool from [https://pypi.org/project/waybackpy/](https://pypi.org/project/waybackpy/), 
+or if you have pipx, by `pipx install waybackpy`.
+
+Find the location of the binary by typing `which waybackpy`, then place that in 
+the ini file. *Placing the binary location turns on archiving all links*.
+
+
+
 ### Outbound parsers
 
 * Mastodon:
-* Twitter  - **IMPORTANT- SEE BELOW**
-* Twitter 
 * Shaarli 
 * Wallabag                 
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any 
 you are not using; adding additional services should follow the pattern shown.  
-
-#### Twitter via Oysttyer  
-
-Install and set up [oysttyer](https://github.com/oysttyer/oysttyer). Place the 
-location of the binary into `agaetr.ini`.  
-
-While `Oysttyer` is by far the easier to set up, it does *not* allow you to 
-specify the image that is tweeted.  For that, you need `twython`, below.  
 
 ### Shaarli (output)
 
@@ -211,42 +207,23 @@ Note that shorteners and wallabag don't get along all the time.
 Install and set up [toot](https://github.com/ihabunek/toot/).  Place the 
 location of the binary into `agaetr.ini`.
 
-#### Twitter using twython 
+#### Bsky via 
 
-This one is a little more complicated, but this is the Twitter client that 
-will post images directly to Twitter.  If this is too complicated, use 
-`oysttyer` above.
+#TODO - WRITE THIS UP
 
-Install [twython](https://github.com/ryanmcgrath/twython) - preferably in your 
-virtual environment that `agaetr` is in via `pip install -U twython`.
 
-In this archive are two files - `tweet.py` and `tweet.patch` - that require a 
-little explanation. I did not need the full functionality of [twython-tools](https://github.com/adversary-org/twython-tools), 
-and in fact, had a bit of a problem getting it working properly. Further, the 
-functionality I *did* want - posting an image to Twitter - was always 
-*interactive* when I wanted to enter the file on the command line. 
+#### Matrix via 
 
-So I (thank you Apache2 license) ripped out the authentication portions and 
-hardcoded them, ripped out all the interactive bits, and remade the Twython-tools 
-program `tweet-full.py` into `tweet.py`. 
+#TODO - WRITE THIS UP
 
-If you wish to see the difference, `tweet.patch` is included for you to verify 
-my changes to the code.
+#### XMPP via 
 
-You must register a [Twitter application](https://apps.twitter.com) and get 
-**user** API codes and type them manually into `tweet.py`.
+#TODO - WRITE THIS UP
 
-`APP_KEY = ""`  
-`APP_SECRET = ""`  
-`OAUTH_TOKEN = ""`  
-`OAUTH_TOKEN_SECRET = ""`  
+#### RSS via 
 
-Place the location of the binary into `agaetr.ini`.
+#TODO - WRITE THIS UP
 
-#### Submit to the Wayback Machine (output)  
-
-While there is an official client, I wrote this using curl calls and [API Keys](https://archive.org/account/s3.php). 
-You need an account there to get your own API keys.  Place them into `agaeter.ini`.
 
 
 ## 6. Feeds Setup
@@ -424,9 +401,7 @@ put these into cronjobs.
 
 There are other files in this repository:
 
-* `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
-* `unredirector_old.sh` - The original program/function used by `agaetr` to remove redirections and shortening.  
-* `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.   
+* `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
 
 ## 12. TODO
 
@@ -440,15 +415,11 @@ There are other files in this repository:
 
 
 * shaarli selector switch for multiple configs?
-* Bibliogram in
 * change queue types to per file
 * incorporate some from newsbeuter-dangerzone
 * test INBOUND wallabag - seems to be broken?
-* In and out - Instagram? 
 * Per feed output selectors (though that's gonna be a pain)
 * Check that send exits cleanly if there's no articles !!
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 * If hashtags are in description or title, make first occurance a hashtag
-* Create some kind of homespun CW for Twitter, etc
-* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram, Internet Archive, archivebox
 * XMPP IN AND OUT VIA BOT

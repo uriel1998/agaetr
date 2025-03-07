@@ -188,12 +188,14 @@ if [ $ARCHIVEIS -eq 1 ];then
     source "$SCRIPT_DIR/archivers/archiveis.sh"
     # this should now set ARCHIVEIS to the Archiveis url
     archiveis_send
+    description=" ais: ${ARCHIVEIS}"
 fi
 if [ $IARCHIVE -eq 1 ];then
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
     wayback_send
     # I may need to put in a shortening thing here
+    description="${description} ia: ${IARCHIVE} "
 fi
 
 
@@ -203,10 +205,6 @@ if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
     # this will overwrite the link
     yourls_shortener
 fi
-
-    
-    
-# ack - need to have out determined by the ini files, and haven't sorted that yet.    
     
 # Parsing enabled out systems. Find files in out_enabled, then import 
 # functions from each and running them with variables already established.
