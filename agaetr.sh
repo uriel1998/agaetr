@@ -116,7 +116,7 @@ configurators(){
 ##############################################################################
 
 # -- chose from existing inis or proffer to make new one
-# TODO -- add in configurator for matrix, etc    
+# TODO -- add in configurator for matrix, archiveis  
     echo "Which would you care to configure?"
     select module in cookies shaarli wallabag mastodon email twitter wayback save feeds quit
     do
@@ -190,8 +190,7 @@ configurators(){
             echo "Please input the access key"
             read accesskey
             echo "Please input the secret key"
-            read accesssecret
-          
+            read accesssecret          
             eval $(printf "sed -i \'/^wayback_access =.*/s/.*/wayback_access = \"${accesskey}\"/' ${inifile}")
             eval $(printf "sed -i \'/^wayback_secret =.*/s/.*/wayback_secret = \"${accesssecret}\"/' ${inifile}")
             ;;

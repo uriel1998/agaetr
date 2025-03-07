@@ -1,15 +1,27 @@
 # bespoke it.  Can't fix everyone's issue.
 # toot
-# bsky - add configurator
-
+# bsky - add configurator -- update
+# archive.is  -- add into readme
+# swap wayback to waybackpy via pipx - https://pypi.org/project/waybackpy/
 test add single url
 
 #### incorporate adding these to the post
-# archive.org
-# archive.is
+# archive.org - https://pypi.org/project/waybackpy/
+# archive.is -  https://github.com/palewire/archiveis
+
+SO OUR FLOW WILL HAVE TO BE
+- if archive.is,
+    do first, capture url
+- if internet archive
+    do second, capture url
+    (shorten that url)
+
+
 # lemmy
 # any other open server socials worth posting to?
 # Something like a "daily urls" post?
 # better tagging
 # removal of the short blurb
 # incorporate some ai summary shit? Maybe for image ID? Still, ew.
+
+
