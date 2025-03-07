@@ -29,7 +29,7 @@ input (particularly RSS feeds) and then share them to various social media outpu
 
 This system is designed for *single user* use, as API keys are required.
 
-Tested with a feeds from:
+Tested with feeds from:
 
 * [dlvr.it](https://dlvrit.com/) 
 * [shaarli](https://github.com/shaarli/Shaarli) instances (see note below)
@@ -39,9 +39,6 @@ Tested with a feeds from:
 * [DeviantArt](https://www.deviantart.com)
 * [YouTube](https://youtube.com) (particularly public playlists, like favorites)
 * [UPI](https://rss.upi.com/news/news.rss)
-
-The preprocessing script is available (with examples) for fixing a few things 
-with WordPress and TT-RSS "published articles" feeds.  
 
 `agaetr` can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
@@ -66,12 +63,29 @@ This project is licensed under the Apache License. For the full license, see `LI
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
 
+Or, y'know, they're in the flatpak.
+
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
 * [wget](https://www.gnu.org/software/wget/)  
-* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)  
+* [gawk](http://www.gnu.org/software/gawk/manual/gawk.html)  
 * [grep](http://en.wikipedia.org/wiki/Grep)  
 * [curl](http://en.wikipedia.org/wiki/CURL)  
+* [sed]
+* [detox]
+* [xmlstarlet]
+* [imagemagick]
+* lynx
+* pandoc
+* html-xml-utils
+
+## 4. Installation
+
+The easiest way is to use the flatpak. *Seriously.* There's lots of fiddly bits 
+here. If you are using the flatpak, skip to Configuration.
+
+
+### Manual installation
 
 You will need some variety of posting mechanism and optionally an URL 
 shortening mechanism. See [Services Setup](#5-services-setup) for details.
@@ -84,7 +98,6 @@ of python dependencies.  Instructions on how to do that are beyond the scope of
 this document.  It is assumed that you have created and activated the 
 virtualenv henceforth.
 
-## 4. Installation
 
 * `mkdir -p $HOME/.config/agaetr`
 * `mkdir -p $HOME/.local/agaetr`
@@ -176,6 +189,16 @@ Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarl
 Make sure you set up the configuration file for the client properly. Place the 
 location of the binary into `agaetr.ini`.
 
+If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used. Multiple shaarli configs can be
+specified in `agaetr.ini` using this format:
+
+```
+[shaarli_config NAME]
+shaarli_config = /path/to/config/file
+```
+
+At present, the client will loop through ALL configured shaarli instances.
+
 #### Wallabag (output)
 
 Install and set up [Wallabag-cli](https://github.com/Nepochal/wallabag-cli). 
@@ -220,20 +243,27 @@ You must register a [Twitter application](https://apps.twitter.com) and get
 
 Place the location of the binary into `agaetr.ini`.
 
+#### Submit to the Wayback Machine (output)  
+
+While there is an official client, I wrote this using curl calls and [API Keys](https://archive.org/account/s3.php). 
+You need an account there to get your own API keys.  Place them into `agaeter.ini`.
+
+
 ## 6. Feeds Setup
 
 Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a
 header line `[Feed#]` with a different number for each feed. 
 
 If a feed is being preprocessed (see below) or you have the RSS as an 
-XML file, you can put the filename directly into `agaetr.ini`.  The options 
-are explained in [Feed Options](#8-feed-options) below.
+XML file, you can put the filename directly into `agaetr.ini`, **RELATIVE TO `$XDG_CONFIG_HOME/agaetr`**.  
+
+The options are explained in [Feed Options](#8-feed-options) below.
 
 For example:
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /feeds/ideatrash_parsed.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -247,6 +277,12 @@ GlobalCW = ideatrash
 ```
 
 ## 7. Feed Preprocessing
+
+This is being incorporated into the entire flow of the system. However, if you're 
+using flatpak, please keep in mind that the binaries called by your "cmd" must be 
+accessible either because they're inside the flatpak or because you've given 
+the flatpak permissions (e.g. through flatseal or the like)
+
 
 While RSS is *supposed* to be a standard... it isn't. Too often there are 
 unusual or irregular elements in an RSS feed.
@@ -309,7 +345,7 @@ there are no content warnings and images are presented normally.
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /feeds/ideatrash_parsed.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -325,6 +361,14 @@ url = https://ideatrash.net/feed
 sensitive = no
 ContentWarning = yes
 GlobalCW = 
+
+# If a path, it must be relative to $XDG_DATA_HOME/agaetr and begin with a slash
+# $XDG_DATA_HOME *is* different if you're using Flatpak!
+# note the source and command. 
+[Feed4]
+src = https://ideatrash.net/feed
+cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+url = /relative/path/to/xml/filename.xml
 
 ```
 
@@ -360,6 +404,15 @@ run as the user (and with the environment) you used to set up the
 online services.**  
 
 
+#TODO - REWRITE ALL THIS 
+- need to have 
+single url 
+--queue
+--url
+defaults to VALUE of url as LAST passed var
+--dry-run
+
+
 * (Optional) Call `rss_preprocessor.sh`.
 * `agaetr_parse.py` to pull down new articles from feeds.
 * `agaetr_send.sh` to send *a* post to the activated social media services
@@ -385,6 +438,11 @@ There are other files in this repository:
 
 ### Someday/Maybe:
 
+
+* shaarli selector switch for multiple configs?
+* Bibliogram in
+* change queue types to per file
+* incorporate some from newsbeuter-dangerzone
 * test INBOUND wallabag - seems to be broken?
 * In and out - Instagram? 
 * Per feed output selectors (though that's gonna be a pain)
@@ -393,3 +451,4 @@ There are other files in this repository:
 * If hashtags are in description or title, make first occurance a hashtag
 * Create some kind of homespun CW for Twitter, etc
 * Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram, Internet Archive, archivebox
+* XMPP IN AND OUT VIA BOT
