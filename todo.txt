@@ -1,6 +1,9 @@
 # bespoke it.  Can't fix everyone's issue.
 # toot
-# bsky
+# bsky - add configurator
+
+test add single url
+
 #### incorporate adding these to the post
 # archive.org
 # archive.is

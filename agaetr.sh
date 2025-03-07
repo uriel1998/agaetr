@@ -76,7 +76,6 @@ display_help(){
 ##############################################################################    
     echo "###################################################################"
     echo "# Standalone: /path/to/agaetr.sh [options]"
-    echo "# Flatpak: flatpak run com.stevesaus.agaetr [options] "
     echo "# Info ############################################################"
     echo "# --help:  show help "
     echo "# --configure: enter configurator"
@@ -86,8 +85,6 @@ display_help(){
     echo "# --pull: draw in configured RSS sources"
     echo "# --push: push out from queue"
     echo "# --muna [URL]: unredirect a URL "
-    # what was this for?
-    echo "# --keyword: Keyword that applies to all input that follows"
     echo "# --version: report version  "
     echo "###################################################################"
 }
@@ -524,7 +521,7 @@ while [ $# -gt 0 ]; do
                     ;;                    
         *muna)     # Just running muna, nothing to see here.
                     shift
-                    URL="${1}"
+                    URL="${@}"
                     "${SCRIPT_DIR}"/muna.sh "${URL}"
                     exit    
                     ;;
