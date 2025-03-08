@@ -13,7 +13,7 @@ function archiveis_send {
     binary=$(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     outstring=$(echo "$binary ${link} -ua \"Mozilla/5.0 (X11; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0\"")
-    # so assign to a GLOBAL variable that gets passed out.
+    # so assign to a GLOBAL variable that gets passed out. Error handling done by the calling script.
     ARCHIVEIS=$(eval "${outstring}")
 }
 

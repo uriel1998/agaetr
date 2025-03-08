@@ -57,6 +57,11 @@ else
     if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
         IARCHIVE=1
     fi
+    if [ IARCHIVE -eq 1 ] || [ ARCHIVEIS -eq 1 ];then
+        ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    else
+        ArchiveLinks=ignore
+    fi
 fi
 
 
@@ -184,19 +189,40 @@ unredirector
 link="$url"
 
 
+# Dealing with archiving links
+description2=""
 if [ $ARCHIVEIS -eq 1 ];then 
     source "$SCRIPT_DIR/archivers/archiveis.sh"
     # this should now set ARCHIVEIS to the Archiveis url
     archiveis_send
-    description=" ais: ${ARCHIVEIS}"
+    # Making sure we get a URL back
+    if [[ $ARCHIVEIS == http* ]];then
+        description2=" ais: ${ARCHIVEIS}"
+    fi
 fi
 if [ $IARCHIVE -eq 1 ];then
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
     wayback_send
     # I may need to put in a shortening thing here
-    description="${description} ia: ${IARCHIVE} "
+    # Making sure we get a URL back
+    if [[ $IARCHIVE == http* ]];then
+        description2="${description} ia: ${IARCHIVE} "
+    fi
 fi
+if [ -z $description2 ];then
+    case ${ArchiveLinks} in
+        replace) 
+            description="${description2}"
+            ;;
+        prepend)
+            description="${description} ${description2}"
+            ;;
+        *)  loud "Links archived, not added to description."
+            ;;
+    esac
+fi
+
 
 
 # SHORTENING OF URL - moved to function here b/c only yourls is supported.
