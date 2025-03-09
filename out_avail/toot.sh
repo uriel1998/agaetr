@@ -31,7 +31,7 @@ function toot_send {
         yourls_shortener
     fi
     
-    binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/cw-bot/${prefix}cw-bot.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
     #Yes, I know the URL length doesn't actually count against it.  Just 

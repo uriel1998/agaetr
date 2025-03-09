@@ -1,22 +1,40 @@
-# bespoke it.  Can't fix everyone's issue.
+
 # toot
 # bsky - add configurator -- update
 # archive.is  -- add into readme
 test add single url
 
+test using user level systemd instead of cron as better way to have environment
 
-Check --- I think globalCW per feed needs to be finished! In the python script for per feed...
+ 
 
 there's something that breaks when the image is bogus that needs to be debugged too.
 
+* shaarli selector switch for multiple configs?
+    - why not have multiple shaarli outputs? Did I fix this?
+* incorporate some from newsbeuter-dangerzone
+* test INBOUND wallabag - seems to be broken?
+* Per feed output selectors (though that's gonna be a pain)
+* Check that send exits cleanly if there's no articles !!
+* Check parser doesn't choke if there's a newline at the end of the posts.db file
+* If hashtags are in description or title, make first occurance a hashtag
+* XMPP   OUT VIA BOT
 
-SO OUR FLOW WILL HAVE TO BE
-- if archive.is,
-    do first, capture url
-- if internet archive
-    do second, capture url
-    (shorten that url)
+#TODO - REWRITE ALL THIS 
+- need to have 
+single url 
+--queue
+--url
+defaults to VALUE of url as LAST passed var
+--dry-run
 
+
+* (Optional) Call `rss_preprocessor.sh`.
+* `agaetr_parse.py` to pull down new articles from feeds.
+* `agaetr_send.sh` to send *a* post to the activated social media services
+
+Seriously, once everything is set up, that's it. You'll probably want to 
+put these into cronjobs. 
 
 # lemmy
 # any other open server socials worth posting to?
@@ -31,3 +49,11 @@ DONE
 # archive.org - https://pypi.org/project/waybackpy/
 # archive.is -  https://github.com/palewire/archiveis
 # removal of the short blurb
+
+SO OUR FLOW WILL HAVE TO BE
+- if archive.is,
+    do first, capture url
+- if internet archive
+    do second, capture url
+    (shorten that url)
+# bespoke it.  Can't fix everyone's issue.

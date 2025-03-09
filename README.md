@@ -381,21 +381,6 @@ run as the user (and with the environment) you used to set up the
 online services.**  
 
 
-#TODO - REWRITE ALL THIS 
-- need to have 
-single url 
---queue
---url
-defaults to VALUE of url as LAST passed var
---dry-run
-
-
-* (Optional) Call `rss_preprocessor.sh`.
-* `agaetr_parse.py` to pull down new articles from feeds.
-* `agaetr_send.sh` to send *a* post to the activated social media services
-
-Seriously, once everything is set up, that's it. You'll probably want to 
-put these into cronjobs. 
 
 ## 11. Other files
 
@@ -414,12 +399,4 @@ There are other files in this repository:
 ### Someday/Maybe:
 
 
-* shaarli selector switch for multiple configs?
-* change queue types to per file
-* incorporate some from newsbeuter-dangerzone
-* test INBOUND wallabag - seems to be broken?
-* Per feed output selectors (though that's gonna be a pain)
-* Check that send exits cleanly if there's no articles !!
-* Check parser doesn't choke if there's a newline at the end of the posts.db file
-* If hashtags are in description or title, make first occurance a hashtag
-* XMPP IN AND OUT VIA BOT
+
