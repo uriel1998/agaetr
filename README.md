@@ -389,6 +389,23 @@ configured.
 run as the user (and with the environment) you used to set up the 
 online services.**  
 
+Because it's all modular, it's possible to run independent elements, or to run from the 
+control file `agaetr.sh`.  
+
+
+Standalone: /path/to/agaetr.sh [options]
+
+*  --help:  show help 
+* --configure: enter configurator
+* --locations: print config and data locations
+* --readme: display the README on the console
+* --version: report version  
+* --pull: draw in configured RSS sources
+* --push: push out from queue
+* --muna [URL]: unredirect a URL 
+* --url [URL] --description [text]: add single url to outbound queue 
+
+** The configurator is not complete for all of these services yet. ** 
 
 
 ## 11. Other files
@@ -396,6 +413,8 @@ online services.**
 There are other files in this repository:
 
 * `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
+* `loginbsky` - I sometimes have problems with Bluesky's session expiring. If this also 
+occurs to you, fill in your credentials and call this prior to `agaetr`. 
 
 ## 12. TODO
 

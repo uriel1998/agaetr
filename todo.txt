@@ -1,7 +1,7 @@
 
 
 bsky - add configurator -- update
-archive.is  -- add into readme
+
 there's something that breaks when the image is bogus that needs to be debugged too.
 
  
@@ -30,6 +30,7 @@ test self_link output
 
 
 DONE
+# archive.is  -- add into readme
 # swap wayback to waybackpy via pipx - https://pypi.org/project/waybackpy/
 #### incorporate adding these to the post
 # archive.org - https://pypi.org/project/waybackpy/
