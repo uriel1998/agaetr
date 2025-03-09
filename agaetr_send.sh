@@ -120,7 +120,7 @@ function parse_instring() {
 
 function check_image() {
     
-    if [ "$imgurl" = "None" ];then 
+    if [ "${imgurl}" = "None" ];then 
         imgurl=""
     fi
     if [ "$imgalt" = "None" ];then 

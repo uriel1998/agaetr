@@ -33,9 +33,7 @@ function bluesky_send {
         title=""
     fi
     
-
-    
-    binary=$(grep 'bluesky =' "/home/steven/.config/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'bluesky =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
 
@@ -57,16 +55,20 @@ function bluesky_send {
     fi
 
    
-    # Get the image, if exists, then send the tweet
-    if [ ! -z "$imgurl" ];then
+    # Get the image, if exists, then send the post
+    if [ ! -z "${imgurl}" ];then
         
         Outfile=$(mktemp)
-        curl "$imgurl" -o "$Outfile" --max-time 60 --create-dirs -s
-        loud "Image obtained, resizing."       
-        if [ -f /usr/bin/convert ];then
-            /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
+        curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        if [ -f "${Outfile}" ];then
+            loud "Image obtained, resizing."       
+            if [ -f /usr/bin/convert ];then
+                /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
+            fi
+            Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post\'")
+        else
+            Limgurl=""
         fi
-        Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post\'")
     else
         Limgurl=""
     fi
@@ -77,8 +79,8 @@ function bluesky_send {
     echo "${postme}"
     eval ${postme}
     
-    if [ -f "$Outfile" ];then
-        rm "$Outfile"
+    if [ -f "${Outfile}" ];then
+        rm "${Outfile}"
     fi
 }
 

@@ -362,7 +362,7 @@ push_send(){
     description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 
     # image processing
-    if [ "$imgurl" = "None" ];then 
+    if [ "${imgurl}" = "None" ];then 
         imgurl=""
         imgalt=""
     else

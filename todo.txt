@@ -27,6 +27,7 @@ single url
 --url
 defaults to VALUE of url as LAST passed var
 --dry-run
+holy crap, I've got duplicate functions, moron
 
 
 * (Optional) Call `rss_preprocessor.sh`.

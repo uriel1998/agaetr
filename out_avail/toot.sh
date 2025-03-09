@@ -55,23 +55,27 @@ function toot_send {
     fi
 
    
-    # Get the image, if exists, then send the tweet
-    if [ ! -z "$imgurl" ];then
+    # Get the image, if exists, then send the post
+    if [ ! -z "${imgurl}" ];then
         
         Outfile=$(mktemp)
-        curl "$imgurl" -o "$Outfile" --max-time 60 --create-dirs -s
-        loud "Image obtained, resizing."       
-        if [ -f /usr/bin/convert ];then
-            /usr/bin/convert -resize 800x512\! "$Outfile" "$Outfile" 
+        curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        if [ -f "${Outfile}" ];then
+            loud "Image obtained, resizing."       
+            if [ -f /usr/bin/convert ];then
+                /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
+            fi
+            Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post\'")
+        else
+            Limgurl=""
         fi
-        Limgurl=$(echo "--media $Outfile")
     else
         Limgurl=""
     fi
 
     if [ ! -z "$cw" ];then
         #there should be commas in the cw! apply sensitive tag if there's an image
-        if [ ! -z "$imgurl" ];then
+        if [ ! -z "${imgurl}" ];then
             #if there is an image, and it's a CW'd post, the image should be sensitive
             cw=$(echo "--sensitive -p \"$cw\"")
         else
@@ -84,8 +88,8 @@ function toot_send {
     postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "$outstring" "$Limgurl" "$cw" "$account_using")
     eval ${postme}
     
-    if [ -f "$Outfile" ];then
-        rm "$Outfile"
+    if [ -f "${Outfile}" ];then
+        rm "${Outfile}"
     fi
 }
 

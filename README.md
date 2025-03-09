@@ -207,9 +207,10 @@ Note that shorteners and wallabag don't get along all the time.
 Install and set up [toot](https://github.com/ihabunek/toot/).  Place the 
 location of the binary into `agaetr.ini`.
 
-#### Bsky via 
+#### Bsky via BSKY_SH_CLI
 
-#TODO - WRITE THIS UP
+We use [BSKY_SH_CLI](https://github.com/bills-appworks/bsky-sh-cli/tree/main) for Bluesky. 
+Install as per the directions, place the location of the binary into `agaetr.ini`.
 
 
 #### Matrix via 
