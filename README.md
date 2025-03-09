@@ -63,7 +63,6 @@ This project is licensed under the Apache License. For the full license, see `LI
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
  
-
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
 * [wget](https://www.gnu.org/software/wget/)  
@@ -72,39 +71,26 @@ linux-like distros:
 * [curl](http://en.wikipedia.org/wiki/CURL)  
 * [sed]
 * [detox]
-* [xmlstarlet]
+* [xmlstarlet](https://xmlstar.sourceforge.net/)
 * [imagemagick]
 * lynx
 * pandoc
 * html-xml-utils
+* pipx (recommended for services)
 
-## 4. Installation
+On Debian/Ubuntu systems, you should be able to snag all these with:
 
-The easiest way is to use the flatpak. *Seriously.* There's lots of fiddly bits 
-here. If you are using the flatpak, skip to Configuration.
+`sudo apt install xmlstarlet html-xml-utils pandoc lynx imagemagick detox python3 bash wget gawk grep curl python3`
 
+### Python dependencies
 
-### Manual installation
+It is recommended that you use `pipx` and your package installer's python packages. 
+If you do not, you should create a virtualenv for this project, as there are a number 
+of python dependencies.  
 
-You will need some variety of posting mechanism and optionally an URL 
-shortening mechanism. See [Services Setup](#5-services-setup) for details.
+* `sudo apt install python3-appdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
 
-It is strongly recommended to create a virtualenv for this project; the 
-installation instructions are written with this in mind.
-
-Ideally, you should create a virtualenv for this project, as there are a number 
-of python dependencies.  Instructions on how to do that are beyond the scope of 
-this document.  It is assumed that you have created and activated the 
-virtualenv henceforth.
-
-
-* `mkdir -p $HOME/.config/agaetr`
-* `mkdir -p $HOME/.local/agaetr`
-* Edit `agaetr.ini` (see instructions below)
-* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
-* `sudo chmod +x $PWD/agaetr_parse.py`
-* `sudo chmod +x $PWD/agaetr_send.sh`
-* (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
+OR
 
 * `pip install -r requirements.txt` 
 
@@ -116,9 +102,23 @@ OR
 * `pip install feedparser`  
 * `pip install requests`
 
-OR 
+## 4. Installation
 
-`sudo apt install python3-appdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
+### Manual installation
+
+You will need some variety of posting mechanism and optionally an URL 
+shortening mechanism. See [Services Setup](#5-services-setup) for details.
+
+* `mkdir -p $HOME/.config/agaetr`
+* `mkdir -p $HOME/.local/agaetr`
+* Edit `agaetr.ini` (see instructions below)
+* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
+* `sudo chmod +x $PWD/agaetr_parse.py`
+* `sudo chmod +x $PWD/agaetr_send.sh`
+* `sudo chmod +x $PWD/agaetr.sh`
+* `sudo chmod +x $PWD/muna.sh`
+
+
 
 Any service you would like to use needs to have a symlink made from the "avail" 
 directory to the "enabled" directory. For example:
@@ -146,7 +146,8 @@ If you create one for another service, please contact me so I can merge it in
 
 #### YOURLS  
 
-Go to your already functional YOURLS instance.  Get the API key from 
+Go to your already functional [YOURLS](https://yourls.org/) instance.  Get the 
+API key (secret signature token) from the `Tools` page of your admin interface. 
 Place the URL of your instance and API key into `agaetr.ini`.  
 
 `yourls_api =`  
@@ -168,14 +169,14 @@ or if you have pipx, by `pipx install waybackpy`.
 Find the location of the binary by typing `which waybackpy`, then place that in 
 the ini file. *Placing the binary location turns on archiving all links*.
 
-
-
 ### Outbound parsers
 
-* Mastodon:
 * Shaarli 
 * Wallabag
-* RSS                 
+* Mastodon
+* Bluesky
+* RSS     
+* Email            
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any 
 you are not using; adding additional services should follow the pattern shown.  
@@ -212,15 +213,6 @@ followed by
 `sh ./download-install.sh`
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
-
-#### Matrix via 
-
-#TODO - WRITE THIS UP
-
-#### XMPP via 
-
-#TODO - WRITE THIS UP
-
 #### RSS via XMLStarlet
 
 Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as 
@@ -232,6 +224,19 @@ rss_output_path = /full/path/including/filename.xml
 self_link = https://location.of.xml.example.com/output.xml
 
 ```
+#### Email
+
+Fill in the appropriate bits in `agaetr.ini`.  The field `email_from` should be 
+one valid email address, the field `email_to` may contain multiple addresses separated 
+by a comma.
+
+smtp_server =
+smtp_port =
+smtp_username =
+smtp_password = 
+email_from = 
+email_to = 
+
 
 ## 6. Feeds Setup
 
