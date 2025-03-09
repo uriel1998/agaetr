@@ -225,7 +225,7 @@ fi
 
 
 
-# SHORTENING OF URL - moved to function here b/c only yourls is supported.
+# SHORTENING OF URL 
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
     loud "Sending URL to shortener function"
     # this will overwrite the link

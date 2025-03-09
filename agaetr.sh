@@ -85,6 +85,7 @@ display_help(){
     echo "# --pull: draw in configured RSS sources"
     echo "# --push: push out from queue"
     echo "# --muna [URL]: unredirect a URL "
+    echo "# --url [URL] --description [text]: add single url to outbound queue "    
     echo "# --version: report version  "
     echo "###################################################################"
 }
@@ -284,139 +285,17 @@ configurators(){
     done
 }
 
-function push_get_instring() {
-    tempstring=""
-    mv "${XDG_DATA_HOME}/agaetr/posts.db" "${XDG_DATA_HOME}/agaetr/posts_back.db"
-    tail -n +2 "${XDG_DATA_HOME}/agaetr/posts_back.db" > "${XDG_DATA_HOME}/agaetr/posts.db"
-    tempstring=$(head -1 "${XDG_DATA_HOME}/agaetr/posts_back.db")
-    rm "${XDG_DATA_HOME}/agaetr/posts_back.db"
-    if [ -z "$tempstring" ];then 
-        loud "Nothing to post."
-        
-    else
-        #Adding string to the "posted" db
-        echo "${tempstring}" >> "${XDG_DATA_HOME}/agaetr/posted.db"
-        return "${tempstring}"
-    fi
-}
-
-function yourls_shortener {
-    local link="${1}"
-    if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then     
-        yourls_api=$(grep yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g'| awk -F '=' '{print $2}')
-        yourls_site=$(grep yourls_site "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-        yourls_string=$(printf "%s \"%s/yourls-api.php?signature=%s&action=shorturl&format=simple&url=%s\" -O- --quiet" "${wget_bin}" "${yourls_site}" "${yourls_api}" "${local_link}")
-        shorturl=$(eval "${yourls_string}")  
-        if [ ${#link} -lt 10 ];then # it didn't work 
-            loud "Shortner failure, using original URL of"
-            loud "${local_link}"
-            echo "${local_link}"
-        else
-            # may need to add verification that it starts with http here?
-            loud "Using shortened link $shorturl" 
-            echo "${shorturl}"
-        fi
-    else
-        # no configuration found, so just passing it back.
-        loud "Shortener configuration not found, using original URL of" 
-        loud "${local_link}" 
-        echo "${local_link}"
-    fi
-}
-
-
-push_send(){
-    
-    # initialize our variables
-    instring=""
-    posttime=""
-    posttime2=""
-    pubtime=""
-    title=""
-    link=""
-    cw=""
-    imgurl=""
-    imgalt=""
-    hashtags=""
-    description=""
-    
-    # get string from queue
-    instring=$(push_get_instring)
-    
-    # parsing instring
-    OIFS=$IFS
-    IFS='|'
-    myarr=($(echo "$instring"))
-    IFS=$OIFS
-
-    # passing published time (from dd MMM)
-    posttime=$(echo "${myarr[0]}")
-    posttime2="${posttime::-6}"
-    pubtime=$(date -d"$posttime2" +%d\ %b)
-    title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-    link=$(echo "${myarr[2]}")
-    cw=$(echo "${myarr[3]}")
-    imgurl=$(echo "${myarr[5]}")
-    imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-    hashtags=$(echo "${myarr[6]}")
-    description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-
-    # image processing
-    if [ "${imgurl}" = "None" ];then 
-        imgurl=""
-        imgalt=""
-    else
-        # There is an image url
-        # Checking the image url before sending it to the client
-        imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
-        if [ "${imagecheck}" -ne 0 ];then
-            loud "Image no longer available; omitting."
-            imgurl=""
-            imgalt=""
-        else
-            #there is an image
-            if [ "$imgalt" = "None" ] || [ "$imagealt" = "" ];then 
-                # there is an image, no alt provided
-                imgalt="Featured image pulled automatically from web."
-            fi
-        fi
-    fi
-    
-    # Deshortening, deobfuscating, and unredirecting the URL with muna
-    url="${link}"
-    source "$SCRIPT_DIR/muna.sh"
-    unredirector
-    link="${url}"
-    
-    # SHORTENING OF URL - moved to function here b/c only yourls is supported.
-    if [ ${#link} -gt 36 ]; then 
-        loud "Sending to shortener function"
-        link=$(yourls_shortener "${link}")
-    fi
-    
-    # Now to send via the posting functions
-    posters=$(ls -A "$SCRIPT_DIR/out_enabled")
-
-# TODO: Explicitly pass strings to sourced functions
-
-
-    for p in $posters;do
-        if [ "$p" != ".keep" ];then 
-            loud "Processing ${p%.*}..."
-            send_funct=$(echo "${p%.*}_send")
-            source "${SCRIPT_DIR}/out_enabled/${p}"
-            loud "${SCRIPT_DIR}/out_enabled/${p}"
-            eval ${send_funct}
-            sleep 5
-        fi
-    done
-    
-}
-
+ 
 
 add_single_url(){
     # okay, so there's always going to be some weird escaping...
-    single_url="${1}"
+    string_in="${@}"
+    if [ $(echo "${string_in}" | grep -c "--description") -neq 0 ];then
+        single_url=$(echo "${string_in}" | awk -F '--description' '{ print $1 }' )
+        description=$(echo "${string_in}" | awk -F '--description' '{ print $2 }')
+    else
+        single_url=$(echo "${string_in}" | awk -F '--url' '{print $2}')
+    fi
     title=$(echo "${@:1}" | sed 's|["]|“|g' | sed 's|['\'']|’|g')
     posttime=$(date +%Y%m%d%H%M%S)
     # No title passed, getting direct from URL
@@ -530,7 +409,7 @@ while [ $# -gt 0 ]; do
                     "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
         --push)     # perform a push run.
-                    push_send
+                    eval agaetr_send.sh
                     ;;
         --url)      # ADDING a single url.                
                     shift
