@@ -3,7 +3,7 @@
 ##############################################################################
 #
 #  sending script
-#  (c) Steven Saus 2022
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 # use as output for bookmark program
 # to create RSS feed of items (for publication, agaeter, etc)
@@ -17,8 +17,10 @@
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
-
-RSSSavePath="$XDG_DATA_HOME/agaetr/output.xml"
+inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+ 
 
 
 
@@ -30,7 +32,7 @@ if [ ! -f "${RSSSavePath}" ];then
     printf '  <channel>\n' >> "${RSSSavePath}"
     printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
     printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
-    printf '    <link rel="self" href="https://stevesaus.me/output.xml" />\n' >> "${RSSSavePath}"
+    printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
     printf '  </channel>\n' >> "${RSSSavePath}"
     printf '</rss>\n' >> "${RSSSavePath}"    
 

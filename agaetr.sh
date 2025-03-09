@@ -4,7 +4,7 @@
 #
 #  agaetr -- to take in RSS feeds and single URL input, preprocess, and to 
 #  output to a number of social media outputs
-#  (c) Steven Saus 2024
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
 ##############################################################################

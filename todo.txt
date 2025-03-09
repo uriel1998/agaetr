@@ -1,46 +1,32 @@
 
-# toot
-# bsky - add configurator -- update
-# archive.is  -- add into readme
-test add single url
 
-test using user level systemd instead of cron as better way to have environment
-
- 
-
+bsky - add configurator -- update
+archive.is  -- add into readme
 there's something that breaks when the image is bogus that needs to be debugged too.
 
-* shaarli selector switch for multiple configs?
-    - why not have multiple shaarli outputs? Did I fix this?
+ 
 * incorporate some from newsbeuter-dangerzone
 * test INBOUND wallabag - seems to be broken?
-* Per feed output selectors (though that's gonna be a pain)
 * Check that send exits cleanly if there's no articles !!
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 * If hashtags are in description or title, make first occurance a hashtag
-* XMPP   OUT VIA BOT
-
-#TODO - REWRITE ALL THIS 
-- need to have 
-
---queue
---url
-defaults to VALUE of url as LAST passed var
---dry-run
-
-
-
-* `agaetr_parse.py` to pull down new articles from feeds.
-* `agaetr_send.sh` to send *a* post to the activated social media services
-
-Seriously, once everything is set up, that's it. You'll probably want to 
-put these into cronjobs. 
-
-# lemmy
+* XMPP   OUT VIA BOT ?
+# lemmy ?
 # any other open server socials worth posting to?
 # Something like a "daily urls" post?
 # better tagging
 # incorporate some ai summary shit? Maybe for image ID? Still, ew.
+
+ 
+
+# TO TEST
+test add single url
+test using user level systemd instead of cron as better way to have environment
+test self_link output
+
+
+
+
 
 
 DONE
@@ -59,3 +45,4 @@ SO OUR FLOW WILL HAVE TO BE
 single url 
 holy crap, I've got duplicate functions, moron
 # bespoke it.  Can't fix everyone's issue.
+# toot

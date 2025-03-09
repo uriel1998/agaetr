@@ -2,8 +2,8 @@
 
 ##############################################################################
 #  agaetr_send.sh
-#  (c) Steven Saus 2023
-#  Licensed under the Apache license
+#  (c) Steven Saus 2025
+#  Licensed under the MIT license
 #
 ##############################################################################
 

@@ -174,7 +174,8 @@ the ini file. *Placing the binary location turns on archiving all links*.
 
 * Mastodon:
 * Shaarli 
-* Wallabag                 
+* Wallabag
+* RSS                 
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any 
 you are not using; adding additional services should follow the pattern shown.  
@@ -182,34 +183,33 @@ you are not using; adding additional services should follow the pattern shown.
 ### Shaarli (output)
 
 Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). 
+If you already have pipx, this can be as simple as `pipx install shaarli-client`.
 Make sure you set up the configuration file for the client properly. Place the 
 location of the binary into `agaetr.ini`.
 
-If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used. Multiple shaarli configs can be
-specified in `agaetr.ini` using this format:
-
-```
-[shaarli_config NAME]
-shaarli_config = /path/to/config/file
-```
-
-At present, the client will loop through ALL configured shaarli instances.
+If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used.  
 
 #### Wallabag (output)
 
 Install and set up [Wallabag-cli](https://github.com/Nepochal/wallabag-cli). 
+If you already have pipx, this can be as simple as `pipx install wallabag-client`.
 Place the location of the binary into `agaetr.ini`.
 
 Note that shorteners and wallabag don't get along all the time.
 
 #### Mastodon via toot  
 
-Install and set up [toot](https://github.com/ihabunek/toot/).  Place the 
-location of the binary into `agaetr.ini`.
+Install and set up [toot](https://github.com/ihabunek/toot/).  
+If you already have pipx, this can be as simple as `pipx install toot`.
+Place the location of the binary into `agaetr.ini`.
 
 #### Bsky via BSKY_SH_CLI
 
 We use [BSKY_SH_CLI](https://github.com/bills-appworks/bsky-sh-cli/tree/main) for Bluesky. 
+This can be as simple as:
+`curl https://raw.githubusercontent.com/bills-appworks/bsky-sh-cli/main/download-install.sh -O`
+followed by
+`sh ./download-install.sh`
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
 
@@ -221,11 +221,17 @@ Install as per the directions, place the location of the binary into `agaetr.ini
 
 #TODO - WRITE THIS UP
 
-#### RSS via 
+#### RSS via XMLStarlet
 
-#TODO - WRITE THIS UP
+Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as 
+`sudo apt install xmlstarlet` on Debian/Ubuntu.
+In `agaetr.ini` specify the path for the resulting xml file and the link where it 
+will eventually be accessed from:
+```
+rss_output_path = /full/path/including/filename.xml
+self_link = https://location.of.xml.example.com/output.xml
 
-
+```
 
 ## 6. Feeds Setup
 
