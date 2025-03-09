@@ -1,4 +1,13 @@
 
+pixelfed using toot
+
+so need multiple toot configurations
+
+toot auth -- lists them
+toot activate selects them
+
+or just tag -u [account] on the end.
+
 
 bsky - add configurator -- update
 
