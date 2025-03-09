@@ -256,12 +256,6 @@ GlobalCW = ideatrash
 
 ## 7. Feed Preprocessing
 
-This is being incorporated into the entire flow of the system. However, if you're 
-using flatpak, please keep in mind that the binaries called by your "cmd" must be 
-accessible either because they're inside the flatpak or because you've given 
-the flatpak permissions (e.g. through flatseal or the like)
-
-
 While RSS is *supposed* to be a standard... it isn't. Too often there are 
 unusual or irregular elements in an RSS feed.
 
@@ -271,8 +265,16 @@ or code for every possibility.
 
 If you have a feed with some unruly elements - such as the "Read more..." that 
 Wordpress loves to put in my own feed, or how the "published articles" feed from 
-tt-rss uses `<updated>` instead of `<pubDate>`, there is an example BASH 
-script to fix both those problems with `sed`.  
+tt-rss uses `<updated>` instead of `<pubDate>`, there is an option to put in a `sed`
+script or the like in `agaetr.ini`.  In this case, `src` is where the feed 
+originally comes from, and `url` is where the processed feed goes to be picked up
+by `agaetr_parse.py`.  These three must be in this order: `src`, `cmd`, `url`, one per line, as below.
+
+[Feed4]
+src = https://ideatrash.net/feed
+cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+url = /relative/path/to/xml/filename.xml
+
 
 Again, you can specify the output filename for the feed location in 
 `agaetr.ini`. This allows the use of the preprocessor without changing 

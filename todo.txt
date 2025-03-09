@@ -22,15 +22,14 @@ there's something that breaks when the image is bogus that needs to be debugged 
 
 #TODO - REWRITE ALL THIS 
 - need to have 
-single url 
+
 --queue
 --url
 defaults to VALUE of url as LAST passed var
 --dry-run
-holy crap, I've got duplicate functions, moron
 
 
-* (Optional) Call `rss_preprocessor.sh`.
+
 * `agaetr_parse.py` to pull down new articles from feeds.
 * `agaetr_send.sh` to send *a* post to the activated social media services
 
@@ -57,4 +56,6 @@ SO OUR FLOW WILL HAVE TO BE
 - if internet archive
     do second, capture url
     (shorten that url)
+single url 
+holy crap, I've got duplicate functions, moron
 # bespoke it.  Can't fix everyone's issue.
