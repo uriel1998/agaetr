@@ -7,13 +7,7 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
-
-#export BSKYSHCLI_SELFHOSTED_DOMAIN= ##
-#PATH=$PATH:/home/steven/.local/bsky_sh_cli/bin
-#export PATH
-#source /home/steven/.bsky_sh_cli.rc
-#/home/steven/.local/bsky_sh_cli/bin/bsky login --handle ### --password #
-
+ 
 #get install directory
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
@@ -27,85 +21,45 @@ function loud() {
 
 function tumblr_send {
 
-
-
-
-
-
-
-
     if [ "$title" == "$link" ];then
         title=""
     fi
     
 
-    binary=$(grep 'bluesky =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-
-
-    if [ ${#outstring} -gt 300 ]; then
-        outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
-        if [ ${#outstring} -gt 300 ]; then
-            outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
-            if [ ${#outstring} -gt 300 ]; then
-                outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
-                if [ ${#outstring} -gt 300 ]; then
-                    outstring=$(printf "%s %s" "$title" "$link")
-                    if [ ${#outstring} -gt 300 ]; then
-                        short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                        outstring=$(printf "%s %s" "$short_title" "$link")
-                    fi
-                fi
-            fi
-        fi
-    fi
-
+    binary=$(grep 'gotumblr =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    textfile=$(grep 'textmd =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    
+    
+    
+    #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
    
-    # Get the image, if exists, then send the post
+    # Get the image, if exists. 
     if [ ! -z "${imgurl}" ];then
-        
+        # If image is local. upload via picgo
         if [ -f "${imgurl}" ];then
-            Outfile="${imgurl}"
-        else
-            Outfile=$(mktemp)
-            curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
-        fi
-        if [ -f "${Outfile}" ];then
-            loud "Image obtained, resizing."       
-            if [ -f /usr/bin/convert ];then
-                /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
-            fi
-            if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(echo "--image ${Outfile} --alt \'${ALT_TEXT}\'")
-            else
-                Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post - ${title}\'")
-            fi
+            bob=$(${picgo_binary} u "${imgurl}")
+            imgurl=$(echo "${bob}" | grep -e "^http")
+        fi    
+        # triple check that it's a url
+        if [[ $imgurl == http* ]];then
+            Limgurl="${imgurl}"
         else
             Limgurl=""
         fi
-    else
-        Limgurl=""
     fi
-
-    go run ./gotumblr.go t
-
-
-This is a second test
-I am testing a program to post to tumblr. Please excuse the mess.
-This is a [link](https://ideatrash.net) and 
-this should be an image of a bigoted sheriff
-
-<img src="https://i.imgur.com/GaESSer.jpeg">
-
-but it may not be anything?
+    echo "${title}" > "${textfile}"
+    echo " " >> "${textfile}"
+    echo "${description}" >> "${textfile}"
+    echo " " >> "${textfile}"
+    printf "<img src=\"%s\">\n" "${Limgurl}" >> "${textfile}"
+    echo " " >> "${textfile}"
+    printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
+    echo " " >> "${textfile}"
+    echo "${hashtags}" >> "${textfile}"
+    # do we need to change to its directory?
+    go run "${binary}" t
     
-    postme=$(printf "%s post --text \'%s\' %s %s" "${binary}" "${outstring}" "${Limgurl}")
-    echo "${postme}"
-    eval ${postme}
-    
-    if [ -f "${Outfile}" ];then
-        rm "${Outfile}"
-    fi
 }
 
 ##############################################################################
