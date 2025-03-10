@@ -213,6 +213,17 @@ followed by
 `sh ./download-install.sh`
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
+
+#### Pixelfed via toot  
+
+Install and set up [toot](https://github.com/ihabunek/toot/).  
+If you already have pipx, this can be as simple as `pipx install toot`.
+Place the location of the binary into `agaetr.ini` if you have not already for 
+Mastodon.  Create a login for pixelfed as well (`toot login`).  Note the pixelfed 
+account name to send to using `toot auth`.  Place this in `agaetr.ini` like so:
+
+`pixelfed = username@pixelfed.example.com`
+
 #### RSS via XMLStarlet
 
 Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as 

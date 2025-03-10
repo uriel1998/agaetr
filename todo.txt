@@ -9,7 +9,11 @@ toot activate selects them
 or just tag -u [account] on the end.
 
 
-bsky - add configurator -- update
+TUMBLR TEXT:  https://github.com/admacro/gotumblr
+    pita, but hey.  Will need whole different output generator here.
+
+
+bsky - add configurator
 
 there's something that breaks when the image is bogus that needs to be debugged too.
 
@@ -56,3 +60,4 @@ single url
 holy crap, I've got duplicate functions, moron
 # bespoke it.  Can't fix everyone's issue.
 # toot
+updated bsky

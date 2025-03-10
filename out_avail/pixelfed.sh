@@ -20,8 +20,8 @@ function loud() {
 }
 
 
-function toot_send {
-
+function pixelfed_send {
+    
     if [ "$title" == "$link" ];then
         title=""
     fi
@@ -32,6 +32,14 @@ function toot_send {
     fi
     
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    account_using=$(grep 'pixelfed =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    
+    if [ "${account}" == "" ];then
+        loud "No pixelfed account specified"
+        exit 98
+    fi
+    
+    
     outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
     #Yes, I know the URL length doesn't actually count against it.  Just 
@@ -63,9 +71,13 @@ function toot_send {
         if [ -f "${Outfile}" ];then
             loud "Image obtained, resizing."       
             if [ -f /usr/bin/convert ];then
-                /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
+                /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
             fi
-            Limgurl=$(echo "--media ${Outfile} --description \'An automated image pulled from the post\'")
+            if [ -f "${Outfile}" ];then
+                Limgurl=$(echo "--media ${Outfile} --description \'${description}\'")
+            else
+                Limgurl=""
+            fi
         else
             Limgurl=""
         fi
@@ -84,9 +96,12 @@ function toot_send {
     else
         cw=""
     fi
-    
-    postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
-    eval ${postme}
+    if [ "$Limageurl" != "" ];then
+        postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+        eval ${postme}
+    else
+        loud "No image, not posting to pixelfed."
+    fi
     
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
@@ -116,6 +131,6 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        toot_send
+        pixelfed_send
     fi
 fi
