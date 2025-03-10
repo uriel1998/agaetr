@@ -50,18 +50,15 @@ function loud() {
         echo "$@" 1>&2
     fi
 }
-LOUD=1
+
 posters=$(ls -A "$SCRIPT_DIR/out_enabled") 
 # Loop through files in the subdirectory (excluding .keep)
 for file in $posters; do
     if [ "$file" != ".keep" ];then 
-        loud "Processing ${file%.*}..."
+        loud "Adding option ${file%.*}..."
         filename_no_ext=$(echo "${file%.*}")
-
-        echo "${filename_no_ext}"
         # Add to array
         services_array+=("$filename_no_ext")
-
         # Append to string (space-separated)
         services_string+="--field=$filename_no_ext:CHK TRUE "
     fi
@@ -69,26 +66,18 @@ done
 # Trim trailing space
 services_string="${services_string% }"
 
-# Print results
-echo "Array: ${services_array[@]}"
-echo "String: $services_string"
-
 if [ -f "${1}" ];then
     IMAGE_FILE="${1}"
     Need_Image="TRUE"
 fi
 
-ANSWER=$( 
-
-yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia -columns=2  --field="Attachment?":CHK "FALSE" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia -columns=2  --field="Attachment?":CHK "FALSE" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
  
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
 # Create a new array ignoring the first three entries (since they're not services)
-services_array=("${temp_array[@]:3}")
-# Print results
-echo "Filtered Array: ${services_array[@]}"
+services_on_array=("${temp_array[@]:3}")
 IFS=$OIFS
 
 # Get our text
@@ -132,51 +121,20 @@ if [ "${Need_Image}" == "TRUE" ];then
     fi
 fi 
 
-
-##### OKAY
 # loop through array of services
-# if equivalent in the on array is TRUE, then source and call with the 
-# information we have.  
+# if equivalent in the on array is TRUE, then source and call
+# "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "ALT_TEXT"
 
-"$pubtime" "$title" "$description" "$link" "$hashtags"
-"$cw"  "${imgurl}" "ALT_TEXT"
-
-
-
-
-
-
-
-    postme=$(printf "%s post --text \"%s\" %s %s" "${bsky_binary}" "${TootText}" "${BSendImage}" "${AltBsky}" | sed 's/\\n/ /g')
-    eval "${postme}"
-    if [ "$?" == "0" ];then 
-        notify-send "Post sent"
-    else
-        notify-send "Error!"
-    fi    
-
-fi
-
-if [ "$TOOTVAR"  == "TRUE" ];then
-    if [ -z "$TOOTACCT" ];then 
-        postme=$(printf "%s post --text \"%s\" %s %s" "${binary}" "${TootText}" "${SendImage}" "${AltText}" "${ContentWarning}")
-        
-       eval "${postme}"
-        if [ "$?" == "0" ];then 
-            notify-send "Toot sent"
-        else
-            notify-send "Error!"
-        fi
-    else
-        postme=$(printf "echo -e \"${TootText}\" | %s post %s %s %s -u %s" "$binary" "${SendImage}" "${AltText}" "${ContentWarning}" "${TOOTACCT}")
-        eval "${postme}"
-        if [ "$?" == "0" ];then 
-            notify-send "Toot sent"
-        else
-            notify-send "Error!"
-        fi
+for i in "${!services_on_array[@]}"; do
+    if [[ "${services_on_array[i]}" == "TRUE" ]]; then
+        loud "Processing ${services_array[i]}..."
+        send_funct=$(echo "${services_array[i]}_send")
+        source "${SCRIPT_DIR}/out_enabled/${services_array[i]}.sh"
+        eval ${send_funct}
+        sleep 5
     fi
-fi
+done
+        
 if [ -f "$SendImage" ];then
     rm -rf "${SendImage}"
 fi
