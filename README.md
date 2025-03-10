@@ -175,6 +175,7 @@ the ini file. *Placing the binary location turns on archiving all links*.
 * Wallabag
 * Mastodon
 * Bluesky
+* Pixelfed
 * RSS     
 * Email            
 
@@ -213,7 +214,6 @@ followed by
 `sh ./download-install.sh`
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
-
 #### Pixelfed via toot  
 
 Install and set up [toot](https://github.com/ihabunek/toot/).  
@@ -223,6 +223,9 @@ Mastodon.  Create a login for pixelfed as well (`toot login`).  Note the pixelfe
 account name to send to using `toot auth`.  Place this in `agaetr.ini` like so:
 
 `pixelfed = username@pixelfed.example.com`
+
+This sender will *only* send if there is an image retrieved. Content warnings 
+and the like are applied.
 
 #### RSS via XMLStarlet
 
@@ -263,7 +266,7 @@ For example:
 
 ```
 [Feed1]
-url = /feeds/ideatrash_parsed.xml
+url = /relative_path_to_xml_file/my_xml_file.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -292,11 +295,12 @@ script or the like in `agaetr.ini`.  In this case, `src` is where the feed
 originally comes from, and `url` is where the processed feed goes to be picked up
 by `agaetr_parse.py`.  These three must be in this order: `src`, `cmd`, `url`, one per line, as below.
 
+```
 [Feed4]
 src = https://ideatrash.net/feed
 cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
 url = /relative/path/to/xml/filename.xml
-
+```
 
 Again, you can specify the output filename for the feed location in 
 `agaetr.ini`. This allows the use of the preprocessor without changing 
@@ -412,7 +416,6 @@ control file `agaetr.sh`.
 Standalone: /path/to/agaetr.sh [options]
 
 *  --help:  show help 
-* --configure: enter configurator
 * --locations: print config and data locations
 * --readme: display the README on the console
 * --version: report version  

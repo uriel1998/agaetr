@@ -1,5 +1,5 @@
 
-pixelfed using toot
+
 
 so need multiple toot configurations
 
@@ -13,7 +13,7 @@ TUMBLR TEXT:  https://github.com/admacro/gotumblr
     pita, but hey.  Will need whole different output generator here.
 
 
-bsky - add configurator
+remove configurators
 
 there's something that breaks when the image is bogus that needs to be debugged too.
 
@@ -36,7 +36,7 @@ there's something that breaks when the image is bogus that needs to be debugged 
 test add single url
 test using user level systemd instead of cron as better way to have environment
 test self_link output
-
+pixelfed using toot
 
 
 
