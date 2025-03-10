@@ -409,10 +409,6 @@ configured.
 run as the user (and with the environment) you used to set up the 
 online services.**  
 
-Because it's all modular, it's possible to run independent elements, or to run from the 
-control file `agaetr.sh`.  
-
-
 Standalone: /path/to/agaetr.sh [options]
 
 *  --help:  show help 
@@ -424,13 +420,22 @@ Standalone: /path/to/agaetr.sh [options]
 * --muna [URL]: unredirect a URL 
 * --url [URL] --description [text]: add single url to outbound queue 
 
-** The configurator is not complete for all of these services yet. ** 
 
+Because it's all modular, it's possible to run independent elements, or to run from the 
+control file `agaetr.sh`.  It's also possible to source the senders and archivers 
+to pass additional (global) variables to them:
+
+"$pubtime" "$title" "$description" "$link" "$hashtags"
+"$cw"  "$imgurl" "ALT_TEXT"
+
+`hooty.sh` is an example of this.
 
 ## 11. Other files
 
 There are other files in this repository:
 
+* `hooty.sh` - a rewrite of `patootie` to use `agaetr`'s framework to interactively 
+send a post to (optionally multiple) services immediately.
 * `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
 * `loginbsky` - I sometimes have problems with Bluesky's session expiring. If this also 
 occurs to you, fill in your credentials and call this prior to `agaetr`. 

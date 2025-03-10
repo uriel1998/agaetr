@@ -28,7 +28,6 @@ function loud() {
 
 
 function bluesky_send {
-
     if [ "$title" == "$link" ];then
         title=""
     fi
