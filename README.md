@@ -176,6 +176,7 @@ the ini file. *Placing the binary location turns on archiving all links*.
 * Mastodon
 * Bluesky
 * Pixelfed
+* Tumblr
 * RSS     
 * Email            
 
@@ -251,6 +252,26 @@ smtp_password =
 email_from = 
 email_to = 
 
+#### Tumblr 
+
+* IMPORTANT: This module requires `go` and `npm` for `gotumblr` and `picgo`, respectively. 
+
+Install [gotumblr](https://github.com/admacro/gotumblr) by installing go and 
+downloading the repository.  Get the appropriate keys as per its README.  Put the 
+full path to `gotumblr.go` and `text.md` in `agaetr.ini`. Please note that these 
+two files should be in **the same** directory.
+
+* IMPORTANT: If you are wanting to post locally-hosted images in your posts (e.g. if 
+you're using `hooty`, below, or something similar), you will need to install 
+[picgo](https://github.com/PicGo/PicGo-Core) as well.  `gotumblr` only posts 
+text posts, so we have to host the image elsewhere. Put the full path to `picgo` 
+in `agaetr.ini`.
+
+```
+gotumblr = /path/to/gotumblr.go
+textmd = /path/to/text.md
+picgo = /path/to/picgo
+```
 
 ## 6. Feeds Setup
 
