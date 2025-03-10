@@ -58,14 +58,22 @@ function bluesky_send {
     # Get the image, if exists, then send the post
     if [ ! -z "${imgurl}" ];then
         
-        Outfile=$(mktemp)
-        curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        if [ -f "${imgurl}" ];then
+            Outfile="${imgurl}"
+        else
+            Outfile=$(mktemp)
+            curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        fi
         if [ -f "${Outfile}" ];then
             loud "Image obtained, resizing."       
             if [ -f /usr/bin/convert ];then
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
-            Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post\'")
+            if [ ! -z "${ALT_TEXT}" ];then
+                Limgurl=$(echo "--image ${Outfile} --alt \'${ALT_TEXT}\'")
+            else
+                Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post - ${title}\'")
+            fi
         else
             Limgurl=""
         fi

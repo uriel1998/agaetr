@@ -51,7 +51,7 @@ function email_send {
     IFS=';' read -ra email_addresses <<< "${raw_emails}"
     IFS="$OIFS"
     curl_bin=$(which curl)
-    for email_addy in "${email_addresses[@]}"
+    for email_addy in ${email_addresses[@]}
     do
         # assemble the header
         loud "Assembling the header"

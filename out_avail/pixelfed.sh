@@ -65,19 +65,22 @@ function pixelfed_send {
    
     # Get the image, if exists, then send the post
     if [ ! -z "${imgurl}" ];then
-        
-        Outfile=$(mktemp)
-        curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        if [ -f "${imgurl}" ];then
+            Outfile="${imgurl}"
+        else
+            Outfile=$(mktemp)
+            curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+        fi
         if [ -f "${Outfile}" ];then
             loud "Image obtained, resizing."       
             if [ -f /usr/bin/convert ];then
                 /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
             fi
-            if [ -f "${Outfile}" ];then
-                Limgurl=$(echo "--media ${Outfile} --description \'${description}\'")
+            if [ ! -z "${ALT_TEXT}" ];then
+                Limgurl=$(echo "--media ${Outfile} --description \'${ALT_TEXT}\'")
             else
-                Limgurl=""
-            fi
+                Limgurl=$(echo "--media ${Outfile} --description \'An automated image pulled from the post - ${title}\'")
+            fi                        
         else
             Limgurl=""
         fi
