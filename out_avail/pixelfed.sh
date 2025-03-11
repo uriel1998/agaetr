@@ -78,6 +78,12 @@ function pixelfed_send {
             if [ -f /usr/bin/convert ];then
                 /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
             fi
+            
+            
+            #########THIS ESCAPING IS NOT WORKING FOR TOOT.  HM.  ALSO I SHOULD PRETREAT
+            # /DETOX THE ALT STRING HUH?
+            
+            
             if [ ! -z "${ALT_TEXT}" ];then
                 Limgurl=$(echo "--media ${Outfile} --description \'${ALT_TEXT}\'")
             else
@@ -101,6 +107,7 @@ function pixelfed_send {
     else
         cw=""
     fi
+ 
     if [ "$Limgurl" != "" ];then
         postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
         eval ${postme}
