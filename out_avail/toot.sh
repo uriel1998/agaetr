@@ -69,10 +69,9 @@ function toot_send {
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(echo "--media ${Outfile} --description \'${ALT_TEXT}\'")
+                Limgurl=$(printf "--media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
             else
-                Limgurl=$(echo "--media ${Outfile} --description \'An automated image pulled from the post - ${title}\'")
-            fi            
+                Limgurl=$(printf "--media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")       
         else
             Limgurl=""
         fi
