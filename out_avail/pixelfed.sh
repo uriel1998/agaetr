@@ -102,7 +102,7 @@ function pixelfed_send {
         cw=""
     fi
     if [ "$Limgurl" != "" ];then
-        postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+        postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
         eval ${postme}
     else
         loud "No image, not posting to pixelfed."

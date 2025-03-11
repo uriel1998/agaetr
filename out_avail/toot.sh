@@ -92,7 +92,7 @@ function toot_send {
         cw=""
     fi
     
-    postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+    postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
     eval ${postme}
     
     if [ -f "${Outfile}" ];then
