@@ -17,6 +17,7 @@
 ############################################################################### 
 VERSION="0.1.0"
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
 wget_bin=$(which wget)
 python_bin=$(which python3)

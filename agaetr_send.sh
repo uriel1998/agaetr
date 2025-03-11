@@ -11,6 +11,7 @@
 # en masse between functions and sourced scripts
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
 SHORTEN=0
 ARCHIVEIS=0

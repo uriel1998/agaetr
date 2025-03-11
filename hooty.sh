@@ -15,6 +15,7 @@
 
 # If an argument is passed, it is assumed to be the image file to attach. 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 Need_Image=""
 IMAGE_FILE=""
 LOUD=0

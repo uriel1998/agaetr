@@ -27,9 +27,20 @@ function toot_send {
     fi
     
     if [ ${#link} -gt 36 ]; then 
-        loud "Sending to shortener function"
-        yourls_shortener
+        # finding shortener, install directory
+        # if not set by the calling script
+        if [ -z "$INSTALL_DIR" ];then
+            # This should be in a subdirectory of agaetr. As should the shorteners.
+            # Get the parent directory of the current directory
+            INSTALL_DIR="$(cd .. && pwd)"
+        fi
+        if [ -f "${INSTALL_DIR}/short_enabled/yourls.sh" ];then
+            source "${INSTALL_DIR}/yourls.sh"
+            loud "Sending to shortener function"
+            yourls_shortener
+        fi
     fi
+    
     account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
