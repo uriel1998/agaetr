@@ -72,7 +72,10 @@ function bluesky_send {
     if [ ! -z "${imgurl}" ];then
         
         if [ -f "${imgurl}" ];then
-            Outfile="${imgurl}"
+            filename=$(basename -- "${imgurl}")
+            extension="${filename##*.}"
+            Outfile=$(mktemp --suffix=.${extension})
+            cp "${imgurl}" "${Outfile}"
         else
             Outfile=$(mktemp)
             curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
