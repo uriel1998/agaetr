@@ -54,8 +54,10 @@ function tumblr_send {
     echo " " >> "${textfile}"
     printf "<img src=\"%s\">\n" "${Limgurl}" >> "${textfile}"
     echo " " >> "${textfile}"
-    printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
-    echo " " >> "${textfile}"
+    if [ "$link" != "" ];then 
+        printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
+        echo " " >> "${textfile}"
+    fi
     echo "${hashtags}" >> "${textfile}"
     # do we need to change to its directory?
     go run "${binary}" t
