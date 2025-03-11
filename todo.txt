@@ -1,19 +1,21 @@
 Make up hooty to both replace patootie and also to test sending
 
 
-so need multiple toot configurations
 
-toot auth -- lists them
-toot activate selects them
+SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
 
-or just tag -u [account] on the end.
+    if [ ${#link} -gt 36 ]; then 
+        if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ];then
+            source "${SCRIPT_DIR}/yourls.sh"
+            loud "Sending to shortener function"
+            yourls_shortener
+        fi
+    fi
 
 
 TUMBLR TEXT:  https://github.com/admacro/gotumblr
     pita, but hey.  Will need whole different output generator here.
 
-
-remove configurators
 
 there's something that breaks when the image is bogus that needs to be debugged too.
 
@@ -42,7 +44,7 @@ pixelfed using toot
 
 
 
-DONE
+#################################################              DONE
 # archive.is  -- add into readme
 # swap wayback to waybackpy via pipx - https://pypi.org/project/waybackpy/
 #### incorporate adding these to the post
@@ -61,3 +63,12 @@ holy crap, I've got duplicate functions, moron
 # bespoke it.  Can't fix everyone's issue.
 # toot
 updated bsky
+so need multiple toot configurations
+
+toot auth -- lists them
+toot activate selects them
+
+or just tag -u [account] on the end.
+
+
+remove configurators

@@ -29,7 +29,7 @@ function tumblr_send {
     binary=$(grep 'gotumblr =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     textfile=$(grep 'textmd =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    
+    workdir=$(echo  $( dirname $(realpath "${textfile}") ))
     
     
     #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
@@ -60,7 +60,9 @@ function tumblr_send {
     fi
     echo "${hashtags}" >> "${textfile}"
     # do we need to change to its directory?
+    cd "${workdir}"
     go run "${binary}" t
+    cd "${SCRIPT_DIR}"
     
 }
 
