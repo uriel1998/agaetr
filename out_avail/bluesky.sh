@@ -14,10 +14,7 @@
 #source /home/steven/.bsky_sh_cli.rc
 #/home/steven/.local/bsky_sh_cli/bin/bsky login --handle ### --password #
 
-
-
-#get script directory
-export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+ 
 LOUD=0
 
 function loud() {

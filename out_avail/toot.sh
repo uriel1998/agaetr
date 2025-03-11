@@ -9,8 +9,7 @@
 ##############################################################################
 
 
-#get install directory
-export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+ 
 LOUD=0
 
 function loud() {

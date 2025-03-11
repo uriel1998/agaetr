@@ -8,8 +8,6 @@
 #
 ##############################################################################
  
-#get install directory
-export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
 
 function loud() {
@@ -59,10 +57,11 @@ function tumblr_send {
         echo " " >> "${textfile}"
     fi
     echo "${hashtags}" >> "${textfile}"
-    # do we need to change to its directory?
+    
+    CURR_DIR=$(pwd)
     cd "${workdir}"
     go run "${binary}" t
-    cd "${SCRIPT_DIR}"
+    cd "${CURR_DIR}"
     
 }
 
