@@ -84,9 +84,9 @@ function pixelfed_send {
             
             
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(printf "--media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+                Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
             else
-                Limgurl=$(printf "--media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
+                Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
             fi                        
         else
             Limgurl=""

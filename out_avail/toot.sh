@@ -30,10 +30,10 @@ function toot_send {
         loud "Sending to shortener function"
         yourls_shortener
     fi
-    
+    account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-
+    
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
 
@@ -69,9 +69,10 @@ function toot_send {
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(printf "--media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+                Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
             else
-                Limgurl=$(printf "--media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")       
+                Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
+            fi
         else
             Limgurl=""
         fi

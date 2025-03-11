@@ -206,6 +206,10 @@ Install and set up [toot](https://github.com/ihabunek/toot/).
 If you already have pipx, this can be as simple as `pipx install toot`.
 Place the location of the binary into `agaetr.ini`.
 
+Specify the account to use (see all accounts with `toot auth`) in `agaetr.ini`:
+
+`mastodon = username@mastodon.example.com`
+
 #### Bsky via BSKY_SH_CLI
 
 We use [BSKY_SH_CLI](https://github.com/bills-appworks/bsky-sh-cli/tree/main) for Bluesky. 
