@@ -103,7 +103,7 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function ready to go."
+    echo "[info] Function bluesky ready to go."
     OUTPUT=0
 else
     OUTPUT=1

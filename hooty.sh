@@ -22,6 +22,16 @@ wget_bin=$(which wget)
 python_bin=$(which python3)
 declare -a services_array=()
 services_string=""
+pubtime=$(date +%D)
+title=""
+description=""
+link=""
+hashtags=""
+cw=""
+imgurl=""
+Limgurl=""
+ALT_TEXT=::
+
 
 if [ -z "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -71,7 +81,7 @@ if [ -f "${1}" ];then
     Need_Image="TRUE"
 fi
 
-ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia -columns=2  --field="Attachment?":CHK "FALSE" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia -columns=2  --field="Attachment?":CHK "${Need_Image}" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
  
 # Make our services on/off array:
 OIFS=$IFS
@@ -87,10 +97,11 @@ if [ "${TootText}" == "" ];then
     exit 99
 fi
 
+
 # Get our Content Warning
-ContentWarning=$(echo "${ANSWER}" | awk -F '±' '{print $2}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-if [ "$ContentWarning" == "none" ];then 
-    ContentWarning=""
+cw=$(echo "${ANSWER}" | awk -F '±' '{print $2}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+if [ "$cw" == "none" ];then 
+    cw=""
 fi
 
 if [ "$IMAGE_FILE" == "" ];then  # if there wasn't one by command line
@@ -111,7 +122,6 @@ if [ "${Need_Image}" == "TRUE" ];then
         SendImage=$(mktemp --suffix=.${extension})
         cp "${IMAGE_FILE}" "${SendImage}"
         ALT_TEXT=$(yad --geometry=+200+200 --window-icon=musique --on-top --skip-taskbar --image-on-top --borders=5 --title "Choose your alt text" --image "${SendImage}" --form --separator="" --item-separator="," --text-align=center --field="Alt text to use?:TXT" "I was too lazy to put alt text" --item-separator="," --separator="")
-        echo "$ALT_TEXT"
         if [ ! -z "$ALT_TEXT" ];then 
             # parens changed here because otherwise eval chokes
             AltText=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
@@ -124,6 +134,9 @@ fi
 # loop through array of services
 # if equivalent in the on array is TRUE, then source and call
 # "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "ALT_TEXT"
+description="${TootText}"
+imgurl="${SendImage}"
+echo "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "$ALT_TEXT"
 
 for i in "${!services_on_array[@]}"; do
     if [[ "${services_on_array[i]}" == "TRUE" ]]; then

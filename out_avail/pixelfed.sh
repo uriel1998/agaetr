@@ -11,7 +11,7 @@
 
 #get install directory
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-LOUD=0
+LOUD=1
 
 function loud() {
     if [ $LOUD -eq 1 ];then
@@ -34,7 +34,7 @@ function pixelfed_send {
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     account_using=$(grep 'pixelfed =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     
-    if [ "${account}" == "" ];then
+    if [ "${account_using}" == "" ];then
         loud "No pixelfed account specified"
         exit 98
     fi
@@ -62,7 +62,9 @@ function pixelfed_send {
         fi
     fi
 
-   
+    loud "${imgurl}" 
+    loud "${ALT_TEXT}"
+    
     # Get the image, if exists, then send the post
     if [ ! -z "${imgurl}" ];then
         if [ -f "${imgurl}" ];then
@@ -99,7 +101,7 @@ function pixelfed_send {
     else
         cw=""
     fi
-    if [ "$Limageurl" != "" ];then
+    if [ "$Limgurl" != "" ];then
         postme=$(printf "%s post \"%s\" %s %s -u %s --quiet" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
         eval ${postme}
     else
@@ -123,7 +125,7 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function ready to go."
+    echo "[info] Function pixelfed ready to go."
     OUTPUT=0
 else
     OUTPUT=1
