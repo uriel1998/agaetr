@@ -97,7 +97,9 @@ function bluesky_send {
         Limgurl=""
     fi
 
-    
+    if [ -f "${HOME}/.local/bin/loginbsky" ];then
+        eval "${HOME}/.local/bin/loginbsky"
+    fi
     
     postme=$(printf "%s post --text \'%s\' %s %s" "${binary}" "${outstring}" "${Limgurl}")
     echo "${postme}"

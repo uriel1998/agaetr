@@ -219,6 +219,8 @@ followed by
 `sh ./download-install.sh`
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
+Additionally, you may wish to use `loginbsky`, see below.
+
 #### Pixelfed via toot  
 
 Install and set up [toot](https://github.com/ihabunek/toot/).  
@@ -276,6 +278,8 @@ gotumblr = /path/to/gotumblr.go
 textmd = /path/to/text.md
 picgo = /path/to/picgo
 ```
+
+You will also probably need to use `tumbr_env`, see below.
 
 ## 6. Feeds Setup
 
@@ -463,7 +467,8 @@ There are other files in this repository:
 send a post to (optionally multiple) services immediately.
 * `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
 * `loginbsky` - I sometimes have problems with Bluesky's session expiring. If this also 
-occurs to you, fill in your credentials and call this prior to `agaetr`. 
+occurs to you, fill in your credentials and copy to `$HOME/.local/bin`
+* `tumblr_env` - If gotumblr is not picking up the environment variables it needs to, put the information in here and copy to `${XDG_CONFIG_HOME}/agaetr/tumblr_env`.
 
 ## 12. TODO
 
