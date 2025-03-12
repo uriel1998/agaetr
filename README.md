@@ -279,7 +279,17 @@ textmd = /path/to/text.md
 picgo = /path/to/picgo
 ```
 
-You will also probably need to use `tumbr_env`, see below.
+You *will* need to set up these exports in your `.bashrc` or `.profile`.  I've banged my 
+head against trying to export them at runtime with no luck, not sure why.
+
+```
+TUMBLR_BLOG_NAME=blogname
+TUMBLR_CONSUMER_KEY=see_readme_for_gotumblr
+TUMBLR_CONSUMER_SECRET=see_readme_for_gotumblr
+TUMBLR_OAUTH_TOKEN=see_readme_for_gotumblr
+TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
+```
+
 
 ## 6. Feeds Setup
 
@@ -468,7 +478,7 @@ send a post to (optionally multiple) services immediately.
 * `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
 * `loginbsky` - I sometimes have problems with Bluesky's session expiring. If this also 
 occurs to you, fill in your credentials and copy to `$HOME/.local/bin`
-* `tumblr_env` - If gotumblr is not picking up the environment variables it needs to, put the information in here and copy to `${XDG_CONFIG_HOME}/agaetr/tumblr_env`.
+
 
 ## 12. TODO
 

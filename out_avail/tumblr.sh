@@ -58,15 +58,9 @@ function tumblr_send {
     fi
     echo "${hashtags}" >> "${textfile}"
     
-    if [ -f "${XDG_CONFIG_HOME}/agaetr/tumblr_env" ];then
-        source "${XDG_CONFIG_HOME}/agaetr/tumblr_env"
-    fi
-    echo "$TUMBLR_BLOG_NAME"
     CURR_DIR=$(pwd)
     cd "${workdir}"
-    bash "${workdir}/env"
-    runstring=$(printf "go run %s t" "${binary}")
-    echo "$TUMBLR_BLOG_NAME"
+    runstring=$(printf "go run %s t" "${workdir}" "${binary}")
     eval "${runstring}"
     cd "${CURR_DIR}"
     
