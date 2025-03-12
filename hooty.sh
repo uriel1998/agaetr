@@ -82,13 +82,13 @@ if [ -f "${1}" ];then
     Need_Image="TRUE"
 fi
 
-ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia -columns=2  --field="Attachment?":CHK "${Need_Image}" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia --field="Hashtags:TXT" -columns=2  --field="Attachment?":CHK "${Need_Image}" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
  
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
 # Create a new array ignoring the first three entries (since they're not services)
-services_on_array=("${temp_array[@]:3}")
+services_on_array=("${temp_array[@]:4}")
 IFS=$OIFS
 
 # Get our text
@@ -105,9 +105,16 @@ if [ "$cw" == "none" ];then
     cw=""
 fi
 
+# Get our hashtags
+hashtags=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+if [ "$hashtags" == "none" ];then 
+    hashtags=""
+fi
+
+
 if [ "$IMAGE_FILE" == "" ];then  # if there wasn't one by command line
     # to see if need to select image
-    Need_Image=$(echo "$ANSWER" | awk -F '±' '{print $3}')
+    Need_Image=$(echo "$ANSWER" | awk -F '±' '{print $4}')
 fi
 
 if [ "${Need_Image}" == "TRUE" ];then 

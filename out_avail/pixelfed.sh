@@ -43,87 +43,84 @@ function pixelfed_send {
     
     if [ "${account_using}" == "" ];then
         loud "No pixelfed account specified"
-        exit 98
-    fi
-    
-    
-    outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+    else
+        outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
 
-    #Yes, I know the URL length doesn't actually count against it.  Just 
-    #reusing code here.
+        #Yes, I know the URL length doesn't actually count against it.  Just 
+        #reusing code here.
 
-    if [ ${#outstring} -gt 500 ]; then
-        outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
         if [ ${#outstring} -gt 500 ]; then
-            outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
+            outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
             if [ ${#outstring} -gt 500 ]; then
-                outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
+                outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
                 if [ ${#outstring} -gt 500 ]; then
-                    outstring=$(printf "%s %s" "$title" "$link")
+                    outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
                     if [ ${#outstring} -gt 500 ]; then
-                        short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                        outstring=$(printf "%s %s" "$short_title" "$link")
+                        outstring=$(printf "%s %s" "$title" "$link")
+                        if [ ${#outstring} -gt 500 ]; then
+                            short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
+                            outstring=$(printf "%s %s" "$short_title" "$link")
+                        fi
                     fi
                 fi
             fi
         fi
-    fi
 
-    loud "${imgurl}" 
-    loud "${ALT_TEXT}"
-    
-    # Get the image, if exists, then send the post
-    if [ ! -z "${imgurl}" ];then
-        if [ -f "${imgurl}" ];then
-            filename=$(basename -- "${imgurl}")
-            extension="${filename##*.}"
-            Outfile=$(mktemp --suffix=.${extension})
-            cp "${imgurl}" "${Outfile}"
-        else
-            Outfile=$(mktemp)
-            curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
-        fi
-        if [ -f "${Outfile}" ];then
-            loud "Image obtained, resizing."       
-            if [ -f /usr/bin/convert ];then
-                /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
-            fi
-            
-            
-            #########THIS ESCAPING IS NOT WORKING FOR TOOT.  HM. 
-            
-            
-            if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+        loud "${imgurl}" 
+        loud "${ALT_TEXT}"
+        
+        # Get the image, if exists, then send the post
+        if [ ! -z "${imgurl}" ];then
+            if [ -f "${imgurl}" ];then
+                filename=$(basename -- "${imgurl}")
+                extension="${filename##*.}"
+                Outfile=$(mktemp --suffix=.${extension})
+                cp "${imgurl}" "${Outfile}"
             else
-                Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
-            fi                        
+                Outfile=$(mktemp)
+                curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
+            fi
+            if [ -f "${Outfile}" ];then
+                loud "Image obtained, resizing."       
+                if [ -f /usr/bin/convert ];then
+                    /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
+                fi
+                
+                
+                #########THIS ESCAPING IS NOT WORKING FOR TOOT.  HM. 
+                
+                
+                if [ ! -z "${ALT_TEXT}" ];then
+                    Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+                else
+                    Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
+                fi                        
+            else
+                Limgurl=""
+            fi
         else
             Limgurl=""
         fi
-    else
-        Limgurl=""
-    fi
 
-    if [ ! -z "${cw}" ];then
-        #there should be commas in the cw! apply sensitive tag if there's an image
-        if [ ! -z "${imgurl}" ];then
-            #if there is an image, and it's a CW'd post, the image should be sensitive
-            cw=$(echo "--sensitive -p \"$cw\"")
+        if [ ! -z "${cw}" ];then
+            #there should be commas in the cw! apply sensitive tag if there's an image
+            if [ ! -z "${imgurl}" ];then
+                #if there is an image, and it's a CW'd post, the image should be sensitive
+                cw=$(echo "--sensitive -p \"$cw\"")
+            else
+                cw=$(echo "-p \"$cw\"")
+            fi
         else
-            cw=$(echo "-p \"$cw\"")
+            cw=""
         fi
-    else
-        cw=""
-    fi
- 
-    if [ "$Limgurl" != "" ];then
-        postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
-        eval ${postme}
-    else
-        loud "No image, not posting to pixelfed."
-    fi
-    
+     
+        if [ "$Limgurl" != "" ];then
+            postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+            eval ${postme}
+        else
+            loud "No image, not posting to pixelfed."
+        fi
+    fi    
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
     fi
