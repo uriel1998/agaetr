@@ -280,7 +280,7 @@ picgo = /path/to/picgo
 ```
 
 You *will* need to set up these exports in your `.bashrc` or `.profile`.  I've banged my 
-head against trying to export them at runtime with no luck, not sure why.
+head against trying to export them at runtime with no luck, not sure why. 
 
 ```
 TUMBLR_BLOG_NAME=blogname
