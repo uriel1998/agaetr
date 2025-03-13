@@ -442,11 +442,6 @@ configured.
 
 ## 10. Usage
 
-### IMPORTANT NOTE ABOUT CRON
-
-**If you run `agaetr` as a cron job, ensure that the cron job is 
-run as the user (and with the environment) you used to set up the 
-online services.**  
 
 Standalone: /path/to/agaetr.sh [options]
 
@@ -458,6 +453,12 @@ Standalone: /path/to/agaetr.sh [options]
 * --push: push out from queue
 * --muna [URL]: unredirect a URL 
 * --url [URL] --description [text]: add single url to outbound queue 
+
+### IMPORTANT NOTE ABOUT CRON
+
+**If you run `agaetr` as a cron job, ensure that the cron job is 
+run as the user (and with the environment) you used to set up the 
+online services.**  
 
 
 Because it's all modular, it's possible to run independent elements, or to run from the 

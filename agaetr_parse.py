@@ -17,6 +17,8 @@ from pathlib import Path
 import shutil
 import requests
 import urllib.parse
+import pathlib
+
 
 ########################################################################
 # Defining configuration locations and such
@@ -35,7 +37,7 @@ if not os.path.isdir(configdir):
 ini = os.path.join(configdir,'agaetr.ini')
 db = os.path.join(datadir,'posts.db')
 posteddb = os.path.join(datadir,'posted.db')         
-tmp = os.path.join(cachedir,'posts.db')
+tmp = os.path.join(cachedir,'posts_cache.db')
 
 Path(posteddb).touch()
 Path(db).touch()
@@ -55,12 +57,18 @@ def post_is_in_db(title):
             if title in line1:
                 return True                                
     return False
-    
+
+
 ########################################################################
 # Parsing that feed!
 ########################################################################
 def parse_that_feed(url,sensitive,CW,GCW):
-
+    
+    # if we are passing in file, should change to uri for feedparser
+    if not url.startswith("http"):
+        url = os.path.join(cachedir,url)
+        url = pathlib.Path(url).resolve().as_uri()
+    
     feed = feedparser.parse(url)
 
     for post in feed.entries:

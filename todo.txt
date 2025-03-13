@@ -28,7 +28,10 @@ Add image shrinker for alt text for hooty
 #################################################              
 # TO TEST
 #################################################              
-pull in
+
+Not using existing alt text when it's in the DB?
+
+
 archiver outputs
 all other outputs
 test add single url 
@@ -44,7 +47,7 @@ Add hashtag field to hooty
 # DONE
 #################################################    
 preprocessor tested
-
+pull in ---- NOT PULLING IN FILE HANDLES
           
 SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
 * ensure there's no "exit" calls in senders 
