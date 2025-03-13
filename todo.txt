@@ -29,7 +29,6 @@ Add image shrinker for alt text for hooty
 # TO TEST
 #################################################              
 
-Not using existing alt text when it's in the DB?
 
 
 archiver outputs
@@ -47,8 +46,9 @@ Add hashtag field to hooty
 # DONE
 #################################################    
 preprocessor tested
-pull in ---- NOT PULLING IN FILE HANDLES
+pull in ---- 
           
+Not using existing alt text when it's in the DB?
 SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
 * ensure there's no "exit" calls in senders 
     if [ ${#link} -gt 36 ]; then 

@@ -26,6 +26,8 @@ link=""
 cw=""
 imgurl=""
 imgalt=""
+# compatability
+ALT_TEXT=""
 hashtags=""
 description=""
 
@@ -135,6 +137,8 @@ function check_image() {
         loud "Image no longer available; omitting."
         imgurl=""
         imgalt=""
+    else
+        ALT_TEXT="${imgalt}"
     fi
 }
 
