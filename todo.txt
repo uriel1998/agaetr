@@ -22,12 +22,15 @@ there's something that breaks when the image is bogus that needs to be debugged 
 # better tagging
 # incorporate some ai summary shit? Maybe for image ID? Still, ew.
 
-
+Add link field to hooty?
+Add image shrinker for alt text for hooty
  
 #################################################              
 # TO TEST
 #################################################              
-
+pull in
+archiver outputs
+all other outputs
 test add single url 
 test using user level systemd instead of cron as better way to have environment
 test self_link output
@@ -39,7 +42,10 @@ Add hashtag field to hooty
 
 #################################################              
 # DONE
-#################################################              
+#################################################    
+preprocessor tested
+
+          
 SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
 * ensure there's no "exit" calls in senders 
     if [ ${#link} -gt 36 ]; then 

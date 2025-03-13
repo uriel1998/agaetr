@@ -152,8 +152,7 @@ rss_preprocessor(){
     # to preprocess any feeds that need it.
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini" 
     
-    
-   OIFS=$IFS
+    OIFS=$IFS
     IFS=$'\n'
     myarr=($(grep --after-context=2 -e "^src =" "${inifile}"))
     IFS=$OIFS
@@ -179,8 +178,7 @@ rss_preprocessor(){
                         rel_path="${XDG_DATA_HOME}/agaetr/${myurl}"                      
                         # time to create the command string
                         thecommand=$(printf "wget -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}"  "${rel_path}")
-                        echo "${thecommand}"
-                        
+                        loud "${thecommand}"
                         eval "${thecommand}"
                     fi
                 fi
@@ -197,6 +195,8 @@ while [ $# -gt 0 ]; do
 ##############################################################################
 # Get command-line parameters
 ##############################################################################
+
+# You have to have the shift or else it will keep looping...
     option="$1"
     case $option in
     
@@ -224,11 +224,12 @@ while [ $# -gt 0 ]; do
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
         --pull)     # perform a pull run. 
+                    shift
                     rss_preprocessor
-                    exit
                     "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
         --push)     # perform a push run.
+                    shift
                     eval agaetr_send.sh
                     ;;
         --url)      # ADDING a single url.                
