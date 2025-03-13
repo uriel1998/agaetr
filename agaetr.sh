@@ -27,7 +27,6 @@ python_bin=$(which python3)
 if [ -z "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
     export XDG_CONFIG_HOME="${HOME}/.config"
-    export XDG_CACHE_HOME="${HOME}/.cache"
 fi
 
 if [ ! -d "${XDG_CONFIG_HOME}" ];then
@@ -242,7 +241,6 @@ while [ $# -gt 0 ]; do
                     #check_for_config
                     echo "$XDG_CONFIG_HOME"
                     echo "$XDG_DATA_HOME"
-                    echo "$XDG_CACHE_HOME"
                     exit
                     ;;
         *)          shift;;
