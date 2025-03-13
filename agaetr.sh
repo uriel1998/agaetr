@@ -176,18 +176,11 @@ rss_preprocessor(){
                     mycmd=$(echo "${myarr[$j]}" | awk -F ' = ' '{print $2}')
                     if [[ "${myarr[$k]}" == "url"* ]];then
                         myurl=$(echo "${myarr[$k]}" | awk -F ' = ' '{print $2}')
-                        
-# TODO                        
-# CHECK FOR PATH OF where it writes to!
-# I think this is right
-                        rel_path=$(printf "%s/agaetr%s" "${XDG_DATA_HOME}" "${myurl}")
-                        just_path=$(realpath "${rel_path}" | awk -F '\/' '{$NF=""}1' | sed 's| |\/|g')
-                        if [ ! -d "${just_path}" ];then
-                            mkdir -p "${just_path}"
-                        fi                        
+                        rel_path="${XDG_DATA_HOME}/agaetr/${myurl}"                      
                         # time to create the command string
-                        thecommand=$(printf "wget -O- \"%s\" | %s > \"%s/agaetr%s\"" "${mysrc}" "${mycmd}" "${XDG_DATA_HOME}" "${myurl}")
-                        #echo "${thecommand}"
+                        thecommand=$(printf "wget -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}"  "${rel_path}")
+                        echo "${thecommand}"
+                        
                         eval "${thecommand}"
                     fi
                 fi
@@ -232,6 +225,7 @@ while [ $# -gt 0 ]; do
         --version)  echo "${VERSION}"; check_for_config; exit ;;
         --pull)     # perform a pull run. 
                     rss_preprocessor
+                    exit
                     "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
         --push)     # perform a push run.
