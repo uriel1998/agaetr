@@ -132,8 +132,9 @@ while [ $# -gt 0 ]; do
     esac
 done   
 
-
-posters=$(ls -A "$SCRIPT_DIR/out_enabled") 
+### NOTE ###
+# Hooty uses *available*, not just *enabled* since it turns everything off by default.
+posters=$(ls -A "$SCRIPT_DIR/out_avail") 
 # Loop through files in the subdirectory (excluding .keep)
 for file in $posters; do
     if [ "$file" != ".keep" ];then 
@@ -268,7 +269,7 @@ for i in "${!services_on_array[@]}"; do
     if [[ "${services_on_array[i]}" == "TRUE" ]]; then
         loud "Processing ${services_array[i]}..."
         send_funct=$(echo "${services_array[i]}_send")
-        source "${SCRIPT_DIR}/out_enabled/${services_array[i]}.sh"
+        source "${SCRIPT_DIR}/out_avail/${services_array[i]}.sh"
         eval ${send_funct}
         sleep 5
     fi
