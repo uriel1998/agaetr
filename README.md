@@ -296,6 +296,11 @@ TUMBLR_OAUTH_TOKEN=see_readme_for_gotumblr
 TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 ```
 
+* IMPORTANT: If you want to use hashtags, you will need to drop my replacement of `gotumblr`, 
+`gotumblr_ss.go`, alongside the original and update `agaetr.ini` appropriately.  
+
+It makes the second line of the text file the hashtags of the post. It currently adds 
+and empty one, and I don't know why.
 
 ## 6. Feeds Setup
 

@@ -47,6 +47,10 @@ function tumblr_send {
         fi
     fi
     echo "${title}" > "${textfile}"
+    if [[ $binary == *gotumblr_ss.go ]]; then
+        # This is on purpose with my hacked version of gotumblr
+        echo "${hashtags}" >> "${textfile}"
+    fi
     echo " " >> "${textfile}"
     echo "${description}" >> "${textfile}"
     echo " " >> "${textfile}"
@@ -56,11 +60,11 @@ function tumblr_send {
         printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
         echo " " >> "${textfile}"
     fi
-    echo "${hashtags}" >> "${textfile}"
+   
     
     CURR_DIR=$(pwd)
     cd "${workdir}"
-    runstring=$(printf "go run %s t" "${workdir}" "${binary}")
+    runstring=$(printf "go run %s/%s t" "${workdir}" "${binary}")
     eval "${runstring}"
     cd "${CURR_DIR}"
     

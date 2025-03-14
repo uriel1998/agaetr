@@ -37,10 +37,8 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function ready to go."
-    OUTPUT=0
+    echo "[info] Function wayback ready to go."
 else
-    OUTPUT=1
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else

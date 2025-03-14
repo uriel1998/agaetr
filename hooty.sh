@@ -107,10 +107,14 @@ while [ $# -gt 0 ]; do
                     exit
                     ;;
         --link|--url)      shift
-                    url="${1}"
+                    link="${1}"
                     shift
                     ;;
-                
+        --media|--image)    shift
+                    IMAGE_FILE="${1}"
+                    Need_Image="TRUE"
+                    shift
+                    ;;
         --toot|--bluesky|--pixelfed)
                     # For service checks, see if they are in out/enabled, if not... then error?    
                     loud "Adding option ${1%:2}..."
@@ -156,14 +160,10 @@ done
 # Trim trailing space
 services_string="${services_string% }"
 
+ 
 
-if [ -f "${1}" ];then
-    IMAGE_FILE="${1}"
-    Need_Image="TRUE"
-fi
+ANSWER=$(yad --geometry=+400+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
-ANSWER=$(yad --geometry=+400+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "$link" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
- exit
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
