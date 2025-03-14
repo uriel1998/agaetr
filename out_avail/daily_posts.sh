@@ -94,7 +94,7 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    loud "[info] Function tumblr ready to go."
+    loud "[info] Function daily posts ready to go."
 else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."

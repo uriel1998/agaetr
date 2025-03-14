@@ -129,6 +129,10 @@ function check_image() {
     loud "[info] Read in image url: ${imgurl}"
     loud "[info] Read in image alt: ${imgalt}"
     
+    if [ "${imgalt}" == "alt" ];then
+        imgalt=""
+    fi
+    
     if [ "${imgurl}" == "None" ];then 
         loud "[info] No image stored in db."
         imgurl=""
@@ -158,7 +162,6 @@ function check_image() {
         if [[ $og_image == http* ]];then
             imgurl="${og_image}"
             imgalt="${og_image_alt}"
-            ALT_TEXT="${og_image_alt}"
             loud "[info] Found ${og_image}"
             loud "[info] Found ${og_image_alt}"
         else
@@ -175,9 +178,17 @@ function check_image() {
         imgalt=""
     else
         loud "[info] Image found, good to go."
-        ALT_TEXT="${imgalt}"
-        loud "[info] Found alt text of ${ALT_TEXT}."
-
+        if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" != "" ];then
+            imgalt="${ALT_TEXT}"
+        fi
+        if [ "${imgalt}" != "" ] && [ "${ALT_TEXT}" == "" ];then
+            ALT_TEXT="${imgalt}"
+        fi        
+        if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" == "" ];then
+            imgalt="An image for decorative purposes automatically pulled from the post."
+            ALT_TEXT="${imgalt}"
+        fi        
+        loud "[info] Using alt text of ${ALT_TEXT}."
     fi
 }
 
