@@ -11,11 +11,10 @@ there's something that breaks when the image is bogus that needs to be debugged 
  
 # lemmy ? - refer folks to https://github.com/programming-dot-dev/rss-bot and use with
 # the rss
- 
+# add archivers to hooty with link 
 
 
 
-Add link field to hooty?
 
  
 #################################################              
@@ -33,6 +32,7 @@ test self_link output
 test hooty
 Add hashtag field to hooty
 
+Add link field to hooty?
 
 
 

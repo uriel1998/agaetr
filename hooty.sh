@@ -72,7 +72,7 @@ display_help(){
     echo "# Info ############################################################"
     echo "# --help - shows this"
     echo "# --media [FULL FILE PATH] - an image to pass"
-    echo "# --url"
+    echo "# --link | --url"
     echo "# The following enable services"
     echo "# --toot"
     echo "# --bluesky"
@@ -94,7 +94,7 @@ while [ $# -gt 0 ]; do
         --help)     display_help
                     exit
                     ;;
-        --url)      shift
+        --link|--url)      shift
                     url="${1}"
                     shift
                     ;;
@@ -150,13 +150,13 @@ if [ -f "${1}" ];then
     Need_Image="TRUE"
 fi
 
-ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+400+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "$link" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
  exit
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
 # Create a new array ignoring the first three entries (since they're not services)
-services_on_array=("${temp_array[@]:4}")
+services_on_array=("${temp_array[@]:5}")
 IFS=$OIFS
 
 # Get our text
@@ -173,8 +173,14 @@ if [ "$cw" == "none" ];then
     cw=""
 fi
 
+# Get our Content Warning
+link=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+if [ "$cw" == "none" ];then 
+    cw=""
+fi
+
 # Get our hashtags
-hashtags=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+hashtags=$(echo "${ANSWER}" | awk -F '±' '{print $4}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
 if [ "$hashtags" == "none" ];then 
     hashtags=""
 fi
