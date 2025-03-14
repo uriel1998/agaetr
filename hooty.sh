@@ -191,27 +191,49 @@ link=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/
 if [ "$link" == "none" ];then 
     link=""
 else
+    # Dealing with archiving links
+    description2=""
     if [ $ARCHIVEIS -eq 1 ];then 
         source "$SCRIPT_DIR/archivers/archiveis.sh"
+        loud "[info] Getting archive.is link"
         # this should now set ARCHIVEIS to the Archiveis url
-        archiveis_send
+        ARCHIVEIS=$(archiveis_send)
         # Making sure we get a URL back
-        if [[ $ARCHIVEIS == http* ]];then
+        if [[ $ARCHIVEIS =~ http* ]];then
+            loud "[info] Got archive.is link of ${ARCHIVEIS} "
             description2=" ais: ${ARCHIVEIS}"
+            description2_md=" [ais](${ARCHIVEIS})"
+            description2_html=" <a href=\"${ARCHIVEIS}\">ais</a>"
+        else
+            loud "[error] Did not get archive.is link"
         fi
     fi
+
     if [ $IARCHIVE -eq 1 ];then
+        loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
         source "$SCRIPT_DIR/archivers/wayback.sh"
         # this should now set IARCHIVE to the IARCHIVE url
-        wayback_send
+        IARCHIVE=$(wayback_send)
         # I may need to put in a shortening thing here
         # Making sure we get a URL back
-        if [[ $IARCHIVE == http* ]];then
+        echo "$IARCHIVE"
+        if [[ $IARCHIVE =~ http* ]];then
+            loud "[info] Got Wayback link of ${IARCHIVE} "
+            # They are always SUPER long
+            if [ $SHORTEN -eq 1 ];then
+                loud "[info] Shortening wayback"
+                shortlink=$(yourls_shortener "${IARCHIVE}")
+                if [[ $shortlink =~ http* ]];then
+                    loud "[info] Wayback shortened to ${shortlink}"
+                    IARCHIVE="${shortlink}"
+                fi
+            fi
             description2="${description2} ia: ${IARCHIVE} "
+            description2_md="${description2_md}  [ia](${IARCHIVE})"
+            description2_html="${description2_html} <a href=\"${IARCHIVE}\">ia</a>"
+        else
+            loud "[error] Did not get Wayback link"
         fi
-    fi
-    if [ -z "${description2}" ];then
-        description="${description} ${description2}"
     fi
 fi
 
@@ -234,12 +256,13 @@ if [ "${Need_Image}" == "TRUE" ];then
     if [ ! -f "${IMAGE_FILE}" ];then
         SendImage=""
     else
-        # resizing will be handled by out modules.
+        # resizing for socials will be handled by out modules.
         filename=$(basename -- "$IMAGE_FILE")
         extension="${filename##*.}"
         SendImage=$(mktemp --suffix=.${extension})
         TempImage=$(mktemp --suffix=.${extension})
         cp "${IMAGE_FILE}" "${SendImage}"
+        # resizing for alt text
         if [ -f /usr/bin/convert ];then
             /usr/bin/convert -resize 800x512\! "${SendImage}" "${TempImage}" 
         else
