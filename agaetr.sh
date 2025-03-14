@@ -202,6 +202,7 @@ while [ $# -gt 0 ]; do
  
     
         --loud)     export LOUD=1
+                    loud "[info] Loud turned on"
                     shift
                     ;;
         --init)     display_help
@@ -224,12 +225,18 @@ while [ $# -gt 0 ]; do
         --version)  echo "${VERSION}"; check_for_config; exit ;;
         --pull)     # perform a pull run. 
                     shift
+                    loud "[info] Preprocessing RSS feeds"
                     rss_preprocessor
+                    loud "[info] Pulling in RSS feeds"
                     "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
                     ;;
         --push)     # perform a push run.
                     shift
-                    eval "${SCRIPT_DIR}"/agaetr_send.sh
+                    if [ $LOUD -eq 1 ];then 
+                        "${SCRIPT_DIR}/agaetr_send.sh" --loud
+                    else
+                        "${SCRIPT_DIR}/agaetr_send.sh"
+                    fi
                     ;;
         --url)      # ADDING a single url.                
                     shift

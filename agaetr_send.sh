@@ -12,7 +12,6 @@
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
-LOUD=0
 SHORTEN=0
 ARCHIVEIS=0
 IARCHIVE=0
@@ -30,6 +29,7 @@ imgalt=""
 ALT_TEXT=""
 hashtags=""
 description=""
+LOUD=0
 
 
 ## What do we know?
@@ -94,7 +94,7 @@ function get_instring() {
         exit
     fi
 
-    #Adding string to the "posted" db
+    loud "Adding string to the posted db"
     echo "$instring" >> "${XDG_DATA_HOME}/agaetr/${prefix}posted.db"
     
 }
@@ -122,20 +122,21 @@ function parse_instring() {
 }
 
 function check_image() {
-
+    loud "Checking image"
     # adding in looking for opengraph metadata here, yes, preferentially so.
     # Fetch webpage content
-    html=$(curl -s "$link")
+    html=$(curl -s "${link}")
     # Extract og:image content
-    og_image=$(echo "$html" | sed -n 's/.*<meta property="og:image" content="\([^"]*\)".*/\1/p')
+    og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image" content="\([^"]*\)".*/\1/p')
     # Extract og:image:alt content
-    og_image_alt=$(echo "$html" | sed -n 's/.*<meta property="og:image:alt" content="\([^"]*\)".*/\1/p')
+    og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt" content="\([^"]*\)".*/\1/p')
     if [[ $og_image == http* ]];then
-        imgurl="${og_image)"
+        imgurl="${og_image}"
         imgalt="${og_image_alt}"
     fi
-    if [ "${imgurl}" = "None" ];then 
+    if [ "${imgurl}" == "None" ];then 
         imgurl=""
+        imgalt=""
     fi
     if [ "$imgalt" = "None" ];then 
         imgalt=""
@@ -172,34 +173,33 @@ while [ $# -gt 0 ]; do
         display_help
         exit
         ;;        
-    --verbose) 
+    --loud) 
         LOUD=1
         shift 
         ;;        
-    --prefix) 
-        shift 
-        prefix="${1}"
-        shift
-        ;;                
     esac
 done
 
-if [ ! -f "${XDG_CONFIG_HOME}/agaetr/${prefix}agaetr.ini" ];then
+if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     echo "INI not located. Exiting." >&2
     exit 89
 fi
-if [ ! -f "${XDG_DATA_HOME}/agaetr/${prefix}posts.db" ];then
+if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
     echo "Post database not located, exiting." >&2
     exit 99
 fi
 
+loud "[info] Getting instring"
 get_instring
+loud "[info] Parsing instring"
 parse_instring
+loud "[info] Checking image"
 check_image
 
 
 # Deshortening, deobfuscating, and unredirecting the URL with muna
 url="$link"
+loud "[info] Running muna"
 source "$SCRIPT_DIR/muna.sh"
 unredirector
 link="$url"
@@ -213,7 +213,10 @@ if [ $ARCHIVEIS -eq 1 ];then
     archiveis_send
     # Making sure we get a URL back
     if [[ $ARCHIVEIS == http* ]];then
+        loud "[info] Got archive.is link of ${ARCHIVEIS} "
         description2=" ais: ${ARCHIVEIS}"
+    else
+        loud "[error] Did not get archive.is link"
     fi
 fi
 if [ $IARCHIVE -eq 1 ];then
@@ -223,10 +226,13 @@ if [ $IARCHIVE -eq 1 ];then
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
     if [[ $IARCHIVE == http* ]];then
+        loud "[info] Got Wayback link of ${IARCHIVE} "
         description2="${description2} ia: ${IARCHIVE} "
+    else
+        loud "[error] Did not get Wayback link"
     fi
 fi
-if [ -z $description2 ];then
+if [ -z "${description2}" ];then
     case ${ArchiveLinks} in
         replace) 
             description="${description2}"

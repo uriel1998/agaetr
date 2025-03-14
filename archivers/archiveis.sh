@@ -14,7 +14,7 @@ function archiveis_send {
 
     outstring=$(echo "$binary ${link} -ua \"Mozilla/5.0 (X11; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0\"")
     # so assign to a GLOBAL variable that gets passed out. Error handling done by the calling script.
-    ARCHIVEIS=$(eval "${outstring}")
+    ARCHIVEIS=`"${outstring}"`
 }
 
 ##############################################################################

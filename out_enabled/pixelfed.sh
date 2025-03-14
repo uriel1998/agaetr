@@ -1,1 +1,0 @@
-/home/steven/Documents/programming/agaetr/out_avail/pixelfed.sh
