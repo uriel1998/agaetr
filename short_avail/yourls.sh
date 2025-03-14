@@ -28,27 +28,27 @@ if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then
     yourls_site=$(grep yourls_site "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     curl_bin=$(which curl)
     yourls_string=$(printf "%s \"%s/yourls-api.php?signature=%s&action=shorturl&format=simple&url=%s\"" "${curl_bin}" "${yourls_site}" "${yourls_api}" "${longlink}")
-    loud "[info] Invoking ${yourls_string}"
+    #loud "[info] Invoking ${yourls_string}"
     shorturl=$(eval "${yourls_string}")  
     if [ ${#shorturl} -lt 10 ];then # it didn't work 
-        loud "[error] Shortner failure, using original URL"
-        loud "[error] of $longlink"
+        #loud "[error] Shortner failure, using original URL"
+        #loud "[error] of $longlink"
         echo "${longlink}"
     else
         #verification that it starts with http here
         if [[ $shorturl == http* ]];then
-            loud "[info] Using shortened link ${shorturl}"
+            #loud "[info] Using shortened link ${shorturl}"
             echo "${shorturl}"            
         else
-            loud "[error] Unknown error from shortener, incorrect url returned, using original URL"
-            loud "[error] of $longlink"
+            #loud "[error] Unknown error from shortener, incorrect url returned, using original URL"
+            #loud "[error] of $longlink"
             echo "${longlink}"
         fi
     fi
 else
     # no configuration found, so just passing it back.
-    loud "[error] Shortener configuration not found, using original URL of" 
-    loud "[error] ${longlink}"
+    #loud "[error] Shortener configuration not found, using original URL of" 
+    #loud "[error] ${longlink}"
     echo "${longlink}"
 fi
 

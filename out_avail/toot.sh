@@ -20,47 +20,45 @@ function loud() {
 
 
 function toot_send {
-
+    tempfile=$(mktemp)
     if [ "$title" == "$link" ];then
         title=""
     fi
     
-    if [ ${#link} -gt 36 ]; then 
-        # finding shortener, install directory
-        # if not set by the calling script
-        if [ -z "$INSTALL_DIR" ];then
-            # This should be in a subdirectory of agaetr. As should the shorteners.
-            # Get the parent directory of the current directory
-            INSTALL_DIR="$(cd .. && pwd)"
-        fi
-        if [ -f "${INSTALL_DIR}/short_enabled/yourls.sh" ];then
-            source "${INSTALL_DIR}/yourls.sh"
-            loud "Sending to shortener function"
-            yourls_shortener
-        fi
-    fi
-    
     account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+    
     
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
     bigstring=$(printf "(%s) %s \n%s \n%s \nArchive: %s \n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+    
     if [ ${#bigstring} -lt 500 ];then 
-        outstring="${bigstring}"
-    fi
-    if [ ${#outstring} -gt 500 ]; then
-        outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
-        if [ ${#outstring} -gt 500 ]; then
-            outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
-            if [ ${#outstring} -gt 500 ]; then
-                outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
-                if [ ${#outstring} -gt 500 ]; then
-                    outstring=$(printf "%s %s" "$title" "$link")
-                    if [ ${#outstring} -gt 500 ]; then
-                        short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                        outstring=$(printf "%s %s" "$short_title" "$link")
+        printf "(%s) %s \n%s \n%s \nArchive: %s \n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+    else
+        outstring=$(printf "(%s) %s \n%s \n%s \n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
+        if [ ${#outstring} -lt 500 ]; then
+            printf "(%s) %s \n%s \n%s \n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags" > "${tempfile}"
+        else
+            outstring=$(printf "(%s) %s \n%s \n%s" "$pubtime" "$title" "$description2" "$link")
+            if [ ${#outstring} -lt 500 ]; then
+                printf "(%s) %s \n%s \n%s" "$pubtime" "$title" "$description2" "$link" > "${tempfile}"
+            else
+                outstring=$(printf "%s \n%s \n%s" "$title" "$description2" "$link")
+                if [ ${#outstring} -lt 500 ]; then
+                    printf "%s \n%s \n%s" "$title" "$description2" "$link" > "${tempfile}"
+                else
+                    outstring=$(printf "(%s) %s \n%s " "$pubtime" "$title" "$link")
+                    if [ ${#outstring} -lt 500 ]; then
+                        printf "(%s) %s \n%s " "$pubtime" "$title" "$link" > "${tempfile}"
+                    else
+                        outstring=$(printf "%s \n%s" "$title" "$link")
+                        if [ ${#outstring} -lt 500 ]; then
+                            printf "%s \n%s" "$title" "$link" > "${tempfile}"
+                        else
+                            short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
+                            printf "%s \n%s" "$short_title" "$link" > "${tempfile}"
+                        fi
                     fi
                 fi
             fi
@@ -86,6 +84,7 @@ function toot_send {
             fi
             if [ ! -z "${ALT_TEXT}" ];then
                 Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+                printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}" > /home/steven/out2.txt
             else
                 Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
             fi
@@ -108,12 +107,16 @@ function toot_send {
         cw=""
     fi
     
-    postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+    postme=$(printf "cat %s | %s post %s %s -u %s" "${tempfile}" "$binary" "${Limgurl}" "${cw}" "${account_using}")
     eval ${postme}
     
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
     fi
+    if [ -f "${tempfile}" ];then
+        rm "${tempfile}"
+    fi
+    
 }
 
 ##############################################################################

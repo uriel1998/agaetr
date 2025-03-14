@@ -24,15 +24,19 @@ function daily_posts_send {
     fi
     
     path=$(grep 'daily_posts =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')  
-    workdir=$( dirname $(realpath "${path}") )
-    textfile="${workdir}/$(date +%Y%M%d).md"
-    
+    workdir=$(realpath "${path}") 
+    if [ ! -d "${workdir}" ];then
+        mkdir -p "${workdir}"
+    fi
+    textfile="${workdir}/$(date +%Y%m%d).md"
+    echo "${textfile}"
+    echo "${workdir}"
     if [ ! -f "${textfile}" ];then
         loud "[info] Starting new daily post"
         echo "# Notable and new (to me) links from $(date +"%d %b %Y")  " > "${textfile}"
         echo " " >> "${textfile}"
         echo "***" >> "${textfile}"
-        
+    fi
     
     #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
     loud "[info] Adding to daily post"

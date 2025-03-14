@@ -48,7 +48,7 @@ fi
 
 
 if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ];then
-    source "${SCRIPT_DIR}/yourls.sh"
+    source "${SCRIPT_DIR}/short_enabled/yourls.sh"
     SHORTEN=1
 fi
 
@@ -262,8 +262,10 @@ if [ $IARCHIVE -eq 1 ];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
         # They are always SUPER long
         if [ $SHORTEN -eq 1 ];then
+            loud "[info] Shortening wayback"
             shortlink=$(yourls_shortener "${IARCHIVE}")
             if [[ $shortlink =~ http* ]];then
+                loud "[info] Wayback shortened to ${shortlink}"
                 IARCHIVE="${shortlink}"
             fi
         fi
@@ -293,7 +295,7 @@ fi
 
 
 # SHORTENING OF URL 
-if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
+if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 64 ]; then
     loud "[info] Sending URL to shortener function"
     shortlink=$(yourls_shortener "${link}")
     if [[ $shortlink =~ http* ]];then
