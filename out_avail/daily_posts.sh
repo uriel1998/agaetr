@@ -29,8 +29,8 @@ function daily_posts_send {
         mkdir -p "${workdir}"
     fi
     textfile="${workdir}/$(date +%Y%m%d).md"
-    echo "${textfile}"
-    echo "${workdir}"
+    
+    loud "[info] Writing to ${textfile}"
     if [ ! -f "${textfile}" ];then
         loud "[info] Starting new daily post"
         echo "# Notable and new (to me) links from $(date +"%d %b %Y")  " > "${textfile}"

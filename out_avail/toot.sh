@@ -75,7 +75,7 @@ function toot_send {
             curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
         fi
         if [ -f "${Outfile}" ];then
-            loud "Image obtained, resizing."       
+            loud "[info] Image obtained, resizing."       
             if [ -f /usr/bin/convert ];then
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
