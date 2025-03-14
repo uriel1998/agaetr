@@ -14,7 +14,7 @@ function shaarli_send {
     # No length requirements here!
     tags=$(echo "$hashtags"  | sed 's|#||g' )
 
-    if [ -z "${description}" ];
+    if [ -z "${description}" ];then
         outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
     else
         outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
