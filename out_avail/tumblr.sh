@@ -35,6 +35,7 @@ function tumblr_send {
     if [ ! -z "${imgurl}" ];then
         # If image is local. upload via picgo
         if [ -f "${imgurl}" ];then
+            loud "[info] Image is a local file, uploading via picgo"        
             bob=$(${picgo_binary} u "${imgurl}")
             imgurl=$(echo "${bob}" | grep -e "^http")
         fi    
@@ -67,6 +68,7 @@ function tumblr_send {
     fi
     if [ "$description2_md" != "" ];then
         echo "*** " >> "${textfile}"
+        echo " " >> "${textfile}"
         echo "Archive Links:  " >> "${textfile}"
         echo "${description2_md}" >> "${textfile}"
     fi   
@@ -96,6 +98,12 @@ else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            LOUD=0
+        fi    
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

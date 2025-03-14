@@ -128,7 +128,10 @@ function parse_instring() {
 function check_image() {
     loud "[info] Read in image url: ${imgurl}"
     loud "[info] Read in image alt: ${imgalt}"
-    
+    if [[ $imgurl == *missing-image* ]] || [[ $imgurl == *placeholder* ]];then
+        imgurl=""
+        imgalt=""
+    fi
     if [ "${imgalt}" == "alt" ];then
         imgalt=""
     fi
@@ -152,7 +155,7 @@ function check_image() {
 
     if [ "${imgurl}" == "" ];then
         loud "[info] Checking image opengraph tags"
-        # adding in looking for opengraph metadata here, yes, preferentially so.
+        # adding in looking for opengraph metadata here.
         # Fetch webpage content
         html=$(curl -s "${link}")
         # Extract og:image content
@@ -262,7 +265,7 @@ if [ $ARCHIVEIS -eq 1 ];then
 fi
 
 if [ $IARCHIVE -eq 1 ];then
-    loud "[info] Getting Wayback link (this may take a moment!)"
+    loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
     IARCHIVE=$(wayback_send)
@@ -306,6 +309,8 @@ fi
 
 
 # SHORTENING OF URL 
+# Look, if the URL is longer than 64 characters... some of these are 128+
+# and I use this with BlueSky as well. 
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 64 ]; then
     loud "[info] Sending URL to shortener function"
     shortlink=$(yourls_shortener "${link}")

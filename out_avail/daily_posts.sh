@@ -22,7 +22,7 @@ function daily_posts_send {
     if [ "$title" == "$link" ];then
         title=""
     fi
-    
+    picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     path=$(grep 'daily_posts =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')  
     workdir=$(realpath "${path}") 
     if [ ! -d "${workdir}" ];then
@@ -44,6 +44,7 @@ function daily_posts_send {
     if [ ! -z "${imgurl}" ];then
         # If image is local. upload via picgo
         if [ -f "${imgurl}" ];then
+            loud "[info] Image is a local file, uploading via picgo"
             bob=$(${picgo_binary} u "${imgurl}")
             imgurl=$(echo "${bob}" | grep -e "^http")
         fi    
@@ -71,13 +72,19 @@ function daily_posts_send {
         echo " " >> "${textfile}"
     fi
     if [ "$description2_md" != "" ];then
+        echo " " >> "${textfile}"
         echo "***" >> "${textfile}"
+        echo " " >> "${textfile}"
         echo "### Archive Links:  " >> "${textfile}"
         echo "${description2_md}" >> "${textfile}"
+        echo " " >> "${textfile}"
         echo "***" >> "${textfile}"
+        echo " " >> "${textfile}"
     fi   
     echo "${hashtags}" >> "${textfile}"
+    echo " " >> "${textfile}"
     echo "***" >> "${textfile}"
+    echo " " >> "${textfile}"
     loud "[info] Finished adding to daily post"
     
 }
@@ -99,6 +106,12 @@ else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            LOUD=0
+        fi    
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

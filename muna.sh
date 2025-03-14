@@ -112,14 +112,13 @@ else
         echo "Please call this as a function or with the url as the first argument."
         exit 99
     else
-        if [ "$1" != "-q" ];then
-            # backwards compatability
-            url="$1"
-            LOUD=0
-        else
-            url="$2"
+        if [ "${1}" == "--loud" ];then
             LOUD=1
+            shift
+        else
+            LOUD=0
         fi
+        url="${1}"
         SUCCESS=0
         unredirector
         if [ $SUCCESS -eq 0 ];then

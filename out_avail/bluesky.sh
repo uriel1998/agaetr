@@ -23,30 +23,51 @@ function loud() {
 
 
 function bluesky_send {
+    
+    tempfile=$(mktemp)
+    
     if [ "$title" == "$link" ];then
         title=""
     fi
      
     binary=$(grep 'bluesky =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+ 
 
-
-    if [ ${#outstring} -gt 300 ]; then
-        outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
-        if [ ${#outstring} -gt 300 ]; then
-            outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
-            if [ ${#outstring} -gt 300 ]; then
-                outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
-                if [ ${#outstring} -gt 300 ]; then
-                    outstring=$(printf "%s %s" "$title" "$link")
-                    if [ ${#outstring} -gt 300 ]; then
-                        short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                        outstring=$(printf "%s %s" "$short_title" "$link")
+   bigstring=$(printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+    
+    if [ ${#bigstring} -lt 300 ];then 
+        printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+    else
+        outstring=$(printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
+        if [ ${#outstring} -lt 300 ]; then
+            printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags" > "${tempfile}"
+        else
+            outstring=$(printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link")
+            if [ ${#outstring} -lt 300 ]; then
+                printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link" > "${tempfile}"
+            else
+                outstring=$(printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link")
+                if [ ${#outstring} -lt 300 ]; then
+                    printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link" > "${tempfile}"
+                else
+                    outstring=$(printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link")
+                    if [ ${#outstring} -lt 300 ]; then
+                        printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link" > "${tempfile}"
+                    else
+                        outstring=$(printf "%s \n\n%s" "$title" "$link")
+                        if [ ${#outstring} -lt 300 ]; then
+                            printf "%s \n\n%s" "$title" "$link" > "${tempfile}"
+                        else
+                            short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
+                            printf "%s \n\n%s" "$short_title" "$link" > "${tempfile}"
+                        fi
                     fi
                 fi
             fi
         fi
     fi
+
+
 
    
     # Get the image, if exists, then send the post
@@ -62,7 +83,7 @@ function bluesky_send {
             curl "${imgurl}" -o "${Outfile}" --max-time 60 --create-dirs -s
         fi
         if [ -f "${Outfile}" ];then
-            loud "Image obtained, resizing."       
+            loud "[info] Image obtained, resizing."       
             if [ -f /usr/bin/convert ];then
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
@@ -82,12 +103,15 @@ function bluesky_send {
         eval "${HOME}/.local/bin/loginbsky"
     fi
     
-    postme=$(printf "%s post --text \'%s\' %s %s" "${binary}" "${outstring}" "${Limgurl}")
-    loud "${postme}"
+    postme=$(printf "%s post --text-file \'%s\' %s %s" "${binary}" "${tempfile}" "${Limgurl}")
+    #loud "${postme}"
     eval ${postme}
     
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
+    fi
+    if [ -f "${tempfile}" ];then
+        rm "${tempfile}"
     fi
 }
 
@@ -108,6 +132,12 @@ else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            LOUD=0
+        fi    
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

@@ -28,31 +28,44 @@ function pixelfed_send {
     if [ "${account_using}" == "" ];then
         loud "No pixelfed account specified"
     else
-        outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-
+                  
         #Yes, I know the URL length doesn't actually count against it.  Just 
         #reusing code here.
-
-        if [ ${#outstring} -gt 500 ]; then
-            outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")
-            if [ ${#outstring} -gt 500 ]; then
-                outstring=$(printf "%s - %s %s %s" "$title" "$description" "$link")
-                if [ ${#outstring} -gt 500 ]; then
-                    outstring=$(printf "(%s) %s %s " "$pubtime" "$title" "$link")
-                    if [ ${#outstring} -gt 500 ]; then
-                        outstring=$(printf "%s %s" "$title" "$link")
-                        if [ ${#outstring} -gt 500 ]; then
-                            short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                            outstring=$(printf "%s %s" "$short_title" "$link")
+        bigstring=$(printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+        
+        if [ ${#bigstring} -lt 500 ];then 
+            printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+        else
+            outstring=$(printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
+            if [ ${#outstring} -lt 500 ]; then
+                printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags" > "${tempfile}"
+            else
+                outstring=$(printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link")
+                if [ ${#outstring} -lt 500 ]; then
+                    printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link" > "${tempfile}"
+                else
+                    outstring=$(printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link")
+                    if [ ${#outstring} -lt 500 ]; then
+                        printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link" > "${tempfile}"
+                    else
+                        outstring=$(printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link")
+                        if [ ${#outstring} -lt 500 ]; then
+                            printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link" > "${tempfile}"
+                        else
+                            outstring=$(printf "%s \n\n%s" "$title" "$link")
+                            if [ ${#outstring} -lt 500 ]; then
+                                printf "%s \n\n%s" "$title" "$link" > "${tempfile}"
+                            else
+                                short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
+                                printf "%s \n\n%s" "$short_title" "$link" > "${tempfile}"
+                            fi
                         fi
                     fi
                 fi
             fi
         fi
 
-        loud "${imgurl}" 
-        loud "${ALT_TEXT}"
-        
+       
         # Get the image, if exists, then send the post
         if [ ! -z "${imgurl}" ];then
             if [ -f "${imgurl}" ];then
@@ -67,24 +80,22 @@ function pixelfed_send {
             if [ -f "${Outfile}" ];then
                 loud "Image obtained, resizing."       
                 if [ -f /usr/bin/convert ];then
-                    /usr/bin/convert -resize 1024x1024 "${Outfile}" "${Outfile}" 
+                    /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
                 fi
-                
-                
-                #########THIS ESCAPING IS NOT WORKING FOR TOOT.  HM. 
-                
-                
                 if [ ! -z "${ALT_TEXT}" ];then
                     Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
                 else
                     Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
-                fi                        
+                fi
             else
                 Limgurl=""
             fi
         else
             Limgurl=""
         fi
+
+              
+ 
 
         if [ ! -z "${cw}" ];then
             #there should be commas in the cw! apply sensitive tag if there's an image
@@ -122,13 +133,19 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function pixelfed ready to go."
-    OUTPUT=0
+    loud "[info] Function pixelfed ready to go."
+
 else
-    OUTPUT=1
+
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            LOUD=0
+        fi    
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

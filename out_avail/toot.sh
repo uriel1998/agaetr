@@ -9,9 +9,6 @@
 ##############################################################################
 
 
- 
-LOUD=0
-
 function loud() {
     if [ $LOUD -eq 1 ];then
         echo "$@"
@@ -31,33 +28,33 @@ function toot_send {
     
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
-    bigstring=$(printf "(%s) %s \n%s \n%s \nArchive: %s \n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+    bigstring=$(printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
     
     if [ ${#bigstring} -lt 500 ];then 
-        printf "(%s) %s \n%s \n%s \nArchive: %s \n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+        printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
     else
-        outstring=$(printf "(%s) %s \n%s \n%s \n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
+        outstring=$(printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
         if [ ${#outstring} -lt 500 ]; then
-            printf "(%s) %s \n%s \n%s \n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags" > "${tempfile}"
+            printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags" > "${tempfile}"
         else
-            outstring=$(printf "(%s) %s \n%s \n%s" "$pubtime" "$title" "$description2" "$link")
+            outstring=$(printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link")
             if [ ${#outstring} -lt 500 ]; then
-                printf "(%s) %s \n%s \n%s" "$pubtime" "$title" "$description2" "$link" > "${tempfile}"
+                printf "(%s) %s \n\n%s \n\n%s" "$pubtime" "$title" "$description2" "$link" > "${tempfile}"
             else
-                outstring=$(printf "%s \n%s \n%s" "$title" "$description2" "$link")
+                outstring=$(printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link")
                 if [ ${#outstring} -lt 500 ]; then
-                    printf "%s \n%s \n%s" "$title" "$description2" "$link" > "${tempfile}"
+                    printf "%s \n\n%s \n\n%s" "$title" "$description2" "$link" > "${tempfile}"
                 else
-                    outstring=$(printf "(%s) %s \n%s " "$pubtime" "$title" "$link")
+                    outstring=$(printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link")
                     if [ ${#outstring} -lt 500 ]; then
-                        printf "(%s) %s \n%s " "$pubtime" "$title" "$link" > "${tempfile}"
+                        printf "(%s) %s \n\n%s " "$pubtime" "$title" "$link" > "${tempfile}"
                     else
-                        outstring=$(printf "%s \n%s" "$title" "$link")
+                        outstring=$(printf "%s \n\n%s" "$title" "$link")
                         if [ ${#outstring} -lt 500 ]; then
-                            printf "%s \n%s" "$title" "$link" > "${tempfile}"
+                            printf "%s \n\n%s" "$title" "$link" > "${tempfile}"
                         else
                             short_title=`echo "$title" | awk '{print substr($0,1,110)}'`
-                            printf "%s \n%s" "$short_title" "$link" > "${tempfile}"
+                            printf "%s \n\n%s" "$short_title" "$link" > "${tempfile}"
                         fi
                     fi
                 fi
@@ -84,7 +81,6 @@ function toot_send {
             fi
             if [ ! -z "${ALT_TEXT}" ];then
                 Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
-                printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}" > /home/steven/out2.txt
             else
                 Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
             fi
@@ -138,6 +134,12 @@ else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            LOUD=0
+        fi    
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"
