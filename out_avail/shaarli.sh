@@ -8,6 +8,13 @@
 #
 ##############################################################################
 
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
+
+
 function shaarli_send {
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
     binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')

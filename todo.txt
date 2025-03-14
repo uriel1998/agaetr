@@ -12,8 +12,9 @@ there's something that breaks when the image is bogus that needs to be debugged 
 # add archivers to hooty with link 
 
 
+# lengthen pulled description, shorten later.
 
-
+use description2 format for hooty like in agaetr_send
  
 #################################################              
 # TO TEST
@@ -22,21 +23,22 @@ there's something that breaks when the image is bogus that needs to be debugged 
 * Check that send exits cleanly if there's no articles !!
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 
-archiver outputs
-all other outputs
 test add single url 
 test using user level systemd instead of cron as better way to have environment
 test self_link output
 test hooty
-Add hashtag field to hooty
-
-Add link field to hooty?
 
 
 
 #################################################              
 # DONE
 #################################################    
+archiver outputs
+all other outputs
+Add hashtag field to hooty
+
+Add link field to hooty?
+
 Add image shrinker for alt text for hooty
 preprocessor tested
 pull in ---- 

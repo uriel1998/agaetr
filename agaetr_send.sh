@@ -260,6 +260,13 @@ if [ $IARCHIVE -eq 1 ];then
     echo "$IARCHIVE"
     if [[ $IARCHIVE =~ http* ]];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
+        # They are always SUPER long
+        if [ $SHORTEN -eq 1 ];then
+            shortlink=$(yourls_shortener "${IARCHIVE}")
+            if [[ $shortlink =~ http* ]];then
+                IARCHIVE="${shortlink}"
+            fi
+        fi
         description2="${description2} ia: ${IARCHIVE} "
         description2_md="${description2_md}  [ia](${IARCHIVE})"
         description2_html="${description2_html} <a href=\"${IARCHIVE}\">ia</a>"
@@ -277,7 +284,7 @@ if [ -n "${description2}" ];then
             loud "[info] Links archived, added to description."
             description="${description} ${description2}"
             ;;
-        *)  loud "Links archived, not added to description."
+        *)  loud "[info] Links archived, not added to description."
             ;;
     esac
 else
@@ -288,8 +295,10 @@ fi
 # SHORTENING OF URL 
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
     loud "[info] Sending URL to shortener function"
-    # this will overwrite the link
-    yourls_shortener
+    shortlink=$(yourls_shortener "${link}")
+    if [[ $shortlink =~ http* ]];then
+        link="${shortlink}"
+    fi
 fi
     
 # Parsing enabled out systems. Find files in out_enabled, then import 
@@ -302,7 +311,6 @@ for p in $posters;do
         loud "[info] Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
         source "${SCRIPT_DIR}/out_enabled/${p}"
-        loud "${SCRIPT_DIR}/out_enabled/${p}"
         eval ${send_funct}
         sleep 5
     fi

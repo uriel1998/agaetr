@@ -98,7 +98,8 @@ def parse_that_feed(url,sensitive,CW,GCW):
                     post_description =BeautifulSoup(post_description, 'html.parser').text
                 else:
                     post_description = ""
-        
+        # TODO
+        # thinking about lengthening this here...
         if len(post_description) > 475:
             post_description = (post_description[:475] + '...')
         

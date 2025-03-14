@@ -28,13 +28,14 @@ function daily_posts_send {
     textfile="${workdir}/$(date +%Y%M%d).md"
     
     if [ ! -f "${textfile}" ];then
+        loud "[info] Starting new daily post"
         echo "# Notable and new (to me) links from $(date +"%d %b %Y")  " > "${textfile}"
         echo " " >> "${textfile}"
         echo "***" >> "${textfile}"
         
     
     #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-   
+    loud "[info] Adding to daily post"
     # Get the image, if exists. 
     if [ ! -z "${imgurl}" ];then
         # If image is local. upload via picgo
@@ -73,7 +74,7 @@ function daily_posts_send {
     fi   
     echo "${hashtags}" >> "${textfile}"
     echo "***" >> "${textfile}"
-    
+    loud "[info] Finished adding to daily post"
     
 }
 

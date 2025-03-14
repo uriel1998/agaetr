@@ -66,7 +66,7 @@ function tumblr_send {
         echo " " >> "${textfile}"
     fi
     if [ "$description2_md" != "" ];then
-        echo "***"
+        echo "*** " >> "${textfile}"
         echo "Archive Links:  " >> "${textfile}"
         echo "${description2_md}" >> "${textfile}"
     fi   

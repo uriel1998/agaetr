@@ -7,8 +7,7 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
-
-LOUD=1
+ 
 
 function loud() {
     if [ $LOUD -eq 1 ];then

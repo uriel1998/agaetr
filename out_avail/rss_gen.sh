@@ -21,12 +21,18 @@ inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
  
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
 
 
 
 function rss_gen_send {
 
 if [ ! -f "${RSSSavePath}" ];then
+    loud "[info] Starting XML file"
     printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
     printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
     printf '  <channel>\n' >> "${RSSSavePath}"
@@ -42,7 +48,7 @@ fi
     DATE="`date`"
     DESC=$(printf "%s\nArchive links:\n%s\n" "${description}" "${description2_html}")
     GUID="${link}" 
-
+    loud "[info] Adding entry to RSS feed"
     xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \
          -s "//item[1]" -t elem -n title -v "$TITLE" \
          -s "//item[1]" -t elem -n link -v "$LINK" \
