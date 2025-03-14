@@ -60,7 +60,7 @@ else
     if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
         IARCHIVE=1
     fi
-    if [ IARCHIVE -eq 1 ] || [ ARCHIVEIS -eq 1 ];then
+    if [ $IARCHIVE -eq 1 ] || [ $ARCHIVEIS -eq 1 ];then
         ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     else
         ArchiveLinks=ignore

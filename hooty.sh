@@ -18,6 +18,8 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 Need_Image="FALSE"
 IMAGE_FILE=""
+ARCHIVEIS=0
+IARCHIVE=0
 LOUD=0
 wget_bin=$(which wget)
 python_bin=$(which python3)
@@ -56,7 +58,7 @@ else
     if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
         IARCHIVE=1
     fi
-    if [ IARCHIVE -eq 1 ] || [ ARCHIVEIS -eq 1 ];then
+    if [ $IARCHIVE -eq 1 ] || [ $ARCHIVEIS -eq 1 ];then
         ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     else
         ArchiveLinks=ignore
