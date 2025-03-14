@@ -7,20 +7,13 @@ Make up hooty to both replace patootie and also to test sending
 
 
 there's something that breaks when the image is bogus that needs to be debugged too.
-
-
-* incorporate some from newsbeuter-dangerzone
-* test INBOUND wallabag - seems to be broken?
-* Check that send exits cleanly if there's no articles !!
-* Check parser doesn't choke if there's a newline at the end of the posts.db file
-* If hashtags are in description or title, make first occurance a hashtag
-* XMPP   OUT VIA BOT ?
+ 
+ 
 # lemmy ? - refer folks to https://github.com/programming-dot-dev/rss-bot and use with
 # the rss
-# any other open server socials worth posting to?
-# Something like a "daily urls" post?
-# better tagging
-# incorporate some ai summary shit? Maybe for image ID? Still, ew.
+ 
+ Hooty needs better control pathways in for determining what is on and not
+
 
 Add link field to hooty?
 Add image shrinker for alt text for hooty
@@ -29,7 +22,8 @@ Add image shrinker for alt text for hooty
 # TO TEST
 #################################################              
 
-
+* Check that send exits cleanly if there's no articles !!
+* Check parser doesn't choke if there's a newline at the end of the posts.db file
 
 archiver outputs
 all other outputs

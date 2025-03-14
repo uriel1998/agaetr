@@ -61,6 +61,58 @@ function loud() {
     fi
 }
 
+
+display_help(){
+##############################################################################
+# Show the Help
+##############################################################################    
+    echo "###################################################################"
+    echo "# Standalone: /path/to/hooty.sh [options]"
+    echo "# Info ############################################################"
+    echo "# --help"
+    echo "# --media"
+    echo "# --url"
+    echo "# --text"
+    echo "# The following enable services and SKIP discovery of any others"
+    echo "# --toot"
+    echo "# --bluesky"
+    echo "# --pixelfed"    
+    echo "###################################################################"
+}
+
+while [ $# -gt 0 ]; do
+##############################################################################
+# Get command-line parameters
+##############################################################################
+
+# You have to have the shift or else it will keep looping...
+    option="$1"
+    case $option in
+        --loud)     export LOUD=1
+                    shift
+                    ;;
+        --help)     display_help
+                    exit
+                    ;;
+        --url)      shift
+                    url="${1}"
+                    shift
+                    ;;
+        --locations) 
+                    # I want to check if it's using the $HOME or flatpak ones here,
+                    #check_for_config
+                    echo "$XDG_CONFIG_HOME"
+                    echo "$XDG_DATA_HOME"
+                    exit
+                    ;;
+        *)          shift;;
+    esac
+done   
+
+
+
+
+
 posters=$(ls -A "$SCRIPT_DIR/out_enabled") 
 # Loop through files in the subdirectory (excluding .keep)
 for file in $posters; do
