@@ -12,11 +12,11 @@ there's something that breaks when the image is bogus that needs to be debugged 
 # lemmy ? - refer folks to https://github.com/programming-dot-dev/rss-bot and use with
 # the rss
  
- Hooty needs better control pathways in for determining what is on and not
+
 
 
 Add link field to hooty?
-Add image shrinker for alt text for hooty
+
  
 #################################################              
 # TO TEST
@@ -39,9 +39,10 @@ Add hashtag field to hooty
 #################################################              
 # DONE
 #################################################    
+Add image shrinker for alt text for hooty
 preprocessor tested
 pull in ---- 
-          
+           Hooty needs better control pathways in for determining what is on and not
 Not using existing alt text when it's in the DB?
 SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
 * ensure there's no "exit" calls in senders 

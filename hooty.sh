@@ -70,11 +70,10 @@ display_help(){
     echo "###################################################################"
     echo "# Standalone: /path/to/hooty.sh [options]"
     echo "# Info ############################################################"
-    echo "# --help"
-    echo "# --media"
+    echo "# --help - shows this"
+    echo "# --media [FULL FILE PATH] - an image to pass"
     echo "# --url"
-    echo "# --text"
-    echo "# The following enable services and SKIP discovery of any others"
+    echo "# The following enable services"
     echo "# --toot"
     echo "# --bluesky"
     echo "# --pixelfed"    
@@ -197,8 +196,17 @@ if [ "${Need_Image}" == "TRUE" ];then
         filename=$(basename -- "$IMAGE_FILE")
         extension="${filename##*.}"
         SendImage=$(mktemp --suffix=.${extension})
+        TempImage=$(mktemp --suffix=.${extension})
         cp "${IMAGE_FILE}" "${SendImage}"
-        ALT_TEXT=$(yad --geometry=+200+200 --window-icon=musique --on-top --skip-taskbar --image-on-top --borders=5 --title "Choose your alt text" --image "${SendImage}" --form --separator="" --item-separator="," --text-align=center --field="Alt text to use?:TXT" "I was too lazy to put alt text" --item-separator="," --separator="")
+        if [ -f /usr/bin/convert ];then
+            /usr/bin/convert -resize 800x512\! "${SendImage}" "${TempImage}" 
+        else
+            cp "${IMAGE_FILE}" "${TempImage}"
+        fi
+        ALT_TEXT=$(yad --geometry=+200+200 --window-icon=musique --on-top --skip-taskbar --image-on-top --borders=5 --title "Choose your alt text" --image "${TempImage}" --form --separator="" --item-separator="," --text-align=center --field="Alt text to use?:TXT" "I was too lazy to put alt text" --item-separator="," --separator="")
+        if [ -f "${TempImage}" ];then
+            rm "${TempImage}"
+        fi
         if [ ! -z "$ALT_TEXT" ];then 
             # parens changed here because otherwise eval chokes
             AltText=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
