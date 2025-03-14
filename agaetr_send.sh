@@ -133,6 +133,7 @@ function check_image() {
     
     if [ "${imgurl}" != "" ];then
         #Checking the stored image url 
+        loud "[info] Checking existence of ${imgurl}"
         imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
         if [ "${imagecheck}" -ne 0 ];then
             loud "[warn] Stored image no longer available."
@@ -170,8 +171,9 @@ function check_image() {
         imgalt=""
     else
         loud "[info] Image found, good to go."
-        loud "[info] Found alt text of ${ALT_TEXT}."
         ALT_TEXT="${imgalt}"
+        loud "[info] Found alt text of ${ALT_TEXT}."
+
     fi
 }
 
