@@ -98,9 +98,15 @@ while [ $# -gt 0 ]; do
                     url="${1}"
                     shift
                     ;;
-# For service checks, see if they are in out/enabled, if not... then error?                    
-                    
-                    
+                
+        --toot|--bluesky|--pixelfed)
+                    # For service checks, see if they are in out/enabled, if not... then error?    
+                    loud "Adding option ${1%:2}..."
+                    services_array+=("${1:2}")
+                    # Append to string (space-separated)
+                    services_string+="--field=${1:2}:CHK TRUE "
+                    shift
+                    ;;
         --locations) 
                     # I want to check if it's using the $HOME or flatpak ones here,
                     #check_for_config
@@ -113,31 +119,27 @@ while [ $# -gt 0 ]; do
 done   
 
 
-# okay, so add the explicit ones as check true, THEN loop, and if they are 
-# in the array, skip. If they are not in the array, add as FALSE. 
-
-if [[ " ${array[*]} " =~ [[:space:]]${value}[[:space:]] ]]; then
-    # whatever you want to do when array contains value
-fi
-
-if [[ ! " ${array[*]} " =~ [[:space:]]${value}[[:space:]] ]]; then
-    # whatever you want to do when array doesn't contain value
-fi
- 
-    posters=$(ls -A "$SCRIPT_DIR/out_enabled") 
-    # Loop through files in the subdirectory (excluding .keep)
-    for file in $posters; do
-        if [ "$file" != ".keep" ];then 
+posters=$(ls -A "$SCRIPT_DIR/out_enabled") 
+# Loop through files in the subdirectory (excluding .keep)
+for file in $posters; do
+    if [ "$file" != ".keep" ];then 
+        if [[ " ${services_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
+            loud "${file} already activated by option"
+        fi            
+        # It is not explicitly turned on by command line option
+        if [[ ! " ${services_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
+            # whatever you want to do when array doesn't contain value
             loud "Adding option ${file%.*}..."
             filename_no_ext=$(echo "${file%.*}")
             # Add to array
             services_array+=("$filename_no_ext")
             # Append to string (space-separated)
-            services_string+="--field=$filename_no_ext:CHK TRUE "
+            services_string+="--field=$filename_no_ext:CHK FALSE "
         fi
-    done
-    # Trim trailing space
-    services_string="${services_string% }"
+    fi
+done
+# Trim trailing space
+services_string="${services_string% }"
 
 
 if [ -f "${1}" ];then
