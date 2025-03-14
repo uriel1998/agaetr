@@ -50,7 +50,17 @@ if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     exit 99
 else
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    
+    if [ -f $(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then 
+        ARCHIVEIS=1
+    fi
+    if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
+        IARCHIVE=1
+    fi
+    if [ IARCHIVE -eq 1 ] || [ ARCHIVEIS -eq 1 ];then
+        ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    else
+        ArchiveLinks=ignore
+    fi    
 fi
 
 function loud() {
@@ -173,10 +183,33 @@ if [ "$cw" == "none" ];then
     cw=""
 fi
 
-# Get our Content Warning
+# Get our link
 link=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/—/g' -e 's/)/—/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-if [ "$cw" == "none" ];then 
-    cw=""
+if [ "$link" == "none" ];then 
+    link=""
+else
+    if [ $ARCHIVEIS -eq 1 ];then 
+        source "$SCRIPT_DIR/archivers/archiveis.sh"
+        # this should now set ARCHIVEIS to the Archiveis url
+        archiveis_send
+        # Making sure we get a URL back
+        if [[ $ARCHIVEIS == http* ]];then
+            description2=" ais: ${ARCHIVEIS}"
+        fi
+    fi
+    if [ $IARCHIVE -eq 1 ];then
+        source "$SCRIPT_DIR/archivers/wayback.sh"
+        # this should now set IARCHIVE to the IARCHIVE url
+        wayback_send
+        # I may need to put in a shortening thing here
+        # Making sure we get a URL back
+        if [[ $IARCHIVE == http* ]];then
+            description2="${description2} ia: ${IARCHIVE} "
+        fi
+    fi
+    if [ -z "${description2}" ];then
+        description="${description} ${description2}"
+    fi
 fi
 
 # Get our hashtags

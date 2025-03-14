@@ -212,7 +212,7 @@ if [ $IARCHIVE -eq 1 ];then
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
     if [[ $IARCHIVE == http* ]];then
-        description2="${description} ia: ${IARCHIVE} "
+        description2="${description2} ia: ${IARCHIVE} "
     fi
 fi
 if [ -z $description2 ];then
@@ -220,7 +220,7 @@ if [ -z $description2 ];then
         replace) 
             description="${description2}"
             ;;
-        prepend)
+        append)
             description="${description} ${description2}"
             ;;
         *)  loud "Links archived, not added to description."

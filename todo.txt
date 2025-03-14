@@ -1,16 +1,14 @@
-Make up hooty to both replace patootie and also to test sending
-
-
-
-
 
 
 
 there's something that breaks when the image is bogus that needs to be debugged too.
  
  
-# lemmy ? - refer folks to https://github.com/programming-dot-dev/rss-bot and use with
-# the rss
+# way to control which parsers get what with auto-runs?
+    - that's really the thing to do 
+    - all on UNLESS?
+    - all/list of individuals?
+    
 # add archivers to hooty with link 
 
 

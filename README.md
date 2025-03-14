@@ -169,6 +169,12 @@ or if you have pipx, by `pipx install waybackpy`.
 Find the location of the binary by typing `which waybackpy`, then place that in 
 the ini file. *Placing the binary location turns on archiving all links*.
 
+#### All Archivers
+
+Place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, or to `ignore` them.
+
+`ArchiveLinks = append`
+
 ### Outbound parsers
 
 * Shaarli 
