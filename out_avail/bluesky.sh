@@ -14,8 +14,6 @@
 #source /home/steven/.bsky_sh_cli.rc
 #/home/steven/.local/bsky_sh_cli/bin/bsky login --handle ### --password #
 
- 
-LOUD=1
 
 function loud() {
     if [ $LOUD -eq 1 ];then
@@ -102,7 +100,7 @@ function bluesky_send {
     fi
     
     postme=$(printf "%s post --text \'%s\' %s %s" "${binary}" "${outstring}" "${Limgurl}")
-    echo "${postme}"
+    loud "${postme}"
     eval ${postme}
     
     if [ -f "${Outfile}" ];then
@@ -134,3 +132,4 @@ else
         toot_send
     fi
 fi
+        

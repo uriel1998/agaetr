@@ -90,11 +90,11 @@ function get_instring() {
 
 
     if [ -z "$instring" ];then 
-        loud "Nothing to post."
+        loud "[info] Nothing to post."
         exit
     fi
 
-    loud "Adding string to the posted db"
+    loud "[info] Adding string to the posted db"
     echo "$instring" >> "${XDG_DATA_HOME}/agaetr/${prefix}posted.db"
     
 }
@@ -122,7 +122,7 @@ function parse_instring() {
 }
 
 function check_image() {
-    loud "Checking image"
+    loud "[info] Checking image opengraph tags"
     # adding in looking for opengraph metadata here, yes, preferentially so.
     # Fetch webpage content
     html=$(curl -s "${link}")
@@ -133,8 +133,11 @@ function check_image() {
     if [[ $og_image == http* ]];then
         imgurl="${og_image}"
         imgalt="${og_image_alt}"
+    else
+        loud "[warn] OpenGraph tags not found, looking for stored img url from feed."
     fi
     if [ "${imgurl}" == "None" ];then 
+        loud "[info] No image available."
         imgurl=""
         imgalt=""
     fi
@@ -146,10 +149,11 @@ function check_image() {
     imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
 
     if [ "${imagecheck}" -ne 0 ];then
-        loud "Image no longer available; omitting."
+        loud "[warn] Image no longer available; omitting."
         imgurl=""
         imgalt=""
     else
+        loud "[info] Image found, good to go."
         ALT_TEXT="${imgalt}"
     fi
 }
@@ -211,49 +215,52 @@ if [ $ARCHIVEIS -eq 1 ];then
     source "$SCRIPT_DIR/archivers/archiveis.sh"
     loud "[info] Getting archive.is link"
     # this should now set ARCHIVEIS to the Archiveis url
-    archiveis_send
+    ARCHIVEIS=$(archiveis_send)
     # Making sure we get a URL back
-    if [[ $ARCHIVEIS == http* ]];then
+    if [[ $ARCHIVEIS =~ http* ]];then
         loud "[info] Got archive.is link of ${ARCHIVEIS} "
         description2=" ais: ${ARCHIVEIS}"
     else
         loud "[error] Did not get archive.is link"
     fi
 fi
+
 if [ $IARCHIVE -eq 1 ];then
     loud "[info] Getting Wayback link (this may take a moment!)"
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
-    wayback_send
+    IARCHIVE=$(wayback_send)
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
-    if [[ $IARCHIVE == http* ]];then
+    echo "$IARCHIVE"
+    if [[ $IARCHIVE =~ http* ]];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
         description2="${description2} ia: ${IARCHIVE} "
     else
         loud "[error] Did not get Wayback link"
     fi
 fi
-if [ -z "${description2}" ];then
+if [ -n "${description2}" ];then
     case ${ArchiveLinks} in
-        replace) 
+        replace*) 
             description="${description2}"
             loud "[info] Links archived, replacing description."
             ;;
-        append)
+        append*)
             loud "[info] Links archived, added to description."
             description="${description} ${description2}"
             ;;
         *)  loud "Links archived, not added to description."
             ;;
     esac
+else
+    loud "[warn] Links not archived."
 fi
 
-exit
 
 # SHORTENING OF URL 
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then
-    loud "Sending URL to shortener function"
+    loud "[info] Sending URL to shortener function"
     # this will overwrite the link
     yourls_shortener
 fi
@@ -265,7 +272,7 @@ posters=$(ls -A "$SCRIPT_DIR/out_enabled")
 
 for p in $posters;do
     if [ "$p" != ".keep" ];then 
-        loud "Processing ${p%.*}..."
+        loud "[info] Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
         source "${SCRIPT_DIR}/out_enabled/${p}"
         loud "${SCRIPT_DIR}/out_enabled/${p}"

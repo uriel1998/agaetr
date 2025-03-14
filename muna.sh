@@ -8,12 +8,8 @@
   
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-LOUD=0
-if [ "$1" == "--verbose" ];then
-    shift
-    LOUD=1
-fi
 
+ 
 function loud() {
     if [ $LOUD -eq 1 ];then
         echo "$@"
