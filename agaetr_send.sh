@@ -122,30 +122,46 @@ function parse_instring() {
 }
 
 function check_image() {
-    loud "[info] Checking image opengraph tags"
-    # adding in looking for opengraph metadata here, yes, preferentially so.
-    # Fetch webpage content
-    html=$(curl -s "${link}")
-    # Extract og:image content
-    og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image" content="\([^"]*\)".*/\1/p')
-    # Extract og:image:alt content
-    og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt" content="\([^"]*\)".*/\1/p')
-    if [[ $og_image == http* ]];then
-        imgurl="${og_image}"
-        imgalt="${og_image_alt}"
-    else
-        loud "[warn] OpenGraph tags not found, looking for stored img url from feed."
-    fi
+    loud "[info] Read in image url: ${imgurl}"
+    loud "[info] Read in image alt: ${imgalt}"
+    
     if [ "${imgurl}" == "None" ];then 
-        loud "[info] No image available."
+        loud "[info] No image stored in db."
         imgurl=""
         imgalt=""
     fi
-    if [ "$imgalt" = "None" ];then 
-        imgalt=""
+    
+    if [ "${imgurl}" != "" ];then
+        #Checking the stored image url 
+        imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
+        if [ "${imagecheck}" -ne 0 ];then
+            loud "[warn] Stored image no longer available."
+            imgurl=""
+            imgalt=""
+        fi
     fi
 
-    #Checking the image url before sending it to the client
+    if [ "${imgurl}" == "" ];then
+        loud "[info] Checking image opengraph tags"
+        # adding in looking for opengraph metadata here, yes, preferentially so.
+        # Fetch webpage content
+        html=$(curl -s "${link}")
+        # Extract og:image content
+        og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image" content="\([^"]*\)".*/\1/p')
+        # Extract og:image:alt content
+        og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt" content="\([^"]*\)".*/\1/p')
+        if [[ $og_image == http* ]];then
+            imgurl="${og_image}"
+            imgalt="${og_image_alt}"
+            ALT_TEXT="${og_image_alt}"
+            loud "[info] Found ${og_image}"
+            loud "[info] Found ${og_image_alt}"
+        else
+            loud "[warn] OpenGraph tags not found."
+        fi
+    fi
+    
+    #Checking the image url AGAIN before sending it to the client
     imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
 
     if [ "${imagecheck}" -ne 0 ];then
@@ -154,6 +170,7 @@ function check_image() {
         imgalt=""
     else
         loud "[info] Image found, good to go."
+        loud "[info] Found alt text of ${ALT_TEXT}."
         ALT_TEXT="${imgalt}"
     fi
 }

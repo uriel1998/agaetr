@@ -84,9 +84,9 @@ function bluesky_send {
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(echo "--image ${Outfile} --alt \'${ALT_TEXT}\'")
+                Limgurl=$(printf " --image %s --alt 'An automated image pulled from the post - %s'" "${Outfile}" "${ALT_TEXT}")
             else
-                Limgurl=$(echo "--image ${Outfile} --alt \'An automated image pulled from the post - ${title}\'")
+                Limgurl=$(printf " --image %s --alt 'An automated image pulled from the post - %s'" "${Outfile}" "${title}")
             fi
         else
             Limgurl=""
