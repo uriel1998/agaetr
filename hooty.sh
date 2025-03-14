@@ -16,12 +16,13 @@
 # If an argument is passed, it is assumed to be the image file to attach. 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
-Need_Image=""
+Need_Image="FALSE"
 IMAGE_FILE=""
 LOUD=0
 wget_bin=$(which wget)
 python_bin=$(which python3)
 declare -a services_array=()
+declare -a on_array=()
 services_string=""
 pubtime=$(date +%D)
 title=""
@@ -102,9 +103,7 @@ while [ $# -gt 0 ]; do
         --toot|--bluesky|--pixelfed)
                     # For service checks, see if they are in out/enabled, if not... then error?    
                     loud "Adding option ${1%:2}..."
-                    services_array+=("${1:2}")
-                    # Append to string (space-separated)
-                    services_string+="--field=${1:2}:CHK TRUE "
+                    on_array+=("${1:2}")
                     shift
                     ;;
         --locations) 
@@ -123,8 +122,13 @@ posters=$(ls -A "$SCRIPT_DIR/out_enabled")
 # Loop through files in the subdirectory (excluding .keep)
 for file in $posters; do
     if [ "$file" != ".keep" ];then 
-        if [[ " ${services_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
-            loud "${file} already activated by option"
+        if [[ " ${on_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
+            loud "${file%.*} activated by option"
+            filename_no_ext=$(echo "${file%.*}")
+            # Add to array
+            services_array+=("$filename_no_ext")
+            # Append to string (space-separated)
+            services_string+="--field=$filename_no_ext:CHK TRUE "            
         fi            
         # It is not explicitly turned on by command line option
         if [[ ! " ${services_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
@@ -147,8 +151,8 @@ if [ -f "${1}" ];then
     Need_Image="TRUE"
 fi
 
-ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia --field="Hashtags:TXT" -columns=2  --field="Attachment?":CHK "${Need_Image}" ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
- 
+ANSWER=$(yad --geometry=+200+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ exit
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
