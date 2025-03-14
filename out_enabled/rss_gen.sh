@@ -1,0 +1,1 @@
+/home/steven/Documents/programming/agaetr/out_avail/rss_gen.sh
