@@ -17,7 +17,7 @@ function loud() {
 
 
 function pixelfed_send {
-    
+    tempfile=$(mktemp)
     if [ "$title" == "$link" ];then
         title=""
     fi
@@ -31,10 +31,10 @@ function pixelfed_send {
                   
         #Yes, I know the URL length doesn't actually count against it.  Just 
         #reusing code here.
-        bigstring=$(printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+        bigstring=$(printf "(%s) %s \n\n%s \n\n%s \n%s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
         
         if [ ${#bigstring} -lt 500 ];then 
-            printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+            printf "(%s) %s \n\n%s \n\n%s \n%s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
         else
             outstring=$(printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
             if [ ${#outstring} -lt 500 ]; then
@@ -110,7 +110,7 @@ function pixelfed_send {
         fi
      
         if [ "$Limgurl" != "" ];then
-            postme=$(printf "%s post \"%s\" %s %s -u %s" "$binary" "${outstring}" "${Limgurl}" "${cw}" "${account_using}")
+            postme=$(printf "cat %s | %s post %s %s -u %s" "${tempfile}" "$binary" "${Limgurl}" "${cw}" "${account_using}")
             eval ${postme}
         else
             loud "No image, not posting to pixelfed."
@@ -119,6 +119,9 @@ function pixelfed_send {
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
     fi
+    if [ -f "${tempfile}" ];then
+        rm "${tempfile}"
+    fi    
 }
 
 ##############################################################################

@@ -32,11 +32,13 @@ function bluesky_send {
      
     binary=$(grep 'bluesky =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
  
-
-   bigstring=$(printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
+    if [ "$description2" != "" ];then
+        description2="Archive: ${description2}"
+    fi
+    bigstring=$(printf "(%s) %s \n\n%s \n\n%s \n%s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags")
     
     if [ ${#bigstring} -lt 300 ];then 
-        printf "(%s) %s \n\n%s \n\n%s \nArchive: %s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
+        printf "(%s) %s \n\n%s \n\n%s \n%s \n\n%s" "$pubtime" "$title" "$description" "$link" "${description2}" "$hashtags" > "${tempfile}"
     else
         outstring=$(printf "(%s) %s \n\n%s \n\n%s \n\n%s" "$pubtime" "$title" "$link" "$description2" "$hashtags")
         if [ ${#outstring} -lt 300 ]; then
