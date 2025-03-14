@@ -298,7 +298,7 @@ TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 ```
 
 * IMPORTANT: If you want to use hashtags, you will need to drop my replacement of `gotumblr`, 
-`gotumblr_ss.go`, alongside the original and update `agaetr.ini` appropriately.  
+`gotumblr_ss.go`, *alongside* the original and update `agaetr.ini` appropriately.  
 
 It makes the second line of the text file the hashtags of the post. It currently adds 
 and empty one, and I don't know why.
@@ -313,7 +313,8 @@ It will create a markdown formatted text file of your links for each day, e.g.
 
 `/path/to/dailypost/YYYYMMDD.md`
 
-Additional processing and formatting is up to you.
+Additional processing and formatting is up to you. If you want YAML frontmatter or the 
+like, you'll need to edit the sending script.
 
 
 ## 6. Feeds Setup

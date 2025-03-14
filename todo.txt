@@ -1,7 +1,6 @@
 
 
 
-there's something that breaks when the image is bogus that needs to be debugged too.
  
  
 # way to control which parsers get what with auto-runs?
@@ -12,20 +11,20 @@ there's something that breaks when the image is bogus that needs to be debugged 
 # add archivers to hooty with link 
 
 
-# lengthen pulled description, shorten later.
 
-use description2 format for hooty like in agaetr_send
+
+
  
 #################################################              
 # TO TEST
 #################################################              
 
-* Check that send exits cleanly if there's no articles !!
+
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 
 test add single url 
 test using user level systemd instead of cron as better way to have environment
-test self_link output
+
 test hooty
 
 
@@ -37,11 +36,15 @@ archiver outputs
 all other outputs
 Add hashtag field to hooty
 
+there's something that breaks when the image is bogus that needs to be debugged too.
+# lengthen pulled description, shorten later.
 Add link field to hooty?
-
+use description2 format for hooty like in agaetr_send
 Add image shrinker for alt text for hooty
 preprocessor tested
 pull in ---- 
+* Check that send exits cleanly if there's no articles !!
+test self_link output
            Hooty needs better control pathways in for determining what is on and not
 Not using existing alt text when it's in the DB?
 SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
