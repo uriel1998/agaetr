@@ -15,7 +15,9 @@ function wayback_send {
     #echo "${outstring}"
     # except we WANT this return -- this returns the archiveis URL, which we need to pass back.
     # so assign to a GLOBAL variable that gets passed out.  error handling done by the calling script
-    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1)
+    # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
+    exec 5>&1
+    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1 >&5)
 
 #Archive URL:
 #https://web.archive.org/web/20250307205449/https://ideatrash.net/

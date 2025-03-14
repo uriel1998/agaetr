@@ -209,6 +209,7 @@ link="$url"
 description2=""
 if [ $ARCHIVEIS -eq 1 ];then 
     source "$SCRIPT_DIR/archivers/archiveis.sh"
+    loud "[info] Getting archive.is link"
     # this should now set ARCHIVEIS to the Archiveis url
     archiveis_send
     # Making sure we get a URL back
@@ -220,6 +221,7 @@ if [ $ARCHIVEIS -eq 1 ];then
     fi
 fi
 if [ $IARCHIVE -eq 1 ];then
+    loud "[info] Getting Wayback link (this may take a moment!)"
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
     wayback_send
@@ -236,8 +238,10 @@ if [ -z "${description2}" ];then
     case ${ArchiveLinks} in
         replace) 
             description="${description2}"
+            loud "[info] Links archived, replacing description."
             ;;
         append)
+            loud "[info] Links archived, added to description."
             description="${description} ${description2}"
             ;;
         *)  loud "Links archived, not added to description."
@@ -245,7 +249,7 @@ if [ -z "${description2}" ];then
     esac
 fi
 
-
+exit
 
 # SHORTENING OF URL 
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 36 ]; then

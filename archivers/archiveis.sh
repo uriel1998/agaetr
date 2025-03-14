@@ -14,7 +14,9 @@ function archiveis_send {
 
     outstring=$(echo "$binary ${link} -ua \"Mozilla/5.0 (X11; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0\"")
     # so assign to a GLOBAL variable that gets passed out. Error handling done by the calling script.
-    ARCHIVEIS=`"${outstring}"`
+    # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
+    exec 5>&1
+    ARCHIVEIS=$(eval "${outstring}" >&5)
 }
 
 ##############################################################################
