@@ -229,7 +229,7 @@ while [ $# -gt 0 ]; do
                     ;;
         --push)     # perform a push run.
                     shift
-                    eval agaetr_send.sh
+                    eval "${SCRIPT_DIR}"/agaetr_send.sh
                     ;;
         --url)      # ADDING a single url.                
                     shift

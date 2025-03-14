@@ -15,7 +15,7 @@
 #/home/steven/.local/bsky_sh_cli/bin/bsky login --handle ### --password #
 
  
-LOUD=0
+LOUD=1
 
 function loud() {
     if [ $LOUD -eq 1 ];then

@@ -54,8 +54,10 @@ function tumblr_send {
     echo " " >> "${textfile}"
     echo "${description}" >> "${textfile}"
     echo " " >> "${textfile}"
-    printf "<img src=\"%s\">\n" "${Limgurl}" >> "${textfile}"
-    echo " " >> "${textfile}"
+    if [ "$Limgurl" != "" ];then 
+        printf "<img src=\"%s\">\n" "${Limgurl}" >> "${textfile}"
+        echo " " >> "${textfile}"
+    fi
     if [ "$link" != "" ];then 
         printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
         echo " " >> "${textfile}"
@@ -64,7 +66,7 @@ function tumblr_send {
     
     CURR_DIR=$(pwd)
     cd "${workdir}"
-    runstring=$(printf "go run %s/%s t" "${workdir}" "${binary}")
+    runstring=$(printf "go run %s t" "${binary}")
     eval "${runstring}"
     cd "${CURR_DIR}"
     
