@@ -29,6 +29,10 @@ imgalt=""
 ALT_TEXT=""
 hashtags=""
 description=""
+# these are for archived links
+description2=""
+description2_md=""
+description2_html=""
 LOUD=0
 
 
@@ -239,6 +243,8 @@ if [ $ARCHIVEIS -eq 1 ];then
     if [[ $ARCHIVEIS =~ http* ]];then
         loud "[info] Got archive.is link of ${ARCHIVEIS} "
         description2=" ais: ${ARCHIVEIS}"
+        description2_md=" [ais](${ARCHIVEIS})"
+        description2_html=" <a href=\"${ARCHIVEIS}\">ais</a>"
     else
         loud "[error] Did not get archive.is link"
     fi
@@ -255,6 +261,8 @@ if [ $IARCHIVE -eq 1 ];then
     if [[ $IARCHIVE =~ http* ]];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
         description2="${description2} ia: ${IARCHIVE} "
+        description2_md="${description2_md}  [ia](${IARCHIVE})"
+        description2_html="${description2_html} <a href=\"${IARCHIVE}\">ia</a>"
     else
         loud "[error] Did not get Wayback link"
     fi

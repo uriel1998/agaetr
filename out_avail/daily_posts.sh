@@ -8,6 +8,7 @@
 #
 ##############################################################################
  
+ 
 
 function loud() {
     if [ $LOUD -eq 1 ];then
@@ -16,18 +17,21 @@ function loud() {
 }
 
 
-function tumblr_send {
+function daily_posts_send {
 
     if [ "$title" == "$link" ];then
         title=""
     fi
     
-
-    binary=$(grep 'gotumblr =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    textfile=$(grep 'textmd =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    workdir=$(echo  $( dirname $(realpath "${textfile}") ))
+    path=$(grep 'daily_posts =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')  
+    workdir=$( dirname $(realpath "${path}") )
+    textfile="${workdir}/$(date +%Y%M%d).md"
     
+    if [ ! -f "${textfile}" ];then
+        echo "# Notable and new (to me) links from $(date +"%d %b %Y")  " > "${textfile}"
+        echo " " >> "${textfile}"
+        echo "***" >> "${textfile}"
+        
     
     #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
    
@@ -45,11 +49,7 @@ function tumblr_send {
             Limgurl=""
         fi
     fi
-    echo "${title}" > "${textfile}"
-    if [[ $binary == *gotumblr_ss.go ]]; then
-        # This is on purpose with my hacked version of gotumblr
-        echo "${hashtags}" >> "${textfile}"
-    fi
+    echo "## ${title}" >> "${textfile}"
     echo " " >> "${textfile}"
     echo "${description}" >> "${textfile}"
 
@@ -59,23 +59,21 @@ function tumblr_send {
         else
             printf "<img src=\"%s\" alt=\"A decorative image automatically pulled from the post.\" >\n" "${Limgurl}" >> "${textfile}"
         fi
-        echo " " >> "${textfile}"
     fi
+    echo " " >> "${textfile}"
     if [ "$link" != "" ];then 
         printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
         echo " " >> "${textfile}"
     fi
     if [ "$description2_md" != "" ];then
-        echo "***"
-        echo "Archive Links:  " >> "${textfile}"
+        echo "***" >> "${textfile}"
+        echo "### Archive Links:  " >> "${textfile}"
         echo "${description2_md}" >> "${textfile}"
+        echo "***" >> "${textfile}"
     fi   
+    echo "${hashtags}" >> "${textfile}"
+    echo "***" >> "${textfile}"
     
-    CURR_DIR=$(pwd)
-    cd "${workdir}"
-    runstring=$(printf "go run %s t" "${binary}")
-    eval "${runstring}"
-    cd "${CURR_DIR}"
     
 }
 
@@ -100,6 +98,6 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        tumblr_send
+        daily_posts_send
     fi
 fi

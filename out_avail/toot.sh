@@ -46,6 +46,8 @@ function toot_send {
     
     #Yes, I know the URL length doesn't actually count against it.  Just 
     #reusing code here.
+    bigstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
+
 
     if [ ${#outstring} -gt 500 ]; then
         outstring=$(printf "(%s) %s - %s %s" "$pubtime" "$title" "$description" "$link")

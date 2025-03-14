@@ -185,6 +185,7 @@ Place into `agaetr.ini` whether your want archived links to `replace` the descri
 * Tumblr
 * RSS     
 * Email            
+* Daily Post
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any 
 you are not using; adding additional services should follow the pattern shown.  
@@ -301,6 +302,19 @@ TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 
 It makes the second line of the text file the hashtags of the post. It currently adds 
 and empty one, and I don't know why.
+
+#### Daily Post
+
+In `agaetr.ini` set up your *directory* for daily posts.
+
+`daily_post = /path/to/directory`
+
+It will create a markdown formatted text file of your links for each day, e.g.
+
+`/path/to/dailypost/YYYYMMDD.md`
+
+Additional processing and formatting is up to you.
+
 
 ## 6. Feeds Setup
 

@@ -40,7 +40,7 @@ fi
     TITLE="${title}"
     LINK=$(printf "href=\"%s\"" "${link}")
     DATE="`date`"
-    DESC="${title}"
+    DESC=$(printf "%s\nArchive links:\n%s\n" "${description}" "${description2_html}")
     GUID="${link}" 
 
     xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \
