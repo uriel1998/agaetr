@@ -115,11 +115,12 @@ display_readme(){
 add_single_url(){
     # okay, so there's always going to be some weird escaping...
     string_in="${@}"
-    if [ $(echo "${string_in}" | grep -c "--description") -neq 0 ];then
-        single_url=$(echo "${string_in}" | awk -F '--description' '{ print $1 }' )
-        description=$(echo "${string_in}" | awk -F '--description' '{ print $2 }')
+    has_description=$(echo "${string_in}" | grep -c " --description")
+    if [ $has_description -eq 1 ];then
+        single_url=$(echo "${string_in}" | awk -F ' --description' '{ print $1 }' )
+        description=$(echo "${string_in}" | awk -F '--description ' '{ print $2 }' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
     else
-        single_url=$(echo "${string_in}" | awk -F '--url' '{print $2}')
+        single_url="${string_in}"
     fi
     title=$(echo "${@:1}" | sed 's|["]|“|g' | sed 's|['\'']|’|g')
     posttime=$(date +%Y%m%d%H%M%S)
@@ -131,13 +132,27 @@ add_single_url(){
     source "$SCRIPT_DIR/muna.sh"
     unredirector
     single_url="${url}"
-    if [ -z "$description" ]; then
-        description=$(wget -qO- "${single_url}" | sed 's/</\n</g' | grep -i "og:description" | awk -F "content=\"" '{print $2}' | awk -F "\">" '{print $1}' | sed 's|["]|“|g' | sed 's|['\'']|’|g'| recode html..)
-        if [ "$description" == "" ];then
-            description=$(wget -qO- "${single_url}" | sed 's/</\n</g' | grep -i "meta name=\"description" | awk -F "content=\"" '{print $2}' | awk -F "\">" '{print $1}' | sed 's|["]|“|g' | sed 's|['\'']|’|g'| recode html..)
-        fi
+    loud "[info] Getting OpenGraph data, if it exists."
+    html=$(curl -s "${single_url}")
+    og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".*content="\([^"]*\)".*/\1/p')
+    # Extract og:image:alt content
+    og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt".*content="\([^"]*\)".*/\1/p')
+    if [[ $og_image == http* ]];then
+        imgurl="${og_image}"
+        imgalt="${og_image_alt}"
+        loud "[info] Found OpenGraph ${og_image}"
+        loud "[info] Found OpenGraph ${og_image_alt}"
+    fi                   
+    if [ -z "$description" ]; then    
+        description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".*content="\([^"]*\)".*/\1/p')
     fi
-    outstring=$(printf "%s|%s|%s||||||%s" "${posttime}" "${title}" "${single_url}" "${description}")
+    title=$(echo "${html}" | sed -n 's/.*<meta property="og:title".*content="\([^"]*\)".*/\1/p')
+    loud "[info] Adding to queue: $single_url"
+    loud "[info] ${title}"
+    loud "[info] ${description}"
+    loud "[info] ${imgurl}"
+    loud "[info] ${imgalt}"
+    outstring=$(printf "%s|%s|%s|%s|%s||||%s" "${posttime}" "${title}" "${single_url}" "${imgalt}" "${imgurl}" "${description}")
     if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
         loud "Post database not located, exiting."
         exit 99

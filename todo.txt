@@ -1,6 +1,6 @@
 
 
-
+ADD "add to agaetr" to hooty 
  
  
 # way to control which parsers get what with auto-runs?
@@ -22,7 +22,7 @@
 
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 
-test add single url 
+
 test using user level systemd instead of cron as better way to have environment
 
 test hooty
@@ -35,7 +35,8 @@ test hooty
 archiver outputs
 all other outputs
 Add hashtag field to hooty
-
+test add single url 
+-- using single url (which i have to do anyway) duh
 there's something that breaks when the image is bogus that needs to be debugged too.
 # lengthen pulled description, shorten later.
 Add link field to hooty?

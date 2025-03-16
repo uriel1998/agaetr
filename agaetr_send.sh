@@ -159,9 +159,9 @@ function check_image() {
         # Fetch webpage content
         html=$(curl -s "${link}")
         # Extract og:image content
-        og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image" content="\([^"]*\)".*/\1/p')
+        og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p')
         # Extract og:image:alt content
-        og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt" content="\([^"]*\)".*/\1/p')
+        og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt".* content="\([^"]*\)".*/\1/p')
         if [[ $og_image == http* ]];then
             imgurl="${og_image}"
             imgalt="${og_image_alt}"

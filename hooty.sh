@@ -83,12 +83,13 @@ display_help(){
     echo "# Standalone: /path/to/hooty.sh [options]"
     echo "# Info ############################################################"
     echo "# --help - shows this"
-    echo "# --media [FULL FILE PATH] - an image to pass"
-    echo "# --link | --url"
-    echo "# The following enable services"
+    echo "# --media [FULL FILE PATH] - an image to pass, optional"
+    echo "# --link | --url - use one or the other, optional"
+    echo "# The following enable services from the CLI with no more clicks"
     echo "# --toot"
     echo "# --bluesky"
-    echo "# --pixelfed"    
+    echo "# --pixelfed"
+    echo "# --tumblr"        
     echo "###################################################################"
 }
 
@@ -115,7 +116,7 @@ while [ $# -gt 0 ]; do
                     Need_Image="TRUE"
                     shift
                     ;;
-        --toot|--bluesky|--pixelfed)
+        --toot|--bluesky|--pixelfed|--tumblr)
                     # For service checks, see if they are in out/enabled, if not... then error?    
                     loud "Adding option ${1%:2}..."
                     on_array+=("${1:2}")
@@ -163,7 +164,7 @@ services_string="${services_string% }"
 
  
 
-ANSWER=$(yad --geometry=+400+200 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
 # Make our services on/off array:
 OIFS=$IFS
