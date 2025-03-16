@@ -159,6 +159,9 @@ for file in $posters; do
         fi
     fi
 done
+
+services_array+="agaetr"
+services_string+="--field=agaetr:CHK FALSE "
 # Trim trailing space
 services_string="${services_string% }"
 
@@ -293,9 +296,18 @@ echo "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "
 for i in "${!services_on_array[@]}"; do
     if [[ "${services_on_array[i]}" == "TRUE" ]]; then
         loud "Processing ${services_array[i]}..."
-        send_funct=$(echo "${services_array[i]}_send")
-        source "${SCRIPT_DIR}/out_avail/${services_array[i]}.sh"
-        eval ${send_funct}
+        if [ "${services_array[i]}" == "agaetr" ];then
+            if [ "${link}" != "" ];then
+                loud "[info] Calling agaetr to add to queue"
+                "${SCRIPT_DIR}/agaetr.sh --url ${link} --description ${description}"
+            else
+                echo "[error] Adding to agaetr queue only makes sense with a link" >&2
+            fi
+        else
+            send_funct=$(echo "${services_array[i]}_send")
+            source "${SCRIPT_DIR}/out_avail/${services_array[i]}.sh"
+            eval ${send_funct}
+        fi
         sleep 5
     fi
 done
