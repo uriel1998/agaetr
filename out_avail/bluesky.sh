@@ -100,8 +100,7 @@ function bluesky_send {
     else
         Limgurl=""
     fi
- 
-    # WHY IS THIS WORKING IN THE SHELL AND NOT CRON?
+  
     postme=$(printf "cat %s | %s post --stdin %s" "${tempfile}" "${binary}"  "${Limgurl}")
     loud "${postme}"
     eval "${postme}"
