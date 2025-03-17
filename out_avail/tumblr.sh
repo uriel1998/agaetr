@@ -27,7 +27,20 @@ function tumblr_send {
     textfile=$(grep 'textmd =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     workdir=$(echo  $( dirname $(realpath "${textfile}") ))
+    # is it in our ini where it should be?
+        
     
+    
+    tbn=$(grep 'TUMBLR_BLOG_NAME=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    tck=$(grep 'TUMBLR_CONSUMER_KEY=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    tcs=$(grep 'TUMBLR_CONSUMER_SECRET=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    tot=$(grep 'TUMBLR_OAUTH_TOKEN=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    tots=$(grep 'TUMBLR_OAUTH_TOKEN_SECRET=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    export TUMBLR_BLOG_NAME="${tbn}"
+    export TUMBLR_CONSUMER_KEY="${tck}"
+    export TUMBLR_CONSUMER_SECRET="${tcs}"
+    export TUMBLR_OAUTH_TOKEN="${tot}"
+    export TUMBLR_OAUTH_TOKEN_SECRET="${tots}"
     
     #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
    
@@ -41,6 +54,7 @@ function tumblr_send {
         fi    
         # triple check that it's a url
         if [[ $imgurl == http* ]];then
+            loud "[info] Image exists, and is an URL"
             Limgurl="${imgurl}"
         else
             Limgurl=""
