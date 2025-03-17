@@ -1,7 +1,35 @@
 
 
-ADD "add to agaetr" to hooty 
+ Crap. May have to switch some things due to sub-shell shenanigans with bsky-sh-cli
  
+ https://linkedin-cli.tigillo.com/
+ https://github.com/kristoff-it/simplex
+ https://github.com/mattn/bsky
+ 
+ ./bsky login -host https://sky.faithcollapsing.com --bgs https://sky.faithcollapsing.com stevensaus.com ruAkAYGfINznyyOrj7b0A0fp
+ 
+ 
+ steven@kowari:$ ./bsky --help post
+NAME:
+   bsky post - Post new text
+
+USAGE:
+   bsky post [text]
+
+DESCRIPTION:
+   Post new text
+
+   -r value                                                         
+   -q value                                                         
+   --stdin                                                          (default: false)
+   --image value, -i value [ --image value, -i value ]              
+   --image-alt value, --ia value [ --image-alt value, --ia value ]  
+   --video value, -v value                                          
+   --video-alt value, --va value                                    
+   --help, -h                                                       show help
+
+
+ https://github.com/cuducos/not-my-ex
  
 # way to control which parsers get what with auto-runs?
     - that's really the thing to do 
@@ -22,10 +50,11 @@ ADD "add to agaetr" to hooty
 
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 
+ADD "add to agaetr" to hooty 
 
 test using user level systemd instead of cron as better way to have environment
 
-test hooty
+
 
 
 
@@ -33,6 +62,7 @@ test hooty
 # DONE
 #################################################    
 archiver outputs
+test hooty
 all other outputs
 Add hashtag field to hooty
 test add single url 

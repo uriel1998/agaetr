@@ -245,7 +245,6 @@ source "$SCRIPT_DIR/muna.sh"
 unredirector
 link="$url"
 
-
 # Dealing with archiving links
 description2=""
 if [ $ARCHIVEIS -eq 1 ];then 

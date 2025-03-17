@@ -17,7 +17,7 @@ function wayback_send {
     # so assign to a GLOBAL variable that gets passed out.  error handling done by the calling script
     # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
     exec 5>&1
-    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1 >&5)
+    IARCHIVE=$(/usr/bin/timeout -k 60 eval "${outstring}" | head -n 2 | tail -n 1 >&5)
 
 #Archive URL:
 #https://web.archive.org/web/20250307205449/https://ideatrash.net/

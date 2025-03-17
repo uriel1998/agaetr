@@ -217,16 +217,15 @@ Specify the account to use (see all accounts with `toot auth`) in `agaetr.ini`:
 
 `mastodon = username@mastodon.example.com`
 
-#### Bsky via BSKY_SH_CLI
+#### Bsky via bsky 
 
-We use [BSKY_SH_CLI](https://github.com/bills-appworks/bsky-sh-cli/tree/main) for Bluesky. 
-This can be as simple as:
-`curl https://raw.githubusercontent.com/bills-appworks/bsky-sh-cli/main/download-install.sh -O`
-followed by
-`sh ./download-install.sh`
+We use [bsky](https://github.com/mattn/bsky) for Bluesky. You can download the 
+binary from the [releases](https://github.com/mattn/bsky/releases) page.
+
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
-Additionally, you may wish to use `loginbsky`, see below.
+Note that if you're specifying an alternate (self-hosted) AT host, that should go *before* 
+the handle and password when performing the `login` command.
 
 #### Pixelfed via toot  
 

@@ -68,7 +68,7 @@ function bluesky_send {
             fi
         fi
     fi
-
+    echo " " >> "${tempfile}"
 
 
    
@@ -90,9 +90,9 @@ function bluesky_send {
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}" 
             fi
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(printf " --image %s --alt '%s'" "${Outfile}" "${ALT_TEXT}")
+                Limgurl=$(printf " --image \'%s\' --alt '%s'" "${Outfile}" "${ALT_TEXT}")
             else
-                Limgurl=$(printf " --image %s --alt 'An automated image pulled from the post - %s'" "${Outfile}" "${title}")
+                Limgurl=$(printf " --image \'%s\' --alt 'An automated image pulled from the post - %s'" "${Outfile}" "${title}")
             fi
         else
             Limgurl=""
@@ -104,10 +104,14 @@ function bluesky_send {
     if [ -f "${HOME}/.local/bin/loginbsky" ];then
         eval "${HOME}/.local/bin/loginbsky"
     fi
-    
-    postme=$(printf "%s post --text-file \'%s\' %s %s" "${binary}" "${tempfile}" "${Limgurl}")
-    #loud "${postme}"
-    eval ${postme}
+ 
+    # WHY IS THIS WORKING IN THE SHELL AND NOT CRON?
+    postme=$(printf "%s post --text-file \'%s\' %s" "${binary}" "${tempfile}" "${Limgurl}")
+    loud "${postme}"
+ 
+    #cat "${tempfile}" | ${binary} post "${Limgurl}"
+    eval "${postme}"
+    #cat "${tempfile}" | ${binary} post "${Limgurl}"
     
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
@@ -144,7 +148,7 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        toot_send
+        bluesky_send
     fi
 fi
         
