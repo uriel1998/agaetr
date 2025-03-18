@@ -16,7 +16,11 @@ function archiveis_send {
     # so assign to a GLOBAL variable that gets passed out. Error handling done by the calling script.
     # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
     exec 5>&1
-    ARCHIVEIS=$(/usr/bin/timeout -k 60 eval "${outstring}" >&5)
+    if [ -f $(which timeout) ];then 
+        ARCHIVEIS=$(timeout --foreground 20 bash $(eval "${outstring}" >&5))
+    else
+        ARCHIVEIS=$(eval "${outstring}" >&5)
+    fi    
 }
 
 ##############################################################################
