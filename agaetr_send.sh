@@ -125,6 +125,29 @@ function parse_instring() {
     description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 }
 
+function get_better_description() {
+    # to strip out crappy descriptions and either omit them or, if available, 
+    # substitute og tags.
+
+    patterns=("Photo illustration by" "The Independent is on the ground" "Sign up for our email newsletter" "originally published")
+    patterns+="(Image Credit:"
+
+    # Loop through the array and check if any pattern matches
+    # If so, nuke the description.
+    for pattern in "${patterns[@]}"; do
+        if [[ "$description" == *"$pattern"* ]]; then
+            loud "[info] Removing bogus description."
+            description=""
+        fi
+    done
+    if [ "$description" == "" ];then
+        loud "[info] Attempting to find OpenGraph tags"
+        html=$(wget -O- "${link}" | sed 's|>|>\n|g')
+        og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+    fi
+
+}
+
 function check_image() {
     loud "[info] Read in image url: ${imgurl}"
     loud "[info] Read in image alt: ${imgalt}"
@@ -157,7 +180,9 @@ function check_image() {
         loud "[info] Checking image opengraph tags"
         # adding in looking for opengraph metadata here.
         # Fetch webpage content
-        html=$(curl -s "${link}")
+        # using wget because some sites (independent, cough) don't return anything 
+        # with curl?
+        html=$(wget -O- "${link}" | sed 's|>|>\n|g')
         # Extract og:image content
         og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p')
         # Extract og:image:alt content
@@ -181,6 +206,7 @@ function check_image() {
         imgalt=""
     else
         loud "[info] Image found, good to go."
+        # substituting og:alt if it is empty and not set by user
         if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" != "" ];then
             imgalt="${ALT_TEXT}"
         fi
@@ -234,9 +260,6 @@ loud "[info] Getting instring"
 get_instring
 loud "[info] Parsing instring"
 parse_instring
-loud "[info] Checking image"
-check_image
-
 
 # Deshortening, deobfuscating, and unredirecting the URL with muna
 url="$link"
@@ -244,6 +267,12 @@ loud "[info] Running muna"
 source "$SCRIPT_DIR/muna.sh"
 unredirector
 link="$url"
+
+
+loud "[info] Checking image"
+check_image
+loud "[info] Checking description"
+get_better_description
 
 # Dealing with archiving links
 description2=""

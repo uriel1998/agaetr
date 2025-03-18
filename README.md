@@ -285,8 +285,8 @@ textmd = /path/to/text.md
 picgo = /path/to/picgo
 ```
 
-You *will* need to set up these exports in your `.bashrc` or `.profile`.  I've banged my 
-head against trying to export them at runtime with no luck, not sure why. 
+Additionally, in `agaetr.ini` you will need to set up these values (see the documentation 
+for `gotumblr` for the values).
 
 ```
 TUMBLR_BLOG_NAME=blogname
@@ -300,7 +300,7 @@ TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 `gotumblr_ss.go`, *alongside* the original and update `agaetr.ini` appropriately.  
 
 It makes the second line of the text file the hashtags of the post. It currently adds 
-and empty one, and I don't know why.
+and empty hashtag, and I don't know why.
 
 #### Daily Post
 

@@ -1,26 +1,15 @@
- https://github.com/mattn/bsky
- 
-
-# Detect bullpuckey descriptions and replace with opengraph ones
 # fix timeout with archivers
-
- 
 # way to control which parsers get what with auto-runs?
     - that's really the thing to do 
     - all on UNLESS?
     - all/list of individuals?
     
-# add archivers to hooty with link 
-
-
-
-
-
  
 #################################################              
 # TO TEST
 #################################################              
-# new bsky test both normally and with cron
+
+# add archivers to hooty with link 
 
 
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
@@ -30,12 +19,41 @@ ADD "add to agaetr" to hooty
 test using user level systemd instead of cron as better way to have environment
 
 
+# Detect bullpuckey descriptions and replace with opengraph ones
+
+https://www.discovermagazine.com/health/high-sugar-linked-to-lung-cancer-expanding-our-understanding-of-diets-impact
+(Image Credit: Halfpoint/Shutterstock) Sign up for our email newsletter for the latest science new
+https://www.independent.co.uk/tech/battery-recycle-lithium-ion-environment-b2713723.html
+From reproductive rights to climate change to Big Tech, The Independent is on the ground when
+by Audrey Dutton, ProPublica, and Kelcie Moseley-Morris,
+https://www.propublica.org/article/st-lukes-hospital-idaho-abortion-ban
+
+https://thebuckeyeflame.com/2025/03/10/cincinnati-lgbtq-commission/
+This story was originally published by Montana Free Press at montanafreepress.org
+https://reasonstobecheerful.world/montana-peer-mental-health-support/
+(Image Credit: Yang Dinghua) Artistic reconstruction of the terrestrial ecological landscape before ...
+https://www.discovermagazine.com/the-sciences/a-life-oasis-protected-plants-during-the-permian-mass-extinction-event
+
+
+
+independent only works with wget
+
+Photo illustration by
+(Image Credit: 
+The Independent is on the ground
+Sign up for our email newsletter
+^by 
+originally published
+
+ use with wget
+ | sed 's|>|>\n|g'
 
 
 
 #################################################              
 # DONE
 #################################################    
+# new bsky test both normally and with cron
 archiver outputs
 test hooty
 all other outputs
