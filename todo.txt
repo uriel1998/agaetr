@@ -10,7 +10,7 @@
 #################################################              
 
 # add archivers to hooty with link 
-
+# timeout with archivers works under cron
 
 * Check parser doesn't choke if there's a newline at the end of the posts.db file
 

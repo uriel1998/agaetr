@@ -11,18 +11,14 @@
 
 function wayback_send {
     binary=$(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(echo "$binary -s --url ${link}")
+    outstring=$(echo "${binary} -s --url ${link}")
     #echo "${outstring}"
     # except we WANT this return -- this returns the archiveis URL, which we need to pass back.
     # so assign to a GLOBAL variable that gets passed out.  error handling done by the calling script
     # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
     exec 5>&1
-    if [ -f $(which timeout) ];then 
-        IARCHIVE=$(timeout --foreground 20 bash $(eval "${outstring}" | head -n 2 | tail -n 1 >&5))
-    else
-        IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1 >&5)
-    fi
-
+    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1 >&5)
+ 
 #Archive URL:
 #https://web.archive.org/web/20250307205449/https://ideatrash.net/
 #Cached save:
