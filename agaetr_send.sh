@@ -140,12 +140,17 @@ function get_better_description() {
             description=""
         fi
     done
-    if [ "$description" == "" ];then
-        loud "[info] Attempting to find OpenGraph tags"
-        html=$(wget -O- "${link}" | sed 's|>|>\n|g')
-        og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+    loud "[info] Attempting to find OpenGraph tags for description"
+    html=$(wget -O- "${link}" | sed 's|>|>\n|g')
+    og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+    if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
+        loud "[info] Subsituting OpenGraph description for parsed description."
+        description="${og_description}"
     fi
-
+    if [ "$og_description" != "" ] && [ "$description" == "" ];then
+        loud "[info] Subsituting OpenGraph description for empty or bad description."
+        description="${og_description}"
+    fi
 }
 
 function check_image() {

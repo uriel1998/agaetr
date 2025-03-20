@@ -1,4 +1,27 @@
-# fix timeout with archivers
+# fix timeout with archivers?
+
+https://www.baeldung.com/linux/bash-timeouts
+function xtimeout {
+  timeout=$1
+  shift
+  command=("$@")
+  (
+    "${command[@]}" &
+    runnerpid=$!
+    trap -- '' SIGTERM
+    ( # killer job
+      sleep $timeout
+      if ps -p $runnerpid > /dev/null; then
+        kill -SIGKILL $runnerpid 2>/dev/null
+      fi
+    ) &
+    killerpid=$!
+    wait $runnerpid
+    kill -SIGKILL $killerpid
+  )
+}
+
+
 # way to control which parsers get what with auto-runs?
     - that's really the thing to do 
     - all on UNLESS?
@@ -10,9 +33,7 @@
 #################################################              
 
 # add archivers to hooty with link 
-# timeout with archivers works under cron
 
-* Check parser doesn't choke if there's a newline at the end of the posts.db file
 
 ADD "add to agaetr" to hooty 
 
@@ -53,6 +74,8 @@ originally published
 #################################################              
 # DONE
 #################################################    
+* Check parser doesn't choke if there's a newline at the end of the posts.db file
+
 # new bsky test both normally and with cron
 archiver outputs
 test hooty
