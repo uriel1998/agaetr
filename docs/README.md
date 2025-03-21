@@ -508,11 +508,9 @@ send a post to (optionally multiple) services immediately.
 
 ### Roadmap:
 
-* 1.0 - Full on installation script including venv
-* 1.0 - Per feed prefix string (e.g. "Blogging: $Title")
-* 1.0 - urldecode strings in titles and descriptions
+* Other services, eg. linkedin, medium?
 
 ### Someday/Maybe:
 
-
+* timeout for archivers?
 
