@@ -29,7 +29,7 @@ input (particularly RSS feeds) and then share them to various social media outpu
 
 This system is designed for *single user* use, as API keys are required.
 
-Tested with a feeds from:
+Tested with feeds from:
 
 * [dlvr.it](https://dlvrit.com/) 
 * [shaarli](https://github.com/shaarli/Shaarli) instances (see note below)
@@ -39,9 +39,6 @@ Tested with a feeds from:
 * [DeviantArt](https://www.deviantart.com)
 * [YouTube](https://youtube.com) (particularly public playlists, like favorites)
 * [UPI](https://rss.upi.com/news/news.rss)
-
-The preprocessing script is available (with examples) for fixing a few things 
-with WordPress and TT-RSS "published articles" feeds.  
 
 `agaetr` can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
@@ -65,34 +62,35 @@ This project is licensed under the Apache License. For the full license, see `LI
 
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
-
+ 
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
 * [wget](https://www.gnu.org/software/wget/)  
-* [awk](http://www.gnu.org/software/gawk/manual/gawk.html)  
+* [gawk](http://www.gnu.org/software/gawk/manual/gawk.html)  
 * [grep](http://en.wikipedia.org/wiki/Grep)  
 * [curl](http://en.wikipedia.org/wiki/CURL)  
+* [sed]
+* [detox]
+* [xmlstarlet](https://xmlstar.sourceforge.net/)
+* [imagemagick]
+* lynx
+* pandoc
+* html-xml-utils
+* pipx (recommended for services)
 
-You will need some variety of posting mechanism and optionally an URL 
-shortening mechanism. See [Services Setup](#5-services-setup) for details.
+On Debian/Ubuntu systems, you should be able to snag all these with:
 
-It is strongly recommended to create a virtualenv for this project; the 
-installation instructions are written with this in mind.
+`sudo apt install xmlstarlet html-xml-utils pandoc lynx imagemagick detox python3 bash wget gawk grep curl python3`
 
-Ideally, you should create a virtualenv for this project, as there are a number 
-of python dependencies.  Instructions on how to do that are beyond the scope of 
-this document.  It is assumed that you have created and activated the 
-virtualenv henceforth.
+### Python dependencies
 
-## 4. Installation
+It is recommended that you use `pipx` and your package installer's python packages. 
+If you do not, you should create a virtualenv for this project, as there are a number 
+of python dependencies.  
 
-* `mkdir -p $HOME/.config/agaetr`
-* `mkdir -p $HOME/.local/agaetr`
-* Edit `agaetr.ini` (see instructions below)
-* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
-* `sudo chmod +x $PWD/agaetr_parse.py`
-* `sudo chmod +x $PWD/agaetr_send.sh`
-* (If using `tweet.py`) `sudo chmod +x $PWD/tweet.py`
+* `sudo apt install python3-appdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
+
+OR
 
 * `pip install -r requirements.txt` 
 
@@ -103,6 +101,24 @@ OR
 * `pip install beautifulsoup4`  
 * `pip install feedparser`  
 * `pip install requests`
+
+## 4. Installation
+
+### Manual installation
+
+You will need some variety of posting mechanism and optionally an URL 
+shortening mechanism. See [Services Setup](#5-services-setup) for details.
+
+* `mkdir -p $HOME/.config/agaetr`
+* `mkdir -p $HOME/.local/agaetr`
+* Edit `agaetr.ini` (see instructions below)
+* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
+* `sudo chmod +x $PWD/agaetr_parse.py`
+* `sudo chmod +x $PWD/agaetr_send.sh`
+* `sudo chmod +x $PWD/agaetr.sh`
+* `sudo chmod +x $PWD/muna.sh`
+
+
 
 Any service you would like to use needs to have a symlink made from the "avail" 
 directory to the "enabled" directory. For example:
@@ -126,99 +142,179 @@ If you create one for another service, please contact me so I can merge it in
 (this repository is mirrored multiple places).
 
 
-### Shorteners
-
-#### murls  
-
-Murls is a free service and does not require an API key. 
-
-#### bit.ly  
-
-**IMPORTANT NOTE** The bit.ly api is changing in March 2020 and is getting 
-more complex; I've not updated/fixed this yet.
-
-If you are using bit.ly, you will need a username and bit.ly API key.
-Place the values of your login and API key into `agaetr.ini`.
-
-`bitly_login =`  
-`bitly_api =`  
+### Shorteners and Archivers
 
 #### YOURLS  
 
-Go to your already functional YOURLS instance.  Get the API key from 
+Go to your already functional [YOURLS](https://yourls.org/) instance.  Get the 
+API key (secret signature token) from the `Tools` page of your admin interface. 
 Place the URL of your instance and API key into `agaetr.ini`.  
 
 `yourls_api =`  
 `yourls_site =`  
 
+#### ARCHIVE.IS
+
+Install the `archiveis` cli tool from [https://github.com/palewire/archiveis](https://github.com/palewire/archiveis), 
+or if you have pipx, by `pipx install archiveis`.
+
+Find the location of the binary by typing `which archiveis`, then place that in 
+the ini file. *Placing the binary location turns on archiving all links*.
+
+#### WAYBACK MACHINE
+
+Install the `waybackpy` cli tool from [https://pypi.org/project/waybackpy/](https://pypi.org/project/waybackpy/), 
+or if you have pipx, by `pipx install waybackpy`.
+
+Find the location of the binary by typing `which waybackpy`, then place that in 
+the ini file. *Placing the binary location turns on archiving all links*.
+
+#### All Archivers
+
+Place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, or to `ignore` them.
+
+`ArchiveLinks = append`
+
 ### Outbound parsers
 
-* Mastodon:
-* Twitter  - **IMPORTANT- SEE BELOW**
-* Twitter 
 * Shaarli 
-* Wallabag                 
+* Wallabag
+* Mastodon
+* Bluesky
+* Pixelfed
+* Tumblr
+* RSS     
+* Email            
+* Daily Post
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any 
 you are not using; adding additional services should follow the pattern shown.  
 
-#### Twitter via Oysttyer  
-
-Install and set up [oysttyer](https://github.com/oysttyer/oysttyer). Place the 
-location of the binary into `agaetr.ini`.  
-
-While `Oysttyer` is by far the easier to set up, it does *not* allow you to 
-specify the image that is tweeted.  For that, you need `twython`, below.  
-
 ### Shaarli (output)
 
 Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). 
+If you already have pipx, this can be as simple as `pipx install shaarli-client`.
 Make sure you set up the configuration file for the client properly. Place the 
 location of the binary into `agaetr.ini`.
+
+If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used.  
 
 #### Wallabag (output)
 
 Install and set up [Wallabag-cli](https://github.com/Nepochal/wallabag-cli). 
+If you already have pipx, this can be as simple as `pipx install wallabag-client`.
 Place the location of the binary into `agaetr.ini`.
 
 Note that shorteners and wallabag don't get along all the time.
 
 #### Mastodon via toot  
 
-Install and set up [toot](https://github.com/ihabunek/toot/).  Place the 
-location of the binary into `agaetr.ini`.
-
-#### Twitter using twython 
-
-This one is a little more complicated, but this is the Twitter client that 
-will post images directly to Twitter.  If this is too complicated, use 
-`oysttyer` above.
-
-Install [twython](https://github.com/ryanmcgrath/twython) - preferably in your 
-virtual environment that `agaetr` is in via `pip install -U twython`.
-
-In this archive are two files - `tweet.py` and `tweet.patch` - that require a 
-little explanation. I did not need the full functionality of [twython-tools](https://github.com/adversary-org/twython-tools), 
-and in fact, had a bit of a problem getting it working properly. Further, the 
-functionality I *did* want - posting an image to Twitter - was always 
-*interactive* when I wanted to enter the file on the command line. 
-
-So I (thank you Apache2 license) ripped out the authentication portions and 
-hardcoded them, ripped out all the interactive bits, and remade the Twython-tools 
-program `tweet-full.py` into `tweet.py`. 
-
-If you wish to see the difference, `tweet.patch` is included for you to verify 
-my changes to the code.
-
-You must register a [Twitter application](https://apps.twitter.com) and get 
-**user** API codes and type them manually into `tweet.py`.
-
-`APP_KEY = ""`  
-`APP_SECRET = ""`  
-`OAUTH_TOKEN = ""`  
-`OAUTH_TOKEN_SECRET = ""`  
-
+Install and set up [toot](https://github.com/ihabunek/toot/).  
+If you already have pipx, this can be as simple as `pipx install toot`.
 Place the location of the binary into `agaetr.ini`.
+
+Specify the account to use (see all accounts with `toot auth`) in `agaetr.ini`:
+
+`mastodon = username@mastodon.example.com`
+
+#### Bsky via bsky 
+
+We use [bsky](https://github.com/mattn/bsky) for Bluesky. You can download the 
+binary from the [releases](https://github.com/mattn/bsky/releases) page.
+
+Install as per the directions, place the location of the binary into `agaetr.ini`.
+
+Note that if you're specifying an alternate (self-hosted) AT host, that should go *before* 
+the handle and password when performing the `login` command.
+
+#### Pixelfed via toot  
+
+Install and set up [toot](https://github.com/ihabunek/toot/).  
+If you already have pipx, this can be as simple as `pipx install toot`.
+Place the location of the binary into `agaetr.ini` if you have not already for 
+Mastodon.  Create a login for pixelfed as well (`toot login`).  Note the pixelfed 
+account name to send to using `toot auth`.  Place this in `agaetr.ini` like so:
+
+`pixelfed = username@pixelfed.example.com`
+
+This sender will *only* send if there is an image retrieved. Content warnings 
+and the like are applied.
+
+#### RSS via XMLStarlet
+
+Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as 
+`sudo apt install xmlstarlet` on Debian/Ubuntu.
+In `agaetr.ini` specify the path for the resulting xml file and the link where it 
+will eventually be accessed from:
+```
+rss_output_path = /full/path/including/filename.xml
+self_link = https://location.of.xml.example.com/output.xml
+
+```
+#### Email
+
+Fill in the appropriate bits in `agaetr.ini`.  The field `email_from` should be 
+one valid email address, the field `email_to` may contain multiple addresses separated 
+by a comma.
+
+smtp_server =
+smtp_port =
+smtp_username =
+smtp_password = 
+email_from = 
+email_to = 
+
+#### Tumblr 
+
+* IMPORTANT: This module requires `go` and `npm` for `gotumblr` and `picgo`, respectively. 
+
+Install [gotumblr](https://github.com/admacro/gotumblr) by installing go and 
+downloading the repository.  Get the appropriate keys as per its README.  Put the 
+full path to `gotumblr.go` and `text.md` in `agaetr.ini`. Please note that these 
+two files should be in **the same** directory.
+
+* IMPORTANT: If you are wanting to post locally-hosted images in your posts (e.g. if 
+you're using `hooty`, below, or something similar), you will need to install 
+[picgo](https://github.com/PicGo/PicGo-Core) as well.  `gotumblr` only posts 
+text posts, so we have to host the image elsewhere. Put the full path to `picgo` 
+in `agaetr.ini`.
+
+```
+gotumblr = /path/to/gotumblr.go
+textmd = /path/to/text.md
+picgo = /path/to/picgo
+```
+
+Additionally, in `agaetr.ini` you will need to set up these values (see the documentation 
+for `gotumblr` for the values).
+
+```
+TUMBLR_BLOG_NAME=blogname
+TUMBLR_CONSUMER_KEY=see_readme_for_gotumblr
+TUMBLR_CONSUMER_SECRET=see_readme_for_gotumblr
+TUMBLR_OAUTH_TOKEN=see_readme_for_gotumblr
+TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
+```
+
+* IMPORTANT: If you want to use hashtags, you will need to drop my replacement of `gotumblr`, 
+`gotumblr_ss.go`, *alongside* the original and update `agaetr.ini` appropriately.  
+
+It makes the second line of the text file the hashtags of the post. It currently adds 
+and empty hashtag, and I don't know why.
+
+#### Daily Post
+
+In `agaetr.ini` set up your *directory* for daily posts.
+
+`daily_post = /path/to/directory`
+
+It will create a markdown formatted text file of your links for each day, e.g.
+
+`/path/to/dailypost/YYYYMMDD.md`
+
+Additional processing and formatting is up to you. If you want YAML frontmatter or the 
+like, you'll need to edit the sending script.
+
 
 ## 6. Feeds Setup
 
@@ -226,14 +322,15 @@ Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a
 header line `[Feed#]` with a different number for each feed. 
 
 If a feed is being preprocessed (see below) or you have the RSS as an 
-XML file, you can put the filename directly into `agaetr.ini`.  The options 
-are explained in [Feed Options](#8-feed-options) below.
+XML file, you can put the filename directly into `agaetr.ini`, **RELATIVE TO `$XDG_CONFIG_HOME/agaetr`**.  
+
+The options are explained in [Feed Options](#8-feed-options) below.
 
 For example:
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /relative_path_to_xml_file/my_xml_file.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -257,8 +354,17 @@ or code for every possibility.
 
 If you have a feed with some unruly elements - such as the "Read more..." that 
 Wordpress loves to put in my own feed, or how the "published articles" feed from 
-tt-rss uses `<updated>` instead of `<pubDate>`, there is an example BASH 
-script to fix both those problems with `sed`.  
+tt-rss uses `<updated>` instead of `<pubDate>`, there is an option to put in a `sed`
+script or the like in `agaetr.ini`.  In this case, `src` is where the feed 
+originally comes from, and `url` is where the processed feed goes to be picked up
+by `agaetr_parse.py`.  These three must be in this order: `src`, `cmd`, `url`, one per line, as below.
+
+```
+[Feed4]
+src = https://ideatrash.net/feed
+cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+url = /relative/path/to/xml/filename.xml
+```
 
 Again, you can specify the output filename for the feed location in 
 `agaetr.ini`. This allows the use of the preprocessor without changing 
@@ -309,7 +415,7 @@ there are no content warnings and images are presented normally.
 
 ```
 [Feed1]
-url = /home/steven/agaetr/ideatrash_parsed.xml
+url = /feeds/ideatrash_parsed.xml
 sensitive = yes
 ContentWarning = no
 GlobalCW = 
@@ -325,6 +431,14 @@ url = https://ideatrash.net/feed
 sensitive = no
 ContentWarning = yes
 GlobalCW = 
+
+# If a path, it must be relative to $XDG_DATA_HOME/agaetr and begin with a slash
+# $XDG_DATA_HOME *is* different if you're using Flatpak!
+# note the source and command. 
+[Feed4]
+src = https://ideatrash.net/feed
+cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/description>/g'
+url = /relative/path/to/xml/filename.xml
 
 ```
 
@@ -353,6 +467,18 @@ configured.
 
 ## 10. Usage
 
+
+Standalone: /path/to/agaetr.sh [options]
+
+*  --help:  show help 
+* --locations: print config and data locations
+* --readme: display the README on the console
+* --version: report version  
+* --pull: draw in configured RSS sources
+* --push: push out from queue
+* --muna [URL]: unredirect a URL 
+* --url [URL] --description [text]: add single url to outbound queue 
+
 ### IMPORTANT NOTE ABOUT CRON
 
 **If you run `agaetr` as a cron job, ensure that the cron job is 
@@ -360,20 +486,23 @@ run as the user (and with the environment) you used to set up the
 online services.**  
 
 
-* (Optional) Call `rss_preprocessor.sh`.
-* `agaetr_parse.py` to pull down new articles from feeds.
-* `agaetr_send.sh` to send *a* post to the activated social media services
+Because it's all modular, it's possible to run independent elements, or to run from the 
+control file `agaetr.sh`.  It's also possible to source the senders and archivers 
+to pass additional (global) variables to them:
 
-Seriously, once everything is set up, that's it. You'll probably want to 
-put these into cronjobs. 
+"$pubtime" "$title" "$description" "$link" "$hashtags"
+"$cw"  "$imgurl" "ALT_TEXT"
+
+`hooty.sh` is an example of this.
 
 ## 11. Other files
 
 There are other files in this repository:
 
-* `unredirector.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
-* `unredirector_old.sh` - The original program/function used by `agaetr` to remove redirections and shortening.  
-* `standalone_sender.sh` - Working on this to use the `agaetr` framework without RSS feeds; not ready for use yet.   
+* `hooty.sh` - a rewrite of `patootie` to use `agaetr`'s framework to interactively 
+send a post to (optionally multiple) services immediately.
+* `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
+
 
 ## 12. TODO
 
@@ -385,11 +514,5 @@ There are other files in this repository:
 
 ### Someday/Maybe:
 
-* test INBOUND wallabag - seems to be broken?
-* In and out - Instagram? 
-* Per feed output selectors (though that's gonna be a pain)
-* Check that send exits cleanly if there's no articles !!
-* Check parser doesn't choke if there's a newline at the end of the posts.db file
-* If hashtags are in description or title, make first occurance a hashtag
-* Create some kind of homespun CW for Twitter, etc
-* Out posting for Facebook (pages, at least), Pleroma, Pintrest, IRC, Instagram, Internet Archive, archivebox
+
+

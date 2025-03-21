@@ -3,31 +3,16 @@
 ##############################################################################
 #
 #  sending script
-#  (c) Steven Saus 2025
+#  (c) Steven Saus 2024
 #  Licensed under the MIT license
 #
 ##############################################################################
 
-function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
-    fi
-}
 
+function surfraw_bookmark {
+    echo -e "${title}\t${link}" >> ${XDG_CONFIG_DIR}/surfraw/bookmarks
 
-function shaarli_send {
-    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    # No length requirements here!
-    tags=$(echo "$hashtags"  | sed 's|#||g' )
-
-    if [ -z "${description}" ];then
-        outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
-    else
-        outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
-    fi
-
-    eval ${outstring} > /dev/null
+#https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit#
 }
 
 
@@ -43,10 +28,8 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function shaarli ready to go."
-    OUTPUT=0
+    loud "[info] Function tumblr ready to go."
 else
-    OUTPUT=1
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
@@ -60,6 +43,5 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        shaarli_send
+        surfraw_bookmark
     fi
-fi

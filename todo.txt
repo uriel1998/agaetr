@@ -1,0 +1,136 @@
+# fix timeout with archivers?
+
+https://www.baeldung.com/linux/bash-timeouts
+function xtimeout {
+  timeout=$1
+  shift
+  command=("$@")
+  (
+    "${command[@]}" &
+    runnerpid=$!
+    trap -- '' SIGTERM
+    ( # killer job
+      sleep $timeout
+      if ps -p $runnerpid > /dev/null; then
+        kill -SIGKILL $runnerpid 2>/dev/null
+      fi
+    ) &
+    killerpid=$!
+    wait $runnerpid
+    kill -SIGKILL $killerpid
+  )
+}
+
+
+# way to control which parsers get what with auto-runs?
+    - that's really the thing to do 
+    - all on UNLESS?
+    - all/list of individuals?
+    
+ 
+#################################################              
+# TO TEST
+#################################################              
+
+# add archivers to hooty with link 
+
+
+ADD "add to agaetr" to hooty 
+
+test using user level systemd instead of cron as better way to have environment
+
+
+# Detect bullpuckey descriptions and replace with opengraph ones
+
+https://www.discovermagazine.com/health/high-sugar-linked-to-lung-cancer-expanding-our-understanding-of-diets-impact
+(Image Credit: Halfpoint/Shutterstock) Sign up for our email newsletter for the latest science new
+https://www.independent.co.uk/tech/battery-recycle-lithium-ion-environment-b2713723.html
+From reproductive rights to climate change to Big Tech, The Independent is on the ground when
+by Audrey Dutton, ProPublica, and Kelcie Moseley-Morris,
+https://www.propublica.org/article/st-lukes-hospital-idaho-abortion-ban
+
+https://thebuckeyeflame.com/2025/03/10/cincinnati-lgbtq-commission/
+This story was originally published by Montana Free Press at montanafreepress.org
+https://reasonstobecheerful.world/montana-peer-mental-health-support/
+(Image Credit: Yang Dinghua) Artistic reconstruction of the terrestrial ecological landscape before ...
+https://www.discovermagazine.com/the-sciences/a-life-oasis-protected-plants-during-the-permian-mass-extinction-event
+
+
+
+independent only works with wget
+
+Photo illustration by
+(Image Credit: 
+The Independent is on the ground
+Sign up for our email newsletter
+^by 
+originally published
+
+ use with wget
+ | sed 's|>|>\n|g'
+
+
+
+#################################################              
+# DONE
+#################################################    
+* Check parser doesn't choke if there's a newline at the end of the posts.db file
+
+# new bsky test both normally and with cron
+archiver outputs
+test hooty
+all other outputs
+Add hashtag field to hooty
+test add single url 
+-- using single url (which i have to do anyway) duh
+there's something that breaks when the image is bogus that needs to be debugged too.
+# lengthen pulled description, shorten later.
+Add link field to hooty?
+use description2 format for hooty like in agaetr_send
+Add image shrinker for alt text for hooty
+preprocessor tested
+pull in ---- 
+* Check that send exits cleanly if there's no articles !!
+test self_link output
+           Hooty needs better control pathways in for determining what is on and not
+Not using existing alt text when it's in the DB?
+SCRIPT_DIR FOR SENDERS IS DIFFERENT -- FIX THAT AND HAVE IT NOT OVERWRITE THE VARIABLE
+* ensure there's no "exit" calls in senders 
+    if [ ${#link} -gt 36 ]; then 
+        if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ];then
+            source "${SCRIPT_DIR}/yourls.sh"
+            loud "Sending to shortener function"
+            yourls_shortener
+        fi
+    fi
+pixelfed using toot
+TUMBLR TEXT:  https://github.com/admacro/gotumblr
+    pita, but hey.  Will need whole different output generator here.
+
+# archive.is  -- add into readme
+# swap wayback to waybackpy via pipx - https://pypi.org/project/waybackpy/
+#### incorporate adding these to the post
+# archive.org - https://pypi.org/project/waybackpy/
+# archive.is -  https://github.com/palewire/archiveis
+# removal of the short blurb
+
+SO OUR FLOW WILL HAVE TO BE
+- if archive.is,
+    do first, capture url
+- if internet archive
+    do second, capture url
+    (shorten that url)
+single url 
+holy crap, I've got duplicate functions, moron
+# bespoke it.  Can't fix everyone's issue.
+# toot
+updated bsky
+so need multiple toot configurations
+
+toot auth -- lists them
+toot activate selects them
+
+or just tag -u [account] on the end.
+
+
+remove configurators

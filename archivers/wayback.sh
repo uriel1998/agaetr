@@ -8,28 +8,24 @@
 #
 ##############################################################################
 
-function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
-    fi
+
+function wayback_send {
+    binary=$(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    outstring=$(echo "${binary} -s --url ${link}")
+    #echo "${outstring}"
+    # except we WANT this return -- this returns the archiveis URL, which we need to pass back.
+    # so assign to a GLOBAL variable that gets passed out.  error handling done by the calling script
+    # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
+    exec 5>&1
+    IARCHIVE=$(eval "${outstring}" | head -n 2 | tail -n 1 >&5)
+ 
+#Archive URL:
+#https://web.archive.org/web/20250307205449/https://ideatrash.net/
+#Cached save:
+#False
+ 
+
 }
-
-
-function shaarli_send {
-    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    binary=$(grep 'shaarli =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    # No length requirements here!
-    tags=$(echo "$hashtags"  | sed 's|#||g' )
-
-    if [ -z "${description}" ];then
-        outstring=$(echo "$binary post-link --title \"$title\" --url $link ")
-    else
-        outstring=$(echo "$binary post-link --description \"$description\" --tags \"$tags\" --title \"$title\" --url $link ")
-    fi
-
-    eval ${outstring} > /dev/null
-}
-
 
 ##############################################################################
 # Are we sourced?
@@ -43,10 +39,8 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function shaarli ready to go."
-    OUTPUT=0
+    echo "[info] Function wayback ready to go."
 else
-    OUTPUT=1
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
@@ -60,6 +54,7 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        shaarli_send
+        wayback_send
     fi
 fi
+

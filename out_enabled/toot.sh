@@ -1,1 +1,1 @@
-/home/steven/documents/programming/agaetr/out_avail/toot.sh
+/home/steven/Documents/programming/agaetr/out_avail/toot.sh
