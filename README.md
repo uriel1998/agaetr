@@ -69,14 +69,14 @@ linux-like distros:
 * [gawk](http://www.gnu.org/software/gawk/manual/gawk.html)  
 * [grep](http://en.wikipedia.org/wiki/Grep)  
 * [curl](http://en.wikipedia.org/wiki/CURL)  
-* [sed]
-* [detox]
+* [sed](https://en.wikipedia.org/wiki/Sed)
+* [detox](https://linux.die.net/man/1/detox)
 * [xmlstarlet](https://xmlstar.sourceforge.net/)
-* [imagemagick]
-* lynx
-* pandoc
-* html-xml-utils
-* pipx (recommended for services)
+* [imagemagick](https://www.imagemagick.org/)
+* [lynx](https://lynx.invisible-island.net/)
+* [pandoc](https://pandoc.org/)
+* [html-xml-utils](https://www.w3.org/Tools/HTML-XML-utils/README)
+* [pipx](https://pipx.pypa.io/stable/installation/)
 
 On Debian/Ubuntu systems, you should be able to snag all these with:
 
