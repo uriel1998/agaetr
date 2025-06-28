@@ -160,14 +160,14 @@ for file in $posters; do
     fi
 done
 
-services_array+="agaetr"
+services_array+=("agaetr")
 services_string+="--field=agaetr:CHK FALSE "
 # Trim trailing space
 services_string="${services_string% }"
 
  
 
-ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "patootie" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
 # Make our services on/off array:
 OIFS=$IFS

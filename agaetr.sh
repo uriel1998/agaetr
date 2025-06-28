@@ -15,7 +15,7 @@
 # standardized binaries that should be on $PATH
 # Likewise with initial INI files
 ############################################################################### 
-VERSION="0.1.0"
+VERSION="0.2.0"
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=0
@@ -191,7 +191,7 @@ rss_preprocessor(){
                         myurl=$(echo "${myarr[$k]}" | awk -F ' = ' '{print $2}')
                         rel_path="${XDG_DATA_HOME}/agaetr/${myurl}"                      
                         # time to create the command string
-                        thecommand=$(printf "wget -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}"  "${rel_path}")
+                        thecommand=$(printf "wget -q -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}"  "${rel_path}")
                         loud "${thecommand}"
                         eval "${thecommand}"
                     fi
@@ -243,7 +243,7 @@ while [ $# -gt 0 ]; do
                     loud "[info] Preprocessing RSS feeds"
                     rss_preprocessor
                     loud "[info] Pulling in RSS feeds"
-                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py                    
+                    "${python_bin}" "${SCRIPT_DIR}"/agaetr_parse.py 2>&1
                     ;;
         --push)     # perform a push run.
                     shift
