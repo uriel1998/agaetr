@@ -38,7 +38,6 @@ LOUD=0
 
 ## What do we know?
 
-
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
@@ -285,7 +284,7 @@ if [ $ARCHIVEIS -eq 1 ];then
     source "$SCRIPT_DIR/archivers/archiveis.sh"
     loud "[info] Getting archive.is link"
     # this should now set ARCHIVEIS to the Archiveis url
-    ARCHIVEIS=$(archiveis_send)
+	ARCHIVEIS=$(archiveis_send)
     # Making sure we get a URL back
     if [[ $ARCHIVEIS =~ http* ]];then
         loud "[info] Got archive.is link of ${ARCHIVEIS} "
@@ -301,7 +300,7 @@ if [ $IARCHIVE -eq 1 ];then
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
     source "$SCRIPT_DIR/archivers/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
-    IARCHIVE=$(wayback_send)
+	IARCHIVE=$(wayback_send)
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
     echo "$IARCHIVE"

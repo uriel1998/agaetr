@@ -88,7 +88,7 @@ It is recommended that you use `pipx` and your package installer's python packag
 If you do not, you should create a virtualenv for this project, as there are a number 
 of python dependencies.  
 
-* `sudo apt install python3-appdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
+* `sudo apt install python3-platformdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
 
 OR
 
@@ -96,7 +96,7 @@ OR
 
 OR
 
-* `pip install appdirs`  
+* `pip install platformdirs`  
 * `pip install configparser`  
 * `pip install beautifulsoup4`  
 * `pip install feedparser`  
@@ -513,4 +513,3 @@ send a post to (optionally multiple) services immediately.
 ### Someday/Maybe:
 
 * timeout for archivers?
-

@@ -11,7 +11,11 @@
 
 function wayback_send {
     binary=$(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    outstring=$(echo "${binary} -s --url ${link}")
+    if [ -f $(which timeout) ];then
+		outstring=$(echo "timeout 60 ${binary} -s --url ${link}")
+	else
+		outstring=$(echo "${binary} -s --url ${link}")
+	fi
     #echo "${outstring}"
     # except we WANT this return -- this returns the archiveis URL, which we need to pass back.
     # so assign to a GLOBAL variable that gets passed out.  error handling done by the calling script

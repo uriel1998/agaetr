@@ -12,7 +12,7 @@ from pprint import pprint
 import configparser
 import os
 from os.path import expanduser
-from appdirs import *
+from platformdirs import user_data_dir, user_config_dir
 from pathlib import Path
 import shutil
 import requests

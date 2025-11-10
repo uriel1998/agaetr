@@ -10,9 +10,13 @@
 
 function archiveis_send {
     
+	
     binary=$(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-
-    outstring=$(echo "$binary ${link} -ua \"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36\"")
+	if [ -f $(which timeout) ];then
+		outstring=$(echo "timeout 60 $binary ${link} -ua \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1\"")
+	else	
+		outstring=$(echo "$binary ${link} -ua \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1\"")
+    fi
     # so assign to a GLOBAL variable that gets passed out. Error handling done by the calling script.
     # https://stackoverflow.com/questions/12451278/capture-stdout-to-a-variable-but-still-display-it-in-the-console
     exec 5>&1
