@@ -269,6 +269,7 @@ parse_instring
 url="$link"
 loud "[info] Running muna"
 source "$SCRIPT_DIR/muna.sh"
+strip_tracking_url
 unredirector
 link="$url"
 
