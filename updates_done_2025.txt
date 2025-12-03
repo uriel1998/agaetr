@@ -1,0 +1,1 @@
+Updated toot script to use 23 character counting for mastodon.
