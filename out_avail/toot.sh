@@ -25,9 +25,6 @@ function toot_send {
     account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
-
-    #Yes, I know the URL length doesn't actually count against it.  Just
-    #reusing code here.
     outstring=$(printf "%s  \n\n%s  \n\n%s  \n%s" "${title}" "${description}" "${description2}" "$hashtags")
 
     if [ ${#outstring} -gt 475 ];then
@@ -119,7 +116,8 @@ function toot_send {
     fi
 
     postme=$(printf "cat %s | %s post %s %s -u %s" "${tempfile}" "$binary" "${Limgurl}" "${cw}" "${account_using}")
-    eval ${postme}
+    loud "${postme}"
+    eval ${postme};poster_result_code=$?     # returns 0|1
 
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"
@@ -156,7 +154,7 @@ else
                 # so it doesn't clobber exported env
                 LOUD=0
             fi
-        fi 
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"
