@@ -127,7 +127,8 @@ function parse_instring() {
 function get_better_description() {
     # to strip out crappy descriptions and either omit them or, if available, 
     # substitute og tags.
-
+    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+    
     patterns=("Photo illustration by" "The Independent is on the ground" "Sign up for our email newsletter" "originally published")
     patterns+="(Image Credit:"
 
@@ -140,7 +141,7 @@ function get_better_description() {
         fi
     done
     loud "[info] Attempting to find OpenGraph tags for description"
-    html=$(wget -O- "${link}" | sed 's|>|>\n|g')
+    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
     og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
     if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
         loud "[info] Subsituting OpenGraph description for parsed description."
@@ -186,7 +187,7 @@ function check_image() {
         # Fetch webpage content
         # using wget because some sites (independent, cough) don't return anything 
         # with curl?
-        html=$(wget -O- "${link}" | sed 's|>|>\n|g')
+        html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
         # Extract og:image content
         og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p')
         # Extract og:image:alt content
@@ -218,7 +219,13 @@ function check_image() {
             ALT_TEXT="${imgalt}"
         fi        
         if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" == "" ];then
-            imgalt="An image for decorative purposes automatically pulled from the post."
+			# this is from newsbeuter_dangerzone
+			if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then 
+				ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${imgurl}")
+				imgalt="${ALT_TEXT}"
+			else
+				imgalt="An image for decorative purposes automatically pulled from the post."
+			fi
             ALT_TEXT="${imgalt}"
         fi        
         loud "[info] Using alt text of ${ALT_TEXT}."
