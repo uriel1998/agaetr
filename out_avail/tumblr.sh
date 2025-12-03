@@ -63,7 +63,9 @@ function tumblr_send {
     echo "${title}" > "${textfile}"
     if [[ $binary == *gotumblr_ss.go ]]; then
         # This is on purpose with my hacked version of gotumblr
-        echo "${hashtags}" >> "${textfile}"
+        # Filter out empty hashtags and clean up the hashtag string
+        filtered_hashtags=$(echo "${hashtags}" | sed 's/#\s*#/#/g; s/#\s*$//; s/^\s*#\s*$//')
+        echo "${filtered_hashtags}" >> "${textfile}"
     fi
     echo " " >> "${textfile}"
     echo "${description}" >> "${textfile}"
