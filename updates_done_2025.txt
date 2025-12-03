@@ -4,3 +4,5 @@ Updated bsky poster
 Tumblr poster changed to python
 Daily posts updated
 pixelfed updated
+shaarli updated
+updated graphics assets

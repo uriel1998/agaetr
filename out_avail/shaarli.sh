@@ -28,6 +28,7 @@ function shaarli_send {
     fi
 
     eval ${outstring} > /dev/null
+    poster_result_code=$?     # returns 0|1
 }
 
 
@@ -54,8 +55,11 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"
