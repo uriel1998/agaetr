@@ -240,6 +240,12 @@ account name to send to using `toot auth`.  Place this in `agaetr.ini` like so:
 This sender will *only* send if there is an image retrieved. Content warnings
 and the like are applied.
 
+#### Local Images For Tumblr, Daily Post, RSS, Email
+
+* **IMPORTANT**: If you are wanting to post locally-hosted images in your posts (e.g. if you're using `hooty`, below, or something similar), you will need to install
+[picgo](https://github.com/PicGo/PicGo-Core) as well.  Put the full path to `picgo` in `agaetr.ini`.
+
+
 #### RSS via XMLStarlet
 
 Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as
@@ -279,10 +285,6 @@ TUMBLR_OAUTH_TOKEN=see_readme_for_gotumblr
 TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 ```
 
-###### Local Images For Tumblr
-
-* IMPORTANT: If you are wanting to post locally-hosted images in your posts (e.g. if you're using `hooty`, below, or something similar), you will need to install
-[picgo](https://github.com/PicGo/PicGo-Core) as well.  Put the full path to `picgo` in `agaetr.ini`.
 
 
 #### Daily Post
@@ -295,8 +297,7 @@ It will create a markdown formatted text file of your links for each day, e.g.
 
 `/path/to/dailypost/YYYYMMDD.md`
 
-Additional processing and formatting is up to you. If you want YAML frontmatter or the
-like, you'll need to edit the sending script.
+Additional processing and formatting is up to you. If you want YAML frontmatter or the like, you'll need to edit the sending script.
 
 
 ## 6. Feeds Setup

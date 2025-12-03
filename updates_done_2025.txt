@@ -1,4 +1,4 @@
 Updated toot script to use 23 character counting for mastodon.
 Began adding result code of poster_result_code
 Updated bsky poster
-Tried to remove extra blank tag at end of tumblr, unsure why it's not.
+Tumblr poster changed to python
