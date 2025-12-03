@@ -22,7 +22,7 @@ function tumblr_send {
         title=""
     fi
 
-
+    # While it still refers to gotumblr, this now works with the python reimplementation.
     binary=$(grep 'gotumblr =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     textfile=$(grep 'textmd =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
@@ -42,8 +42,6 @@ function tumblr_send {
     export TUMBLR_OAUTH_TOKEN="${tot}"
     export TUMBLR_OAUTH_TOKEN_SECRET="${tots}"
 
-    #outstring=$(printf "(%s) %s - %s %s %s" "$pubtime" "$title" "$description" "$link" "$hashtags")
-
     # Get the image, if exists.
     if [ ! -z "${imgurl}" ];then
         # If image is local. upload via picgo
@@ -60,13 +58,12 @@ function tumblr_send {
             Limgurl=""
         fi
     fi
-    echo "${title}" > "${textfile}"
-    if [[ $binary == *gotumblr_ss.go ]]; then
-        # This is on purpose with my hacked version of gotumblr
-        # Filter out empty hashtags and clean up the hashtag string
-        filtered_hashtags=$(echo "${hashtags}" | sed 's/#\s*#/#/g; s/#\s*$//; s/^\s*#\s*$//')
-        echo "${filtered_hashtags}" >> "${textfile}"
-    fi
+
+    # TODO - our python version can handle all these as command arguments, etc. But hey, let's stay consistent.
+
+    echo "${title}  " > "${textfile}"
+    filtered_hashtags=$(echo "${hashtags}" | sed 's/#\s*#/#/g; s/#\s*$//; s/^\s*#\s*$//')
+    echo "${filtered_hashtags}  " >> "${textfile}"
     echo " " >> "${textfile}"
     echo "${description}" >> "${textfile}"
 
@@ -91,10 +88,9 @@ function tumblr_send {
 
     CURR_DIR=$(pwd)
     cd "${workdir}"
-    runstring=$(printf "go run %s t" "${binary}")
+    runstring=$(printf "%s --file %s" "${binary}" "${textfile}")
     eval "${runstring}";poster_result_code=$?
     cd "${CURR_DIR}"
-
 }
 
 ##############################################################################
