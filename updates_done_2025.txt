@@ -1,1 +1,3 @@
 Updated toot script to use 23 character counting for mastodon.
+Began adding result code of poster_result_code
+Updated bsky poster 
