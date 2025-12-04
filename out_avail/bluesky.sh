@@ -29,7 +29,12 @@ function bluesky_send {
     if [ "$description2" != "" ];then
         description2="Archive: ${description2}"
     fi
-    
+
+    # because bsky has a 300 character limit
+    if [ "${shortlink}" = "" ];then
+        shortlink="${link}"  #in case it's not set
+    fi
+
     outstring=$(printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}")
 
     if [ ${#outstring} -gt 300 ];then
@@ -39,20 +44,20 @@ function bluesky_send {
         d1len=$(( ${#description} + 3 ))
         d2len=$(( ${#description2} + 3 ))
         hashlen=$(( ${#hashtags} + 3 ))
-        urlen=$(( ${#link} + 3 ))
+        urlen=$(( ${#shortlink} + 3 ))
         total_length=$(( tlen + d1len + d2len + hashlen + urlen ))
         diff_len=$(( 300 - total_length ))
         if [ $diff_len -lt 0 ]; then
-            printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}" > "${tempfile}"
+            printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
         else
             if [ $hashlen -gt $diff_len ];then
-                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
+                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
             else
                 diff_len=$(( diff_len - hashlen ))
                 if [ $d2len -gt $diff_len ];then
                     trimto=$(( d2len - diff_len - 4 ))
                     description2="${description2:0:trimto}... "
-                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
+                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
                 else
                     diff_len=$(( diff_len - d2len ))
                     # the difference was more than we could cut out of d2len
@@ -60,13 +65,13 @@ function bluesky_send {
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "
-                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description}" "${link}" > "${tempfile}"
+                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description}" "${shortlink}" > "${tempfile}"
                     else
                         diff_len=$(( diff_len - d1len ))
                         # the difference was more than we could cut out of d1len
                         trimto=$(( tlen - diff_len - 4 ))
                         title="${title:0:trimto}... "
-                        printf "%s  \n\n%s" "${title}" "${link}" > "${tempfile}"
+                        printf "%s  \n\n%s" "${title}" "${shortlink}" > "${tempfile}"
                         # use tlen and diff_len to figure out how much to trim off title, post.
                         # this test HAS to pass,
                     fi
@@ -75,7 +80,7 @@ function bluesky_send {
         fi
     else
         # I realize this is a double test.
-        printf "%s \n\n%s \n\n%s \n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}" > "${tempfile}"
+        printf "%s \n\n%s \n\n%s \n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
     fi
 
 
