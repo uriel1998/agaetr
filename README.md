@@ -40,7 +40,7 @@ Tested with feeds from:
 * [YouTube](https://youtube.com) (particularly public playlists, like favorites)
 * [UPI](https://rss.upi.com/news/news.rss)
 
-`agaetr` can also *deobfuscate* incoming links and optionally shorten outgoing links.
+`agaetr`, through using [muna](actual link to muna, please!) #TODO can also *deobfuscate* incoming links and optionally shorten outgoing links.
 
 This was created because pay services are expensive, and other options are
 either limited or subject to frequent bitrot.
@@ -52,13 +52,24 @@ found and (relatively) easily swapped in without changing your whole setup.
 
 `agaetr` is an anglicization of ágætr, meaning "famous".
 
-Special thanks to Alvin Alexander's [whose post](https://alvinalexander.com/python/python-script-read-rss-feeds-database) got me on the right track.
+Special thanks to Alvin Alexander, [whose post](https://alvinalexander.com/python/python-script-read-rss-feeds-database) got me on the right track.
+
+
+## Flow and Philosophy
+
+Input is either a single URL or a call to the *pull* function, which pulls in configured RSS feeds.
+It stores basic information about the articles in a flat database, which will eventually be upgraded to sqlite
+When push is called, it will pull the oldest link, deobfuscate the URL, get opengraph tags and images (if ones weren't already existant),
+    It calls all functions in out_enabled, passing along several variables, and expects the function to set the status variable to determine if it was sent or not.
+    (Date of sending, etc, as well as successes, will eventually be included in the db.)
 
 ## 2. License
 
 This project is licensed under the Apache License. For the full license, see `LICENSE`.
 
 ## 3. Prerequisites
+
+# TODO - this needs cleaned up and corrected.  And an actual setup program put in place, with a virtualenv created.
 
 These are probably already installed or are easily available from your distro on
 linux-like distros:  
@@ -147,19 +158,12 @@ If you create one for another service, please contact me so I can merge it in
 #### YOURLS  
 
 Go to your already functional [YOURLS](https://yourls.org/) instance.  Get the
-API key (secret signature token) from the `Tools` page of your admin interface.
-Place the URL of your instance and API key into `agaetr.ini`.  
+API key (secret signature token) from the `Tools` page of your admin interface.  Place the URL of your instance and API key into `agaetr.ini`.  
 
 `yourls_api =`  
 `yourls_site =`  
 
-#### ARCHIVE.IS
 
-Install the `archiveis` cli tool from [https://github.com/palewire/archiveis](https://github.com/palewire/archiveis),
-or if you have pipx, by `pipx install archiveis`.
-
-Find the location of the binary by typing `which archiveis`, then place that in
-the ini file. *Placing the binary location turns on archiving all links*.
 
 #### WAYBACK MACHINE
 
@@ -168,6 +172,9 @@ or if you have pipx, by `pipx install waybackpy`.
 
 Find the location of the binary by typing `which waybackpy`, then place that in
 the ini file. *Placing the binary location turns on archiving all links*.
+https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit?tab=t.0
+https://archive.org/account/s3.php
+
 
 #### All Archivers
 
