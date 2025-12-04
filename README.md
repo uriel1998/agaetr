@@ -57,7 +57,7 @@ Special thanks to Alvin Alexander, [whose post](https://alvinalexander.com/pytho
 
 ## Flow and Philosophy
 
-Input is either a single URL or a call to the *pull* function, which pulls in configured RSS feeds.
+Input is either a single URL or a call to the *pull* function, which pulls in configured RSS feeds.  These can be online or static XML files, and can be pre-processed as well.
 It stores basic information about the articles in a flat database, which will eventually be upgraded to sqlite
 When push is called, it will pull the oldest link, deobfuscate the URL, get opengraph tags and images (if ones weren't already existant),
     It calls all functions in out_enabled, passing along several variables, and expects the function to set the status variable to determine if it was sent or not.
