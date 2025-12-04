@@ -7,12 +7,16 @@
 #  Licensed under the MIT license
 # use as output for bookmark program
 # to create RSS feed of items (for publication, agaeter, etc)
-# 
+#
 #https://stackoverflow.com/questions/12827343/linux-send-stdout-of-command-to-an-rss-feed
 #
 ##############################################################################
 
-#TODO: multiple outputs?
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
 
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -20,7 +24,7 @@ fi
 inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
- 
+
 function loud() {
     if [ $LOUD -eq 1 ];then
         echo "$@"
@@ -40,14 +44,14 @@ if [ ! -f "${RSSSavePath}" ];then
     printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
     printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
     printf '  </channel>\n' >> "${RSSSavePath}"
-    printf '</rss>\n' >> "${RSSSavePath}"    
+    printf '</rss>\n' >> "${RSSSavePath}"
 
 fi
     TITLE="${title}"
     LINK=$(printf "href=\"%s\"" "${link}")
     DATE="`date`"
     DESC=$(printf "%s\nArchive links:\n%s\n" "${description}" "${description2_html}")
-    GUID="${link}" 
+    GUID="${link}"
     loud "[info] Adding entry to RSS feed"
     xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \
          -s "//item[1]" -t elem -n title -v "$TITLE" \
@@ -55,7 +59,7 @@ fi
          -s "//item[1]" -t elem -n pubDate -v "$DATE" \
          -s "//item[1]" -t elem -n description -v "$DESC" \
          -s "//item[1]" -t elem -n guid -v "$GUID" \
-         -d "//item[position()>10]"  "${RSSSavePath}" ; 
+         -d "//item[position()>10]"  "${RSSSavePath}" ;
 
 
 }
@@ -84,8 +88,11 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

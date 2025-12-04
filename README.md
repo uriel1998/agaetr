@@ -259,6 +259,8 @@ self_link = https://location.of.xml.example.com/output.xml
 ```
 #### Email
 
+Install [pup](https://github.com/EricChiang/pup), which may be as easy as `sudo apt install pup` on Debian/Ubuntu.
+
 Fill in the appropriate bits in `agaetr.ini`.  The field `email_from` should be
 one valid email address, the field `email_to` may contain multiple addresses separated
 by a comma.
