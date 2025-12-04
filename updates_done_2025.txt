@@ -6,3 +6,6 @@ Daily posts updated
 pixelfed updated
 shaarli updated
 updated graphics assets
+updated surfraw_bookmark
+updated wallabag
+updated email

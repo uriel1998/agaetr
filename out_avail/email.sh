@@ -18,11 +18,11 @@ function loud() {
 }
 
 # should have been passed in, but just in case...
-    
+
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
-inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini" 
+inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 
 function email_send {
     if [ -z "${1}" ];then
@@ -33,18 +33,29 @@ function email_send {
     smtp_server=$(grep 'smtp_server =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
     smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
-    email_from=$(grep 'email_from =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
-    raw_emails=$(grep 'email_to =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') 
+    smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    email_from=$(grep 'email_from =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    raw_emails=$(grep 'email_to =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     tmpfile=$(mktemp)
     loud "Obtaining text of HTML..."
     echo "${link}" > ${tmpfile}
     echo "  " >> ${tmpfile}
-    
-    wget --connect-timeout=2 --read-timeout=10 --tries=1 -e robots=off -O - "${link}" | sed -e 's/<img[^>]*>//g' | sed -e 's/<div[^>]*>//g' | hxclean | hxnormalize -e -L -s 2>/dev/null | tidy -quiet -omit -clean 2>/dev/null | hxunent | iconv -t utf-8//TRANSLIT - | sed -e 's/\(<em>\|<i>\|<\/em>\|<\/i>\)/&🞵/g' | sed -e 's/\(<strong>\|<b>\|<\/strong>\|<\/b>\)/&🞶/g' |lynx -dump -stdin -display_charset UTF-8 -width 140 | sed -e 's/\*/•/g' | sed -e 's/Θ/🞵/g' | sed -e 's/Φ/🞯/g' >> ${tmpfile}
-    
-    # Removed addressbook bit since that doesn't make sense here.
+
+    # We have MUCH better ways of getting this email.
+    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+    input=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" )
+
+    antimatch=""
+    antimatch=$(echo "${input}" | pup 'div[style*="display: none;"],div[style*="display:none;"], div[style*="visibility: hidden;"], div[style*="overflow: hidden;"]')
+    echo " " # <- leading whitespace, do not delete
+    lynx_vars=""
+    if [ "$antimatch" != "" ];then
+        echo "${input}"  | pup | grep -vF "${antimatch}" | sed -e 's/<div[^>]*>//g' | sed 's/<img[^>]\+>//g' | sed -e 's/<!-- -->//g'| sed -e 's/<em[^>]*>/§⬞/g' | sed -e 's/<\/em>/⬞§/g' | sed -e 's/<strong[^>]*>/§⬞/g' | sed -e 's/<\/strong>/⬞§/g' | sed -e 's/<\/tr>/<\/tr><br \/>/g'| lynx -dump -stdin -assume_charset=UTF-8 -force_empty_hrefless_a -hiddenlinks=ignore -html5_charsets -dont_wrap_pre -width=$WRAP -collapse_br_tags | grep -v "READ MORE:" >> ${tmpfile}
+    else
+        echo "${input}"  | pup | sed -e 's/<div[^>]*>//g' | sed 's/<img[^>]\+>//g' | sed -e 's/<!-- -->//g'| sed -e 's/<em[^>]*>/§⬞/g' | sed -e 's/<\/em>/⬞§/g' | sed -e 's/<strong[^>]*>/§⬞/g' | sed -e 's/<\/strong>/⬞§/g' | sed -e 's/<\/tr>/<\/tr><br \/>/g'| lynx -dump -stdin -assume_charset=UTF-8 -force_empty_hrefless_a -hiddenlinks=ignore -html5_charsets -dont_wrap_pre -width=$WRAP -collapse_br_tags | grep -v "READ MORE:" >> ${tmpfile}
+    fi
+
 
     # Split raw CSV of of emails into actual email addresses
     OIFS="$IFS"
@@ -61,11 +72,11 @@ function email_send {
         echo "From: ${email_from}" >> "${tmpfile2}"
         echo -e "\n\n" >> "${tmpfile2}"
         cat "${tmpfile}" >> "${tmpfile2}"
-        # assemble the command 
+        # assemble the command
         loud "Assembling the command for $email_addy."
         command_line=$(printf "%s --url \'smtps://%s:%s\' --ssl-reqd --mail-from \'%s\' --mail-rcpt \'%s\' --upload-file %s --user \'%s:%s\'"
         "${curl_bin}" "${smtp_server}" "${smtp_port}" "${email_from}" "${email_addy}" "${tmpfile2}" "${smtp_username}" "${smtp_password}")
-        eval "${command_line}"
+        eval "${command_line}";poster_result_code=$?     # returns 0|1
         rm "${tmpfile2}"
     done
     rm ${tmpfile}
@@ -93,16 +104,21 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "${1}" == "--loud" ];then
+                LOUD=1
+                shift
+            else
+                if [ "$LOUD" == "" ];then
+                    # so it doesn't clobber exported env
+                    LOUD=0
+                fi
+            fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"
-        else 
+        else
             title="${1}"
         fi
         email_send "${title}"
     fi
 fi
-
-

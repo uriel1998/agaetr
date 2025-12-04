@@ -7,14 +7,20 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
+function loud() {
+    if [ $LOUD -eq 1 ];then
+        echo "$@"
+    fi
+}
 
 function wallabag_send {
-    
+
     binary=$(grep 'wallabag =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     outstring=$(echo "$binary add --quiet --title \"$title\" $link ")
-    echo "${outstring}"
+    loud "${outstring}"
     eval ${outstring} > /dev/null
+    poster_result_code=$?     # returns 0|1
 }
 
 ##############################################################################
@@ -29,7 +35,7 @@ $(return >/dev/null 2>&1)
 
 # What exit code did that give?
 if [ "$?" -eq "0" ];then
-    echo "[info] Function wallabag ready to go."
+    loud "[info] Function wallabag ready to go."
     OUTPUT=0
 else
     OUTPUT=1
@@ -40,8 +46,11 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

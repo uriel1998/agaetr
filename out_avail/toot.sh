@@ -102,7 +102,7 @@ function toot_send {
     else
         Limgurl=""
     fi
-
+poster_result_code=0
     if [ ! -z "${cw}" ];then
         #there should be commas in the cw! apply sensitive tag if there's an image
         if [ ! -z "${imgurl}" ];then
