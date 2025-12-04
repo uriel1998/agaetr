@@ -183,11 +183,12 @@ function check_image() {
             ALT_TEXT="${imgalt}"
         fi
         if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" == "" ];then
-			# this is from newsbeuter_dangerzone
+            # this can handle URLs or files passed to it.
 			if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then
 				ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${imgurl}")
 				imgalt="${ALT_TEXT}"
 			else
+                #fallback
 				imgalt="An image for decorative purposes automatically pulled from the post."
 			fi
             ALT_TEXT="${imgalt}"
@@ -350,8 +351,9 @@ fi
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 64 ]; then
     loud "[info] Sending URL to shortener function"
     shortlink=$(yourls_shortener "${link}")
+    # TODO -- use this with bsky, etc.
     if [[ $shortlink =~ http* ]];then
-        link="${shortlink}"
+        export shortlink
     fi
 fi
 
@@ -365,7 +367,11 @@ for p in $posters;do
         loud "[info] Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
         source "${SCRIPT_DIR}/out_enabled/${p}"
+        poster_result_code=0
         eval ${send_funct}
+        if [ "$poster_result_code" != "0" ];
+            loud "[ERROR] ${p} did not succeed in some way!"
+        fi
         sleep 5
     fi
 done

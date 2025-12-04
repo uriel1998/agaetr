@@ -10,3 +10,4 @@ updated surfraw_bookmark
 updated wallabag
 updated email
 updated rssgen (i think, lol)
+updating send -- removed archive.is entirely.  

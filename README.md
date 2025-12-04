@@ -61,7 +61,14 @@ Input is either a single URL or a call to the *pull* function, which pulls in co
 It stores basic information about the articles in a flat database, which will eventually be upgraded to sqlite
 When push is called, it will pull the oldest link, deobfuscate the URL, get opengraph tags and images (if ones weren't already existant),
     It calls all functions in out_enabled, passing along several variables, and expects the function to set the status variable to determine if it was sent or not.
+    It passes out:
+
+    "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}"
+    and poster_result_code is the return code
+
+
     (Date of sending, etc, as well as successes, will eventually be included in the db.)
+
 
 ## 2. License
 

@@ -7,7 +7,7 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
- 
+
 
 function loud() {
     if [ $LOUD -eq 1 ];then
@@ -29,7 +29,8 @@ function bluesky_send {
     if [ "$description2" != "" ];then
         description2="Archive: ${description2}"
     fi
-    outstring=$(printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}")
+    
+    outstring=$(printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}")
 
     if [ ${#outstring} -gt 300 ];then
 
