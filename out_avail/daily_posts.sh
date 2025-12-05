@@ -56,7 +56,7 @@ function daily_posts_send {
         fi
     fi
     echo "## ${title}" >> "${textfile}"
-    echo " " >> "${textfile}"
+    echo "  " >> "${textfile}"
     echo "${description}" >> "${textfile}"
 
     if [ "$Limgurl" != "" ];then
@@ -66,25 +66,21 @@ function daily_posts_send {
             printf "<img src=\"%s\" alt=\"A decorative image automatically pulled from the post.\" >  \n" "${Limgurl}" >> "${textfile}"
         fi
     fi
-    echo " " >> "${textfile}"
+    echo "  " >> "${textfile}"
     if [ "$link" != "" ];then
         printf "[%s](%s)  " "${title}" "${link}" >> "${textfile}"
-        echo " " >> "${textfile}"
+        echo "  " >> "${textfile}"
     fi
     if [ "$description2_md" != "" ];then
-        echo " " >> "${textfile}"
-        echo "***" >> "${textfile}"
-        echo " " >> "${textfile}"
-        echo "### Archive Links:  " >> "${textfile}"
-        echo "${description2_md}" >> "${textfile}"
-        echo " " >> "${textfile}"
-        echo "***" >> "${textfile}"
-        echo " " >> "${textfile}"
+        echo "  " >> "${textfile}"
+        echo "  " >> "${textfile}"
+        echo "**Archive Links:**  ${description2_md}  " >> "${textfile}"
+        echo "  " >> "${textfile}"
     fi
     echo "${hashtags}  " >> "${textfile}"
-    echo " " >> "${textfile}"
+    echo "  " >> "${textfile}"
     echo "***" >> "${textfile}"
-    echo " " >> "${textfile}"
+    echo "  " >> "${textfile}"
     if [ -f "${textfile}" ];then
         poster_result_code=0     # returns 0|1
         loud "[info] Finished adding to daily post"

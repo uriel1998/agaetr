@@ -101,10 +101,10 @@ function bluesky_send {
                 /usr/bin/convert -resize 800x512\! "${Outfile}" "${Outfile}"
             fi
             if [ ! -z "${ALT_TEXT}" ];then
-                Limgurl=$(printf " --media %s --description \"%s\"" "${Outfile}" "${ALT_TEXT}")
+                Limgurl=$(printf " --image %s --image-alt \"%s\"" "${Outfile}" "${ALT_TEXT}")
             else
                 # I suppose there could be another call to ai_gen_alt_text here
-                Limgurl=$(printf " --media %s --description \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
+                Limgurl=$(printf " --image %s --image-alt \"An image pulled automatically from the post for decorative purposes only.\"" "${Outfile}")
             fi
         else
             Limgurl=""

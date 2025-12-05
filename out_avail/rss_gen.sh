@@ -12,11 +12,6 @@
 #
 ##############################################################################
 
-function loud() {
-    if [ "$LOUD" != "1" ];then
-        echo "$@"
-    fi
-}
 
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -25,30 +20,36 @@ inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
+
 function loud() {
-    if [ "$LOUD" != "1" ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
+
 function rss_gen_send {
+    if [ ! -f "${RSSSavePath}" ];then
+        loud "[info] Starting XML file"
+        printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
+        printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
+        printf '  <channel>\n' >> "${RSSSavePath}"
+        printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
+        printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
+        printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
+        printf '  </channel>\n' >> "${RSSSavePath}"
+        printf '</rss>\n' >> "${RSSSavePath}"
+    fi
+    XML_title=$(echo "${title}" | hxenunt -fb )
+    XML_description=$(echo "${description}" | hxenunt -fb )
+    XML_description2=$(echo "${description2}" | hxenunt -fb )
 
-if [ ! -f "${RSSSavePath}" ];then
-    loud "[info] Starting XML file"
-    printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
-    printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
-    printf '  <channel>\n' >> "${RSSSavePath}"
-    printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
-    printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
-    printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
-    printf '  </channel>\n' >> "${RSSSavePath}"
-    printf '</rss>\n' >> "${RSSSavePath}"
-
-fi
-    TITLE="${title}"
+    TITLE="${XML_title}"
     LINK=$(printf "href=\"%s\"" "${link}")
     DATE="`date`"
-    DESC=$(printf "%s\nArchive links:\n%s\n" "${description}" "${description2_html}")
+    DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
     loud "[info] Adding entry to RSS feed"
     xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \

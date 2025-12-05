@@ -40,8 +40,10 @@ description2_html=""
 
 
 function loud() {
-    if [ "$LOUD" != "1" ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
@@ -105,16 +107,22 @@ function get_better_description() {
         fi
     done
     loud "[info] Attempting to find OpenGraph tags for description"
-    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
+    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g' | hxunent -f ) # NOT XML SAFE YET, need -b switch
+
     og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
     if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
         loud "[info] Subsituting OpenGraph description for parsed description."
         description="${og_description}"
+    else
+        if [ "$og_description" != "" ] && [ "$description" == "" ];then
+            loud "[info] Subsituting OpenGraph description for empty or bad description."
+            description="${og_description}"
+        else
+            # it's the original description, so now need to clean it with hxenunt
+            description=$(echo "${description}" | hxunent -f | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+        fi
     fi
-    if [ "$og_description" != "" ] && [ "$description" == "" ];then
-        loud "[info] Subsituting OpenGraph description for empty or bad description."
-        description="${og_description}"
-    fi
+
 }
 
 function check_image() {
@@ -234,6 +242,7 @@ if [ -f $(grep 'waybackpy =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2
     IARCHIVE=1
     ArchiveLinks=$(grep 'ArchiveLinks =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 else
+    IARCHIVE=0
     ArchiveLinks=ignore
 fi
 
@@ -286,21 +295,7 @@ get_better_description
 
 # Dealing with archiving links
 description2=""
-if [ $ARCHIVEIS -eq 1 ];then
-    source "$SCRIPT_DIR/archivers/archiveis.sh"
-    loud "[info] Getting archive.is link"
-    # this should now set ARCHIVEIS to the Archiveis url
-	ARCHIVEIS=$(archiveis_send)
-    # Making sure we get a URL back
-    if [[ $ARCHIVEIS =~ http* ]];then
-        loud "[info] Got archive.is link of ${ARCHIVEIS} "
-        description2=" ais: ${ARCHIVEIS}"
-        description2_md=" [ais](${ARCHIVEIS})"
-        description2_html=" <a href=\"${ARCHIVEIS}\">ais</a>"
-    else
-        loud "[error] Did not get archive.is link"
-    fi
-fi
+
 
 if [ $IARCHIVE -eq 1 ];then
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
@@ -370,7 +365,7 @@ for p in $posters;do
         source "${SCRIPT_DIR}/out_enabled/${p}"
         poster_result_code=0
         eval ${send_funct}
-        if [ "$poster_result_code" != "0" ];
+		if [ "$poster_result_code" != "0" ];then
             loud "[ERROR] ${p} did not succeed in some way!"
         fi
         sleep 5
