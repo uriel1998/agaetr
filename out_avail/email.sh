@@ -12,7 +12,7 @@
 #https://blog.edmdesigner.com/send-email-from-linux-command-line/
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }

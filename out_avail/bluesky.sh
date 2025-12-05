@@ -10,7 +10,7 @@
 
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }

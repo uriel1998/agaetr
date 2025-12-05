@@ -11,7 +11,7 @@
 
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }
@@ -61,14 +61,14 @@ function daily_posts_send {
 
     if [ "$Limgurl" != "" ];then
         if [ "${ALT_TEXT}" != "" ];then
-            printf "<img src=\"%s\" alt=\"%s\" >\n" "${Limgurl}" "${ALT_TEXT}" >> "${textfile}"
+            printf "<img src=\"%s\" alt=\"%s\" >  \n" "${Limgurl}" "${ALT_TEXT}" >> "${textfile}"
         else
-            printf "<img src=\"%s\" alt=\"A decorative image automatically pulled from the post.\" >\n" "${Limgurl}" >> "${textfile}"
+            printf "<img src=\"%s\" alt=\"A decorative image automatically pulled from the post.\" >  \n" "${Limgurl}" >> "${textfile}"
         fi
     fi
     echo " " >> "${textfile}"
     if [ "$link" != "" ];then
-        printf "[%s](%s)" "${title}" "${link}" >> "${textfile}"
+        printf "[%s](%s)  " "${title}" "${link}" >> "${textfile}"
         echo " " >> "${textfile}"
     fi
     if [ "$description2_md" != "" ];then
@@ -81,7 +81,7 @@ function daily_posts_send {
         echo "***" >> "${textfile}"
         echo " " >> "${textfile}"
     fi
-    echo "${hashtags}" >> "${textfile}"
+    echo "${hashtags}  " >> "${textfile}"
     echo " " >> "${textfile}"
     echo "***" >> "${textfile}"
     echo " " >> "${textfile}"

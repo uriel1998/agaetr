@@ -40,7 +40,7 @@ description2_html=""
 
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }
@@ -230,18 +230,19 @@ fi
 
 
 
-    if [ -f $(grep 'waybackpy =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
-        IARCHIVE=1
-        ArchiveLinks=$(grep 'ArchiveLinks =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    else
-        ArchiveLinks=ignore
-    fi
+if [ -f $(grep 'waybackpy =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
+    IARCHIVE=1
+    ArchiveLinks=$(grep 'ArchiveLinks =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+else
+    ArchiveLinks=ignore
 fi
 
 
+
 # Note that it must be BOTH in enabled and the trigger is actually putting the API key in place.
-if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api =' "${inifile}" | awk -F "=" '{print $2}') != "" ];then
-    source "${SCRIPT_DIR}/yourls.sh"
+notify-send "${inifile}"
+if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api=' "${inifile}" | awk -F "=" '{print $2}') != "" ];then
+    source "${SCRIPT_DIR}/short_enabled/yourls.sh"
     SHORTEN=1
 fi
 

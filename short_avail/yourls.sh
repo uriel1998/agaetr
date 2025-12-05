@@ -8,10 +8,10 @@
 #
 ##############################################################################
 
- 
+
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@" >&2
     fi
 }
@@ -22,15 +22,15 @@ function yourls_shortener {
 longlink="${1}"
 # for if URL is > what the shortening is (otherwise you'll lose real data later)
 
-if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then 
-    
+if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then
+
     yourls_api=$(grep yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g'| awk -F '=' '{print $2}')
     yourls_site=$(grep yourls_site "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     curl_bin=$(which curl)
     yourls_string=$(printf "%s \"%s/yourls-api.php?signature=%s&action=shorturl&format=simple&url=%s\"" "${curl_bin}" "${yourls_site}" "${yourls_api}" "${longlink}")
     #loud "[info] Invoking ${yourls_string}"
-    shorturl=$(eval "${yourls_string}")  
-    if [ ${#shorturl} -lt 10 ];then # it didn't work 
+    shorturl=$(eval "${yourls_string}")
+    if [ ${#shorturl} -lt 10 ];then # it didn't work
         #loud "[error] Shortner failure, using original URL"
         #loud "[error] of $longlink"
         echo "${longlink}"
@@ -38,7 +38,7 @@ if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then
         #verification that it starts with http here
         if [[ $shorturl == http* ]];then
             #loud "[info] Using shortened link ${shorturl}"
-            echo "${shorturl}"            
+            echo "${shorturl}"
         else
             #loud "[error] Unknown error from shortener, incorrect url returned, using original URL"
             #loud "[error] of $longlink"
@@ -47,7 +47,7 @@ if [ $(grep -c yourls_api "${XDG_CONFIG_HOME}/agaetr/agaetr.ini") -gt 0 ];then
     fi
 else
     # no configuration found, so just passing it back.
-    #loud "[error] Shortener configuration not found, using original URL of" 
+    #loud "[error] Shortener configuration not found, using original URL of"
     #loud "[error] ${longlink}"
     echo "${longlink}"
 fi
@@ -79,11 +79,11 @@ else
         else
             LOUD=0
         fi
-    
+
         longlink="${1}"
         if [ ! -z "$2" ];then
             title="$2"
-        else 
+        else
             title="${1}"
         fi
         yourls_shortener "${longlink}"

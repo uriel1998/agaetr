@@ -13,7 +13,7 @@
 ##############################################################################
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }
@@ -26,12 +26,10 @@ RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' 
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
+    if [ "$LOUD" != "1" ];then
         echo "$@"
     fi
 }
-
-
 
 function rss_gen_send {
 
