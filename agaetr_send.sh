@@ -238,18 +238,15 @@ fi
 
 
 
-if [ -f $(grep 'waybackpy =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
+if [ -f $(grep 'wayback_access' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
     IARCHIVE=1
-    ArchiveLinks=$(grep 'ArchiveLinks =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    ArchiveLinks=$(grep 'ArchiveLinks' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 else
     IARCHIVE=0
     ArchiveLinks=ignore
 fi
 
-
-
 # Note that it must be BOTH in enabled and the trigger is actually putting the API key in place.
-notify-send "${inifile}"
 if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api=' "${inifile}" | awk -F "=" '{print $2}') != "" ];then
     source "${SCRIPT_DIR}/short_enabled/yourls.sh"
     SHORTEN=1
@@ -299,12 +296,14 @@ description2=""
 
 if [ $IARCHIVE -eq 1 ];then
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
-    source "$SCRIPT_DIR/archivers/wayback.sh"
+
+	# That's right, it's in avail. This is SEPARATE from it being called
+	# as an out method, which can ALSO be done on a per call basis
+	source "$SCRIPT_DIR/out_avail/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
 	IARCHIVE=$(wayback_send)
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
-    echo "$IARCHIVE"
     if [[ $IARCHIVE =~ http* ]];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
         # They are always SUPER long

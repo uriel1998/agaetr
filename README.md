@@ -170,24 +170,18 @@ API key (secret signature token) from the `Tools` page of your admin interface. 
 `yourls_api =`  
 `yourls_site =`  
 
-
-
 #### WAYBACK MACHINE
 
-Install the `waybackpy` cli tool from [https://pypi.org/project/waybackpy/](https://pypi.org/project/waybackpy/),
-or if you have pipx, by `pipx install waybackpy`.
+We are using a CURL method with API keys. Get [your keys for the Internet Archive here](https://archive.org/account/s3.php) and then place them in agaetr.ini like so:
 
-Find the location of the binary by typing `which waybackpy`, then place that in
-the ini file. *Placing the binary location turns on archiving all links*.
-https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit?tab=t.0
-https://archive.org/account/s3.php
+wayback_access = ACCESS_KEY
+wayback_secret = SECRET
 
-
-#### All Archivers
-
-Place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, or to `ignore` them.
+If you put an access key in the INI file, that *turns on automatic archiving*.  To have those links appear in your social media post, you must *also* place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, or to `ignore` them.
 
 `ArchiveLinks = append`
+
+You may additionally symlink `wayback.sh` like any of the outbound parsers to have it be called that way, but it won't add the URL to the posts.
 
 ### Outbound parsers
 
@@ -200,6 +194,7 @@ Place into `agaetr.ini` whether your want archived links to `replace` the descri
 * RSS     
 * Email            
 * Daily Post
+* Wayback Machine
 
 Note that each service has its own line in `agaetr.ini`.  Leave blank any
 you are not using; adding additional services should follow the pattern shown.  

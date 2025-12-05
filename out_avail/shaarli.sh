@@ -7,10 +7,11 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
-
 function loud() {
-    if [ "$LOUD" != "1" ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
