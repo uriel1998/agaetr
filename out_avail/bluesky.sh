@@ -37,10 +37,10 @@ function bluesky_send {
         shortlink="${link}"  #in case it's not set
     fi
 
-    outstring=$(printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}")
-
+    outstring=$(printf "%s\n\n%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}")
+	echo "${outstring}" > /home/steven/tmp/bslushit.txt
+	echo "${#outstring}" > /home/steven/tmp/bslushit.txt
 	if [ ${#outstring} -gt 290 ];then
-
         # testing length description, which is either from the feed, null (default newsboat/mutt), or *user set* from newsboat/mutt.
         tlen=$(( ${#title} + 3 )) # accounting for newlines
         d1len=$(( ${#description} + 3 ))
@@ -48,32 +48,37 @@ function bluesky_send {
         hashlen=$(( ${#hashtags} + 3 ))
         urlen=$(( ${#shortlink} + 3 ))
         total_length=$(( tlen + d1len + d2len + hashlen + urlen ))
-		diff_len=$(( 290 - total_length ))
+		echo "${total_length}" >> /home/steven/tmp/bslushit.txt
+		diff_len=$(( total_length - 290 ))
         if [ $diff_len -lt 0 ]; then
-            printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
+			echo "${diff_len} - 1" >> /home/steven/tmp/bslushit.txt
+			printf "%s\n\n%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
         else
             if [ $hashlen -gt $diff_len ];then
-                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
+                printf "%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
             else
                 diff_len=$(( diff_len - hashlen ))
+				echo "${diff_len} - 2" >> /home/steven/tmp/bslushit.txt
                 if [ $d2len -gt $diff_len ];then
                     trimto=$(( d2len - diff_len - 4 ))
                     description2="${description2:0:trimto}... "
-                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
+                    printf "%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
                 else
                     diff_len=$(( diff_len - d2len ))
+					echo "${diff_len} - 3" >> /home/steven/tmp/bslushit.txt
                     # the difference was more than we could cut out of d2len
                     if [ $d1len -gt $diff_len ];then
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "
-                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description}" "${shortlink}" > "${tempfile}"
+                        printf "%s\n\n%s\n\n%s" "${title}" "${description}" "${shortlink}" > "${tempfile}"
                     else
                         diff_len=$(( diff_len - d1len ))
+						echo "${diff_len} - 4" >> /home/steven/tmp/bslushit.txt
                         # the difference was more than we could cut out of d1len
                         trimto=$(( tlen - diff_len - 4 ))
                         title="${title:0:trimto}... "
-                        printf "%s  \n\n%s" "${title}" "${shortlink}" > "${tempfile}"
+                        printf "%s\n\n%s" "${title}" "${shortlink}" > "${tempfile}"
                         # use tlen and diff_len to figure out how much to trim off title, post.
                         # this test HAS to pass,
                     fi
