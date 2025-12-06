@@ -247,7 +247,7 @@ else
 fi
 
 # Note that it must be BOTH in enabled and the trigger is actually putting the API key in place.
-if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api=' "${inifile}" | awk -F "=" '{print $2}') != "" ];then
+if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api' "${inifile}"  | sed 's/ //g'| awk -F "=" '{print $2}') != "" ];then
     source "${SCRIPT_DIR}/short_enabled/yourls.sh"
     SHORTEN=1
 fi
