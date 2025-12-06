@@ -38,7 +38,8 @@ function rss_gen_send {
         printf '  <channel>\n' >> "${RSSSavePath}"
         printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
         printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
-        printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
+        printf '    <link>%s</link>\n' "${self_link}" >> "${RSSSavePath}"
+        printf '    <atom:link rel="self" href="%s" type="application/rss+xml" />\n' "${self_link}" >> "${RSSSavePath}"
         printf '  </channel>\n' >> "${RSSSavePath}"
         printf '</rss>\n' >> "${RSSSavePath}"
     fi
@@ -47,18 +48,20 @@ function rss_gen_send {
     XML_description2=$(echo "${description2}" | hxunent -fb )
 
     TITLE="${XML_title}"
-    LINK=$(printf "href=\"%s\"" "${link}")
-    DATE="`date`"
+    LINK="${link}"
+    DATE="$(date -R)"
     DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
     loud "[info] Adding entry to RSS feed"
-    xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \
-         -s "//item[1]" -t elem -n title -v "$TITLE" \
-         -s "//item[1]" -t elem -n link -v "$LINK" \
-         -s "//item[1]" -t elem -n pubDate -v "$DATE" \
-         -s "//item[1]" -t elem -n description -v "$DESC" \
-         -s "//item[1]" -t elem -n guid -v "$GUID" \
-         -d "//item[position()>10]"  "${RSSSavePath}" ;
+    xmlstarlet ed -L \
+        -s "/rss/channel" -t elem -n item -v "" \
+        -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
+        -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
+        -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
+        -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
+        -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
+        -d "/rss/channel/item[position()>10]" "${RSSSavePath}"
+
 
 
 }
