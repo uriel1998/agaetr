@@ -237,10 +237,8 @@ if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
 fi
 
 
-
-if [ -f $(grep 'wayback_access' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
+if [ $(grep 'wayback_access' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') != "" ];then
     IARCHIVE=1
-	echo "archive on" > /home/steven/tmp/shit.txt
     ArchiveLinks=$(grep 'ArchiveLinks' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 else
     IARCHIVE=0
@@ -296,9 +294,7 @@ description2=""
 
 
 if [ $IARCHIVE -eq 1 ];then
-	echo "archive on" >> /home/steven/tmp/shit.txt
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
-
 	# That's right, it's in avail. This is SEPARATE from it being called
 	# as an out method, which can ALSO be done on a per call basis
 	source "$SCRIPT_DIR/out_avail/wayback.sh"
@@ -317,9 +313,9 @@ if [ $IARCHIVE -eq 1 ];then
                 IARCHIVE="${shortlink}"
             fi
         fi
-        description2="${description2} ia: ${IARCHIVE} "
-        description2_md="${description2_md}  [ia](${IARCHIVE})"
-        description2_html="${description2_html} <a href=\"${IARCHIVE}\">ia</a>"
+        description2="ia: ${IARCHIVE} "
+        description2_md="[ia](${IARCHIVE})  "
+        description2_html="<a href=\"${IARCHIVE}\">ia</a> "
     else
         loud "[error] Did not get Wayback link"
     fi
