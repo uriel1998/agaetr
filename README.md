@@ -102,23 +102,19 @@ On Debian/Ubuntu systems, you should be able to snag all these with:
 
 ### Python dependencies
 
-It is recommended that you use `pipx` and your package installer's python packages.
-If you do not, you should create a virtualenv for this project, as there are a number
-of python dependencies.  
+It is recommended that you use `pipx` or similar tool and your package installer's python packages to the extent possible.
 
 * `sudo apt install python3-platformdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
 
-OR
+If you do not, you should create a virtualenv for this project, as there are a number
+of python dependencies.  In the directory for `agaetr`:
 
-* `pip install -r requirements.txt`
-
-OR
-
-* `pip install platformdirs`  
-* `pip install configparser`  
-* `pip install beautifulsoup4`  
-* `pip install feedparser`  
-* `pip install requests`
+```
+python3 -m venv .
+source bin/activate
+pip install -U pip
+pip install -r requirements.txt
+```
 
 ## 4. Installation
 
@@ -135,7 +131,6 @@ shortening mechanism. See [Services Setup](#5-services-setup) for details.
 * `sudo chmod +x $PWD/agaetr_send.sh`
 * `sudo chmod +x $PWD/agaetr.sh`
 * `sudo chmod +x $PWD/muna.sh`
-
 
 
 Any service you would like to use needs to have a symlink made from the "avail"
@@ -164,15 +159,14 @@ If you create one for another service, please contact me so I can merge it in
 
 #### YOURLS  
 
-Go to your already functional [YOURLS](https://yourls.org/) instance.  Get the
-API key (secret signature token) from the `Tools` page of your admin interface.  Place the URL of your instance and API key into `agaetr.ini`.  
+Uses `curl` to make the API call.  Go to your already functional [YOURLS](https://yourls.org/) instance.  Get the API key (secret signature token) from the `Tools` page of your admin interface.  Place the URL of your instance and API key into `agaetr.ini`.  
 
 `yourls_api =`  
 `yourls_site =`  
 
 #### WAYBACK MACHINE
 
-We are using a CURL method with API keys. Get [your keys for the Internet Archive here](https://archive.org/account/s3.php) and then place them in agaetr.ini like so:
+We are using `curl` with API keys. Get [your keys for the Internet Archive here](https://archive.org/account/s3.php) and then place them in agaetr.ini like so:
 
 wayback_access = ACCESS_KEY
 wayback_secret = SECRET
@@ -182,6 +176,8 @@ If you put an access key in the INI file, that *turns on automatic archiving*.  
 `ArchiveLinks = append`
 
 You may additionally symlink `wayback.sh` like any of the outbound parsers to have it be called that way, but it won't add the URL to the posts.
+
+This *frequently* times out, and can take 1-3 minutes when it works properly.
 
 ### Outbound parsers
 
@@ -201,7 +197,7 @@ you are not using; adding additional services should follow the pattern shown.
 
 ### Shaarli (output)
 
-Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client).
+Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). If you are using a
 If you already have pipx, this can be as simple as `pipx install shaarli-client`.
 Make sure you set up the configuration file for the client properly. Place the
 location of the binary into `agaetr.ini`.

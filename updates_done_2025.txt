@@ -12,3 +12,4 @@ updated email
 updated rssgen (i think, lol)
 updating send -- removed archive.is entirely.
 moved shortlink to separate variable, only used by bsky if needed.
+added in more hxenunt to deal with special characters
