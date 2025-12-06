@@ -10,10 +10,8 @@
 
 
 function loud() {
-	if [ "$LOUD" != "" ];then
-		if [ $LOUD -eq 1 ];then
-			echo "$@" 1>&2
-		fi
+    if [ "$LOUD" != "1" ];then
+        echo "$@"
     fi
 }
 

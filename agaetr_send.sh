@@ -240,6 +240,7 @@ fi
 
 if [ -f $(grep 'wayback_access' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
     IARCHIVE=1
+	echo "archive on" > /home/steven/tmp/shit.txt
     ArchiveLinks=$(grep 'ArchiveLinks' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 else
     IARCHIVE=0
@@ -295,6 +296,7 @@ description2=""
 
 
 if [ $IARCHIVE -eq 1 ];then
+	echo "archive on" >> /home/steven/tmp/shit.txt
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
 
 	# That's right, it's in avail. This is SEPARATE from it being called
