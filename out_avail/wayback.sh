@@ -17,7 +17,6 @@ function loud() {
 }
 
 function wayback_send {
-	LOUD=1
     local wayback_access wayback_secret
     local save_resp job_id
     local status_resp status ts orig

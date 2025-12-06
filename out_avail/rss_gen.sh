@@ -42,9 +42,9 @@ function rss_gen_send {
         printf '  </channel>\n' >> "${RSSSavePath}"
         printf '</rss>\n' >> "${RSSSavePath}"
     fi
-    XML_title=$(echo "${title}" | hxenunt -fb )
-    XML_description=$(echo "${description}" | hxenunt -fb )
-    XML_description2=$(echo "${description2}" | hxenunt -fb )
+    XML_title=$(echo "${title}" | hxunent -fb )
+    XML_description=$(echo "${description}" | hxunent -fb )
+    XML_description2=$(echo "${description2}" | hxunent -fb )
 
     TITLE="${XML_title}"
     LINK=$(printf "href=\"%s\"" "${link}")

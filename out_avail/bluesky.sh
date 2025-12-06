@@ -39,7 +39,7 @@ function bluesky_send {
 
     outstring=$(printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}")
 
-    if [ ${#outstring} -gt 300 ];then
+	if [ ${#outstring} -gt 290 ];then
 
         # testing length description, which is either from the feed, null (default newsboat/mutt), or *user set* from newsboat/mutt.
         tlen=$(( ${#title} + 3 )) # accounting for newlines
@@ -48,7 +48,7 @@ function bluesky_send {
         hashlen=$(( ${#hashtags} + 3 ))
         urlen=$(( ${#shortlink} + 3 ))
         total_length=$(( tlen + d1len + d2len + hashlen + urlen ))
-        diff_len=$(( 300 - total_length ))
+		diff_len=$(( 290 - total_length ))
         if [ $diff_len -lt 0 ]; then
             printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
         else
