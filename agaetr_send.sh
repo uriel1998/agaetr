@@ -330,6 +330,10 @@ if [ -n "${description2}" ];then
             loud "[info] Links archived, added to description."
             description="${description} ${description2}"
             ;;
+		ignore*)
+			loud "[info] Link archived, removed from description2"
+			description2=""
+			;;
         *)  loud "[info] Links archived, not added to description."
             ;;
     esac

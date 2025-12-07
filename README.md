@@ -73,7 +73,7 @@ Because it's all modular, it's possible to run independent elements, or to run f
 
 * $title - The title of the article
 * $description - The main description of the article from the summary or OpenGraph tags.
-* $description2 - Additional description, typically used by agaetr for appending archive links, but it doesn't need to be.
+* $description2 - Additional description, typically used by agaetr for archive links, but it doesn't need to be.
 * $hashtags - what it says
 * $link - the original URL to the article
 * $imgurl - a link to an image to go with the article
@@ -177,9 +177,9 @@ We are using `curl` with API keys. Get [your keys for the Internet Archive here]
 wayback_access = ACCESS_KEY
 wayback_secret = SECRET
 
-If you put an access key in the INI file, that *turns on automatic archiving*.  To have those links appear in your social media post, you must *also* place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, or to `ignore` them.
+If you put an access key in the INI file, that *turns on automatic archiving*.  To have those links appear in your social media post, you must *also* place into `agaetr.ini` whether your want archived links to `replace` the description, to `append` them to the description, have them be `separate` (the default), or to `ignore` them.
 
-`ArchiveLinks = append`
+`ArchiveLinks = separate`
 
 You may additionally symlink `wayback.sh` like any of the outbound parsers to have it be called that way, but it won't add the URL to the posts.
 
