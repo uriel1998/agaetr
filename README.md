@@ -55,19 +55,36 @@ found and (relatively) easily swapped in without changing your whole setup.
 Special thanks to Alvin Alexander, [whose post](https://alvinalexander.com/python/python-script-read-rss-feeds-database) got me on the right track.
 
 
-## Flow and Philosophy
+### Flow and Philosophy
 
 Input is either a single URL or a call to the *pull* function, which pulls in configured RSS feeds.  These can be online or static XML files, and can be pre-processed as well.
-It stores basic information about the articles in a flat database, which will eventually be upgraded to sqlite
-When push is called, it will pull the oldest link, deobfuscate the URL, get opengraph tags and images (if ones weren't already existant),
-    It calls all functions in out_enabled, passing along several variables, and expects the function to set the status variable to determine if it was sent or not.
-    It passes out:
 
-    "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}"
-    and poster_result_code is the return code
+When push is called, it will pull the oldest link, deobfuscate the URL, get opengraph tags and images (if ones weren't already existant), and call all functions in `out_enabled`.  
+
+### Services Not Covered Here / Contributing
+
+One of the reason there are multiple different example service wrappers (and that they are written in pretty straightforward BASH scripting) is so that future users (including myself) can use them as templates or examples for other tools or new services with as little fuss as possible and without requiring a great deal of knowledge on the part of the user.
+
+If you create one for another service, please contact me so I can merge it in (this repository is mirrored multiple places).
+
+Because it's all modular, it's possible to run independent elements, or to run from the control file `agaetr.sh`.  It's also possible to source the senders and archivers to pass additional (global) variables to them.  `hooty.sh` is an example of this.
+
+`agaetr_send` passes the following information to senders in these variables:
+
+* $title - The title of the article
+* $description - The main description of the article from the summary or OpenGraph tags.
+* $description2 - Additional description, typically used by agaetr for appending archive links, but it doesn't need to be.
+* $hashtags - what it says
+* $link - the original URL to the article
+* $imgurl - a link to an image to go with the article
+* $ALT_TEXT - alt text for the above image  
+* $shortlink - the shortened link to the article
+
+The scripts in `out_avail` each check to see if they are sourced, and the actual sending function is the filename with `_send` appended.  For example, the bluesky sender is `bluesky.sh`, and has a function `bluesky_send`.  
+
+Adding your own or different senders is largely wiring those bits together.  Examples of how limiting length is done can be seen in the senders for bluesky, mastodon, and pixelfed.  
 
 
-    (Date of sending, etc, as well as successes, will eventually be included in the db.)
 
 
 ## 2. License
@@ -76,10 +93,7 @@ This project is licensed under the Apache License. For the full license, see `LI
 
 ## 3. Prerequisites
 
-# TODO - this needs cleaned up and corrected.  And an actual setup program put in place, with a virtualenv created.
-
-These are probably already installed or are easily available from your distro on
-linux-like distros:  
+These are probably already installed or are easily available from your distro on linux-like distros:  
 
 * [python3](https://www.python.org)  
 * [bash](https://www.gnu.org/software/bash/)  
@@ -119,10 +133,7 @@ pip install -r requirements.txt
 
 It is recommended that you use `pipx` or similar tool or your package installer's python packages to the extent possible to install senders and helpers.
 
-
 ## 4. Installation
-
-### Manual installation
 
 Clone or download the repository to the directory of your choice. Then:
 
@@ -153,32 +164,6 @@ services.
 
 ## 5. Services Setup
 
-### Services Not Covered Here / Contributing
-
-One of the reason there are multiple different example service wrappers
-(and that they are written in pretty straightforward BASH scripting)
-is so that future users (including myself) can use them as templates or
-examples for other tools or new services with as little fuss as possible
-and without requiring a great deal of knowledge on the part of the user.
-
-If you create one for another service, please contact me so I can merge it in
-(this repository is mirrored multiple places).
-
-`agaetr_send` passes the following information to senders in these variables:
-
-* $title - The title of the article
-* $description - The main description of the article from the summary or OpenGraph tags.
-* $description2 - Additional description, typically used by agaetr for appending archive links, but it doesn't need to be.
-* $hashtags - what it says
-* $link - the original URL to the article
-* $imgurl - a link to an image to go with the article
-* $ALT_TEXT - alt text for the above image  
-* $shortlink - the shortened link to the article
-
-The scripts in `out_avail` each check to see if they are sourced, and the actual sending function is the filename with `_send` appended.  For example, the bluesky sender is `bluesky.sh`, and has a function `bluesky_send`.  
-
-Adding your own or different senders is largely wiring those bits together.  Examples of how limiting length is done can be seen in the senders for bluesky, mastodon, and pixelfed.  
-
 ### Shorteners and Archivers
 
 #### YOURLS  
@@ -203,7 +188,7 @@ You may additionally symlink `wayback.sh` like any of the outbound parsers to ha
 
 This *frequently* times out, and can take 1-3 minutes when it works properly.
 
-### Outbound parsers
+### Outbound Senders
 
 * Shaarli
 * Wallabag
@@ -234,7 +219,7 @@ Place the location of the binary into `agaetr.ini`.
 
 Note that shorteners and wallabag don't get along all the time.
 
-#### Mastodon via toot  
+#### Mastodon via toot  (output)
 
 Install and set up [toot](https://github.com/ihabunek/toot/).  
 If you already have pipx, this can be as simple as `pipx install toot`.
@@ -244,7 +229,7 @@ Specify the account to use (see all accounts with `toot auth`) in `agaetr.ini`:
 
 `mastodon = username@mastodon.example.com`
 
-#### Bsky via bsky
+#### Bsky via bsky (output)
 
 We use [bsky](https://github.com/mattn/bsky) for Bluesky. You can download the
 binary from the [releases](https://github.com/mattn/bsky/releases) page.
@@ -253,7 +238,7 @@ Install as per the directions, place the location of the binary into `agaetr.ini
 
 Note that if you're specifying an alternate (self-hosted) AT host, that should go *before* the handle and password when performing the `login` command.
 
-#### Pixelfed via toot  
+#### Pixelfed via toot (output)
 
 Install and set up [toot](https://github.com/ihabunek/toot/).  
 If you already have pipx, this can be as simple as `pipx install toot`.
@@ -272,7 +257,7 @@ and the like are applied.
 [picgo](https://github.com/PicGo/PicGo-Core) as well.  Put the full path to `picgo` in `agaetr.ini`.
 
 
-#### RSS via XMLStarlet
+#### RSS via XMLStarlet (output)
 
 Install [XMLStarlet](https://xmlstar.sourceforge.net/) which may be as easy as
 `sudo apt install xmlstarlet` on Debian/Ubuntu.
@@ -283,9 +268,7 @@ rss_output_path = /full/path/including/filename.xml
 self_link = https://location.of.xml.example.com/output.xml
 
 ```
-#### Email
-
-
+#### Email (output)
 
 Fill in the appropriate bits in `agaetr.ini`.  The field `email_from` should be
 one valid email address, the field `email_to` may contain multiple addresses separated
@@ -298,7 +281,7 @@ smtp_password =
 email_from =
 email_to =
 
-#### Tumblr
+#### Tumblr (output)
 
 Preferentially we use the python reimplementation of [gotumblr](https://github.com/admacro/gotumblr) found at [python_tumblr_poster](https://github.com/uriel1998/python_tumblr_poster). The configuration and environment variables for the python reimplementation are the same.  Follow the installation instructions for [python_tumblr_poster](https://github.com/uriel1998/python_tumblr_poster).  Place the environment variables and path to `run_tumblr.sh` (NOT the python file itself; that's so it'll pull in the venv created during installation) and where it writes the text file for posting in `agaetr.ini`.
 
@@ -313,9 +296,7 @@ TUMBLR_OAUTH_TOKEN=see_readme_for_gotumblr
 TUMBLR_OAUTH_TOKEN_SECRET=see_readme_for_gotumblr
 ```
 
-
-
-#### Daily Post
+#### Daily Post (output)
 
 In `agaetr.ini` set up your *directory* for daily posts.
 
@@ -327,11 +308,9 @@ It will create a markdown formatted text file of your links for each day, e.g.
 
 Additional processing and formatting is up to you. If you want YAML frontmatter or the like, you'll need to edit the sending script.
 
-
 ## 6. Feeds Setup
 
-Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a
-header line `[Feed#]` with a different number for each feed.
+Information about your feeds goes into `agaetr.ini`.  Each feed is marked by a header line `[Feed#]` with a different number for each feed.  Hopefully, that's it.  
 
 If a feed is being preprocessed (see below) or you have the RSS as an
 XML file, you can put the filename directly into `agaetr.ini`, **RELATIVE TO `$XDG_CONFIG_HOME/agaetr`**.  
@@ -357,19 +336,11 @@ GlobalCW = ideatrash
 
 ## 7. Feed Preprocessing
 
-While RSS is *supposed* to be a standard... it isn't. Too often there are
-unusual or irregular elements in an RSS feed.
+While RSS is *supposed* to be a standard... it isn't. Too often there are unusual or irregular elements in an RSS feed.
 
-While I've tried to make some of the more popular "odd" feeds - like YouTube
-and DeviantArt - work properly inside of `agaetr_parse.py`, I cannot check
-or code for every possibility.
+While I've tried to make some of the more popular "odd" feeds - like YouTube and DeviantArt - work properly inside of `agaetr_parse.py`, I cannot check or code for every possibility.
 
-If you have a feed with some unruly elements - such as the "Read more..." that
-Wordpress loves to put in my own feed, or how the "published articles" feed from
-tt-rss uses `<updated>` instead of `<pubDate>`, there is an option to put in a `sed`
-script or the like in `agaetr.ini`.  In this case, `src` is where the feed
-originally comes from, and `url` is where the processed feed goes to be picked up
-by `agaetr_parse.py`.  These three must be in this order: `src`, `cmd`, `url`, one per line, as below.
+If you have a feed with some unruly elements - such as the "Read more..." that Wordpress loves to put in my own feed, or how the "published articles" feed from tt-rss uses `<updated>` instead of `<pubDate>`, there is an option to put in a `sed` script or the like in `agaetr.ini`.  In this case, `src` is where the feed originally comes from, and `url` is where the processed feed goes to be picked up by `agaetr_parse.py`.  These three must be in this order: `src`, `cmd`, `url`, one per line, as below.
 
 ```
 [Feed4]
@@ -379,28 +350,20 @@ url = /relative/path/to/xml/filename.xml
 ```
 
 Again, you can specify the output filename for the feed location in
-`agaetr.ini`. This allows the use of the preprocessor without changing
-anything else.
+`agaetr.ini`. This allows the use of the preprocessor without changing anything else.
 
 This isn't meant to be a comprehensive "fix" so much as an example to
 help get you started with your own unruly feeds.
 
 ### Note about Shaarli feeds
 
-Please note that if you're importing a Shaarli feed, you will probably want to
-toggle "RSS direct links" in the Preferences menu, otherwise it links directly
-to your Shaarli, not to the thing your Shaarli is pointing at.
+Please note that if you're importing a Shaarli feed, you will probably want to toggle "RSS direct links" in the Preferences menu, otherwise it links directly to your Shaarli, not to the thing your Shaarli is pointing at.
 
 ## 8. Feed Options
 
 There are two places to configure feed options in `agaetr.ini`.
 
-In the default block, you can define the (duh) default options. For
-social media accounts that support content warnings and sensitive image
-markers (like Mastodon) you can configure if images are "sensitive" by
-default, whether the posts from `agaetr` are marked with content warning
-by default, and what strings (in the post title or tags) will *always*
-trigger the content warning.
+In the default block, you can define the (duh) default options. For social media accounts that support content warnings and sensitive image markers (like Mastodon) you can configure if images are "sensitive" by default, whether the posts from `agaetr` are marked with content warning by default, and what strings (in the post title or tags) will *always* trigger the content warning.
 
 *Note*: Images are marked as sensitive if the content warning is triggered.
 
@@ -413,17 +376,11 @@ filters =
 #filters = politics blog sex bigot supremacist nazi climate
 ```
 
-In each feed's configuration, you can choose the default for *that feed*.
-For example, in *Feed1* below, images are marked sensitive, but there is *not*
-a content warning for any items in the feed.  
+In each feed's configuration, you can choose the default for *that feed*. For example, in *Feed1* below, images are marked sensitive, but there is *not* a content warning for any items in the feed.  
 
-In *Feed2* below, all images are marked sensitive and all posts are marked with a
-content warning of "ideatrash".  It will also mark the content warning with
-any other tags the post may have.
+In *Feed2* below, all images are marked sensitive and all posts are marked with a content warning of "ideatrash".  It will also mark the content warning with any other tags the post may have.
 
-In *Feed3* below, images are only marked sensitive if they are triggered by a
-content warning (from the "filter" line in the *Default* section), otherwise
-there are no content warnings and images are presented normally.
+In *Feed3* below, images are only marked sensitive if they are triggered by a content warning (from the "filter" line in the *Default* section), otherwise there are no content warnings and images are presented normally.
 
 ```
 [Feed1]
@@ -456,13 +413,9 @@ url = /relative/path/to/xml/filename.xml
 
 ## 9. Advanced Content Warning
 
-If you need ideas for what tags/terms make good content warnings, the file
-`cwlist.txt` is included for your convenience. Because of how it matches, a
-filter of "abuse" should catch "child abuse" and "sexual abuse", etc. However,
-it matches whole words, so "war" should *not* catch "bloatware" or "warframe".
+If you need ideas for what tags/terms make good content warnings, the file `cwlist.txt` is included for your convenience. Because of how it matches, a filter of "abuse" should catch "child abuse" and "sexual abuse", etc. However, it matches whole words, so "war" should *not* catch "bloatware" or "warframe".
 
-The advanced content warning system is configured in the `agaetr.ini` as
-well, following a similar format to the feeds:
+The advanced content warning system is configured in the `agaetr.ini` as well, following a similar format to the feeds:
 
 ```
 [CW9]
@@ -470,15 +423,11 @@ keyword = social-media
 matches = facebook twitter mastodon social-media online
 ```
 
-The "keyword" is what is outputted as the content warning, the space-separated
-line after matches is what strings will trigger that keyword as a content
-warning.  This will work on *all* feeds where `ContentWarning = yes` is
-configured.
+The "keyword" is what is outputted as the content warning, the space-separated line after matches is what strings will trigger that keyword as a content warning.  This will work on *all* feeds where `ContentWarning = yes` is configured.
 
 ### The keyword should **NOT** be a potentially sensitive word itself.
 
 ## 10. Usage
-
 
 Standalone: /path/to/agaetr.sh [options]
 
@@ -496,16 +445,6 @@ Standalone: /path/to/agaetr.sh [options]
 **If you run `agaetr` as a cron job, ensure that the cron job is
 run as the user (and with the environment) you used to set up the
 online services.**  
-
-
-Because it's all modular, it's possible to run independent elements, or to run from the
-control file `agaetr.sh`.  It's also possible to source the senders and archivers
-to pass additional (global) variables to them:
-
-"$pubtime" "$title" "$description" "$link" "$hashtags"
-"$cw"  "$imgurl" "ALT_TEXT"
-
-`hooty.sh` is an example of this.
 
 ## 11. Other files
 
