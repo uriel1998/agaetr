@@ -7,13 +7,15 @@
 #
 ##############################################################################
 
-# Set defaults and global variables so they can be passed back and forth 
+# Set defaults and global variables so they can be passed back and forth
 # en masse between functions and sourced scripts
+
+# LOUD=0  <-- this should be set by env
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
+inifile=""
 SHORTEN=0
-ARCHIVEIS=0
 IARCHIVE=0
 prefix=""
 instring=""
@@ -25,7 +27,7 @@ link=""
 cw=""
 imgurl=""
 imgalt=""
-# compatability
+# compatibility
 ALT_TEXT=""
 hashtags=""
 description=""
@@ -33,51 +35,15 @@ description=""
 description2=""
 description2_md=""
 description2_html=""
-LOUD=0
-
-
-## What do we know?
-
-if [ ! -d "${XDG_DATA_HOME}" ];then
-    export XDG_DATA_HOME="${HOME}/.local/share"
-fi
-if [ ! -d "${XDG_CONFIG_HOME}" ];then
-    export XDG_CONFIG_HOME="${HOME}/.config"
-fi
-
-
-if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ];then
-    source "${SCRIPT_DIR}/short_enabled/yourls.sh"
-    SHORTEN=1
-fi
-
-
-if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
-    echo "ERROR - INI NOT FOUND" >&2
-    exit 99
-else
-    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    if [ -f $(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then 
-        ARCHIVEIS=1
-    fi
-    if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
-        IARCHIVE=1
-    fi
-    if [ $IARCHIVE -eq 1 ] || [ $ARCHIVEIS -eq 1 ];then
-        ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    else
-        ArchiveLinks=ignore
-    fi
-fi
-
-
 
 ##########Functions
 
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
@@ -92,14 +58,14 @@ function get_instring() {
     rm "${XDG_DATA_HOME}/agaetr/${prefix}posts_back.db"
 
 
-    if [ -z "$instring" ];then 
+    if [ -z "$instring" ];then
         loud "[info] Nothing to post."
         exit
     fi
 
     loud "[info] Adding string to the posted db"
     echo "$instring" >> "${XDG_DATA_HOME}/agaetr/${prefix}posted.db"
-    
+
 }
 
 function parse_instring() {
@@ -125,10 +91,10 @@ function parse_instring() {
 }
 
 function get_better_description() {
-    # to strip out crappy descriptions and either omit them or, if available, 
+    # to strip out crappy descriptions and either omit them or, if available,
     # substitute og tags.
     local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
-    
+
     patterns=("Photo illustration by" "The Independent is on the ground" "Sign up for our email newsletter" "originally published")
     patterns+="(Image Credit:"
 
@@ -141,16 +107,22 @@ function get_better_description() {
         fi
     done
     loud "[info] Attempting to find OpenGraph tags for description"
-    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
+    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g' | hxunent -f ) # NOT XML SAFE YET, need -b switch
+
     og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
     if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
         loud "[info] Subsituting OpenGraph description for parsed description."
         description="${og_description}"
+    else
+        if [ "$og_description" != "" ] && [ "$description" == "" ];then
+            loud "[info] Subsituting OpenGraph description for empty or bad description."
+            description="${og_description}"
+        else
+            # it's the original description, so now need to clean it with hxenunt
+            description=$(echo "${description}" | hxunent -f | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+        fi
     fi
-    if [ "$og_description" != "" ] && [ "$description" == "" ];then
-        loud "[info] Subsituting OpenGraph description for empty or bad description."
-        description="${og_description}"
-    fi
+
 }
 
 function check_image() {
@@ -163,15 +135,15 @@ function check_image() {
     if [ "${imgalt}" == "alt" ];then
         imgalt=""
     fi
-    
-    if [ "${imgurl}" == "None" ];then 
+
+    if [ "${imgurl}" == "None" ];then
         loud "[info] No image stored in db."
         imgurl=""
         imgalt=""
     fi
-    
+
     if [ "${imgurl}" != "" ];then
-        #Checking the stored image url 
+        #Checking the stored image url
         loud "[info] Checking existence of ${imgurl}"
         imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
         if [ "${imagecheck}" -ne 0 ];then
@@ -185,7 +157,7 @@ function check_image() {
         loud "[info] Checking image opengraph tags"
         # adding in looking for opengraph metadata here.
         # Fetch webpage content
-        # using wget because some sites (independent, cough) don't return anything 
+        # using wget because some sites (independent, cough) don't return anything
         # with curl?
         html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
         # Extract og:image content
@@ -201,7 +173,7 @@ function check_image() {
             loud "[warn] OpenGraph tags not found."
         fi
     fi
-    
+
     #Checking the image url AGAIN before sending it to the client
     imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
 
@@ -217,55 +189,86 @@ function check_image() {
         fi
         if [ "${imgalt}" != "" ] && [ "${ALT_TEXT}" == "" ];then
             ALT_TEXT="${imgalt}"
-        fi        
+        fi
         if [ "${imgalt}" == "" ] && [ "${ALT_TEXT}" == "" ];then
-			# this is from newsbeuter_dangerzone
-			if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then 
+            # this can handle URLs or files passed to it.
+			if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then
 				ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${imgurl}")
 				imgalt="${ALT_TEXT}"
 			else
+                #fallback
 				imgalt="An image for decorative purposes automatically pulled from the post."
 			fi
             ALT_TEXT="${imgalt}"
-        fi        
+        fi
         loud "[info] Using alt text of ${ALT_TEXT}."
     fi
 }
 
- 
+
 
 
 ##############################################################################
-# 
-# Script Enters Here
-# 
-##############################################################################
-
-# parse command line options
 #
-while [ $# -gt 0 ]; do
-    option="$1"
-    case $option in
+# Script Enters Here
+#
+##############################################################################
 
-    --help) 
-        display_help
-        exit
-        ;;        
-    --loud) 
-        LOUD=1
-        shift 
-        ;;        
-    esac
-done
+## What do we know?
+
+if [ ! -d "${XDG_DATA_HOME}" ];then
+    export XDG_DATA_HOME="${HOME}/.local/share"
+fi
+if [ ! -d "${XDG_CONFIG_HOME}" ];then
+    export XDG_CONFIG_HOME="${HOME}/.config"
+fi
+
+
 
 if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     echo "INI not located. Exiting." >&2
     exit 89
+else
+    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 fi
 if [ ! -f "${XDG_DATA_HOME}/agaetr/posts.db" ];then
     echo "Post database not located, exiting." >&2
     exit 99
 fi
+
+
+if [ $(grep 'wayback_access' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}') != "" ];then
+    IARCHIVE=1
+    ArchiveLinks=$(grep 'ArchiveLinks' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+else
+    IARCHIVE=0
+    ArchiveLinks=ignore
+fi
+
+# Note that it must be BOTH in enabled and the trigger is actually putting the API key in place.
+if [ -f "${SCRIPT_DIR}/short_enabled/yourls.sh" ] && [ $(grep 'yourls_api' "${inifile}"  | sed 's/ //g'| awk -F "=" '{print $2}') != "" ];then
+    source "${SCRIPT_DIR}/short_enabled/yourls.sh"
+    SHORTEN=1
+fi
+
+# parse command line options
+# This should ONLY be pulling from the database, not directly
+while [ $# -gt 0 ]; do
+    option="$1"
+    case $option in
+
+    --help)
+        display_help
+        exit
+        ;;
+    --loud)
+        LOUD=1
+        shift
+        ;;
+    *) shift ;;
+    esac
+done
+
 
 loud "[info] Getting instring"
 get_instring
@@ -288,30 +291,17 @@ get_better_description
 
 # Dealing with archiving links
 description2=""
-if [ $ARCHIVEIS -eq 1 ];then 
-    source "$SCRIPT_DIR/archivers/archiveis.sh"
-    loud "[info] Getting archive.is link"
-    # this should now set ARCHIVEIS to the Archiveis url
-	ARCHIVEIS=$(archiveis_send)
-    # Making sure we get a URL back
-    if [[ $ARCHIVEIS =~ http* ]];then
-        loud "[info] Got archive.is link of ${ARCHIVEIS} "
-        description2=" ais: ${ARCHIVEIS}"
-        description2_md=" [ais](${ARCHIVEIS})"
-        description2_html=" <a href=\"${ARCHIVEIS}\">ais</a>"
-    else
-        loud "[error] Did not get archive.is link"
-    fi
-fi
+
 
 if [ $IARCHIVE -eq 1 ];then
     loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
-    source "$SCRIPT_DIR/archivers/wayback.sh"
+	# That's right, it's in avail. This is SEPARATE from it being called
+	# as an out method, which can ALSO be done on a per call basis
+	source "$SCRIPT_DIR/out_avail/wayback.sh"
     # this should now set IARCHIVE to the IARCHIVE url
 	IARCHIVE=$(wayback_send)
     # I may need to put in a shortening thing here
     # Making sure we get a URL back
-    echo "$IARCHIVE"
     if [[ $IARCHIVE =~ http* ]];then
         loud "[info] Got Wayback link of ${IARCHIVE} "
         # They are always SUPER long
@@ -323,16 +313,16 @@ if [ $IARCHIVE -eq 1 ];then
                 IARCHIVE="${shortlink}"
             fi
         fi
-        description2="${description2} ia: ${IARCHIVE} "
-        description2_md="${description2_md}  [ia](${IARCHIVE})"
-        description2_html="${description2_html} <a href=\"${IARCHIVE}\">ia</a>"
+        description2="ia: ${IARCHIVE} "
+        description2_md="[ia](${IARCHIVE})  "
+        description2_html="<a href=\"${IARCHIVE}\">ia</a> "
     else
         loud "[error] Did not get Wayback link"
     fi
 fi
 if [ -n "${description2}" ];then
     case ${ArchiveLinks} in
-        replace*) 
+        replace*)
             description="${description2}"
             loud "[info] Links archived, replacing description."
             ;;
@@ -348,28 +338,33 @@ else
 fi
 
 
-# SHORTENING OF URL 
+# SHORTENING OF URL
 # Look, if the URL is longer than 64 characters... some of these are 128+
-# and I use this with BlueSky as well. 
+# and I use this with BlueSky as well.
 if [ $SHORTEN -eq 1 ] && [ ${#link} -gt 64 ]; then
     loud "[info] Sending URL to shortener function"
     shortlink=$(yourls_shortener "${link}")
+    # TODO -- use this with bsky, etc.
     if [[ $shortlink =~ http* ]];then
-        link="${shortlink}"
+        export shortlink
     fi
 fi
-    
-# Parsing enabled out systems. Find files in out_enabled, then import 
+
+# Parsing enabled out systems. Find files in out_enabled, then import
 # functions from each and running them with variables already established.
 
 posters=$(ls -A "$SCRIPT_DIR/out_enabled")
 
 for p in $posters;do
-    if [ "$p" != ".keep" ];then 
+    if [ "$p" != ".keep" ];then
         loud "[info] Processing ${p%.*}..."
         send_funct=$(echo "${p%.*}_send")
         source "${SCRIPT_DIR}/out_enabled/${p}"
+        poster_result_code=0
         eval ${send_funct}
+		if [ "$poster_result_code" != "0" ];then
+            loud "[ERROR] ${p} did not succeed in some way!"
+        fi
         sleep 5
     fi
 done

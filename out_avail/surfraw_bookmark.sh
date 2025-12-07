@@ -11,7 +11,7 @@
 
 function surfraw_bookmark {
     echo -e "${title}\t${link}" >> ${XDG_CONFIG_DIR}/surfraw/bookmarks
-
+    poster_result_code=0 
 #https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit#
 }
 
@@ -37,8 +37,11 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

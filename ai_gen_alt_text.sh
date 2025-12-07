@@ -9,7 +9,7 @@ if [ $# -lt 1 ]; then
 fi
 
 IMAGE="$1"
-PROMPT="${2:-Describe this image in one short sentence.}"
+PROMPT="${2:-Describe this image in one short sentence. Use no punctuation that would cause errors in HTML or a commandline.}"
 
 if [ ! -f "${IMAGE}" ]; then
 	if [[ $IMAGE == *"http"* ]]; then

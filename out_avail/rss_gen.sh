@@ -7,12 +7,11 @@
 #  Licensed under the MIT license
 # use as output for bookmark program
 # to create RSS feed of items (for publication, agaeter, etc)
-# 
+#
 #https://stackoverflow.com/questions/12827343/linux-send-stdout-of-command-to-an-rss-feed
 #
 ##############################################################################
 
-#TODO: multiple outputs?
 
 if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
@@ -20,42 +19,49 @@ fi
 inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
- 
+
+
 function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
 
-
 function rss_gen_send {
+    if [ ! -f "${RSSSavePath}" ];then
+        loud "[info] Starting XML file"
+        printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
+        printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
+        printf '  <channel>\n' >> "${RSSSavePath}"
+        printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
+        printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
+        printf '    <link>%s</link>\n' "${self_link}" >> "${RSSSavePath}"
+        printf '    <atom:link rel="self" href="%s" type="application/rss+xml" />\n' "${self_link}" >> "${RSSSavePath}"
+        printf '  </channel>\n' >> "${RSSSavePath}"
+        printf '</rss>\n' >> "${RSSSavePath}"
+    fi
+    XML_title=$(echo "${title}" | hxunent -fb )
+    XML_description=$(echo "${description}" | hxunent -fb )
+    XML_description2=$(echo "${description2}" | hxunent -fb )
 
-if [ ! -f "${RSSSavePath}" ];then
-    loud "[info] Starting XML file"
-    printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
-    printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
-    printf '  <channel>\n' >> "${RSSSavePath}"
-    printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
-    printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
-    printf '    <link rel="self" href="%s" />\n' "${self_link}" >> "${RSSSavePath}"
-    printf '  </channel>\n' >> "${RSSSavePath}"
-    printf '</rss>\n' >> "${RSSSavePath}"    
-
-fi
-    TITLE="${title}"
-    LINK=$(printf "href=\"%s\"" "${link}")
-    DATE="`date`"
-    DESC=$(printf "%s\nArchive links:\n%s\n" "${description}" "${description2_html}")
-    GUID="${link}" 
+    TITLE="${XML_title}"
+    LINK="${link}"
+    DATE="$(date -R)"
+    DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
+    GUID="${link}"
     loud "[info] Adding entry to RSS feed"
-    xmlstarlet ed -L   -a "//channel" -t elem -n item -v ""  \
-         -s "//item[1]" -t elem -n title -v "$TITLE" \
-         -s "//item[1]" -t elem -n link -v "$LINK" \
-         -s "//item[1]" -t elem -n pubDate -v "$DATE" \
-         -s "//item[1]" -t elem -n description -v "$DESC" \
-         -s "//item[1]" -t elem -n guid -v "$GUID" \
-         -d "//item[position()>10]"  "${RSSSavePath}" ; 
+    xmlstarlet ed -L \
+        -s "/rss/channel" -t elem -n item -v "" \
+        -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
+        -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
+        -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
+        -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
+        -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
+        -d "/rss/channel/item[position()>10]" "${RSSSavePath}"
+
 
 
 }
@@ -84,8 +90,11 @@ else
             LOUD=1
             shift
         else
-            LOUD=0
-        fi    
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

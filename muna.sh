@@ -10,8 +10,10 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 
 function loud() {
-    if [ "${LOUD:-0}" -eq 1 ];then
-        echo "$@"
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 

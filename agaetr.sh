@@ -2,7 +2,7 @@
 
 ##############################################################################
 #
-#  agaetr -- to take in RSS feeds and single URL input, preprocess, and to 
+#  agaetr -- to take in RSS feeds and single URL input, preprocess, and to
 #  output to a number of social media outputs
 #  (c) Steven Saus 2025
 #  Licensed under the MIT license
@@ -14,7 +14,7 @@
 # Establishing XDG directories, or creating them if needed.
 # standardized binaries that should be on $PATH
 # Likewise with initial INI files
-############################################################################### 
+###############################################################################
 VERSION="0.2.0"
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
@@ -36,17 +36,19 @@ fi
 
 function loud() {
 ##############################################################################
-# loud outputs on stderr 
-##############################################################################    
-    if [ $LOUD -eq 1 ];then
-        echo "$@" 1>&2
+# loud outputs on stderr
+##############################################################################
+	if [ "$LOUD" != "" ];then
+		if [ $LOUD -eq 1 ];then
+			echo "$@" 1>&2
+		fi
     fi
 }
 
 check_for_config(){
 ##############################################################################
 # Make sure the config is there
-##############################################################################    
+##############################################################################
     if [ ! -d "${XDG_CONFIG_HOME}/agaetr" ];then
         mkdir -p "${XDG_CONFIG_HOME}/agaetr"
     fi
@@ -58,33 +60,33 @@ check_for_config(){
     fi
     if [ ! -f "${XDG_CONFIG_HOME}/agaetr/cw.ini" ];then
         cp /app/etc/cw.ini "${XDG_CONFIG_HOME}/agaetr/cw.ini"
-    fi        
+    fi
     if [ ! -d "${XDG_DATA_HOME}/agaetr" ];then
         mkdir -p "${XDG_DATA_HOME}/agaetr"
     fi
     if [ ! -f "${XDG_DATA_HOME}/agaetr/README.md" ];then
         cp /app/share/agaetr/README.md "${XDG_DATA_HOME}/agaetr/README.md"
-    fi        
+    fi
     if [ ! -f "${XDG_DATA_HOME}/agaetr/LICENSE.md" ];then
         cp /app/share/agaetr/LICENSE.md "${XDG_DATA_HOME}/agaetr/LICENSE.md"
-    fi        
+    fi
 }
 
 display_help(){
 ##############################################################################
 # Show the Help
-##############################################################################    
+##############################################################################
     echo "###################################################################"
     echo "# Standalone: /path/to/agaetr.sh [options]"
     echo "# Info ############################################################"
     echo "# --help:  show help "
     echo "# --locations: print config and data locations"
     echo "# --readme: display the README on the console"
-    echo "# Usage ###########################################################"    
+    echo "# Usage ###########################################################"
     echo "# --pull: draw in configured RSS sources"
     echo "# --push: push out from queue"
     echo "# --muna [URL]: unredirect a URL "
-    echo "# --url [URL] --description [text]: add single url to outbound queue "    
+    echo "# --url [URL] --description [text]: add single url to outbound queue "
     echo "# --version: report version  "
     echo "###################################################################"
 }
@@ -108,9 +110,9 @@ display_readme(){
     exit
 }
 
- 
 
- 
+
+
 
 add_single_url(){
     # okay, so there's always going to be some weird escaping...
@@ -142,8 +144,8 @@ add_single_url(){
         imgalt="${og_image_alt}"
         loud "[info] Found OpenGraph ${og_image}"
         loud "[info] Found OpenGraph ${og_image_alt}"
-    fi                   
-    if [ -z "$description" ]; then    
+    fi
+    if [ -z "$description" ]; then
         description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".*content="\([^"]*\)".*/\1/p')
     fi
     title=$(echo "${html}" | sed -n 's/.*<meta property="og:title".*content="\([^"]*\)".*/\1/p')
@@ -164,8 +166,8 @@ add_single_url(){
 
 rss_preprocessor(){
     # to preprocess any feeds that need it.
-    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini" 
-    
+    inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
+
     OIFS=$IFS
     IFS=$'\n'
     myarr=($(grep --after-context=2 -e "^src =" "${inifile}"))
@@ -175,7 +177,7 @@ rss_preprocessor(){
     # use url for output directories
     # then do this - printf if I have to in order for escapes to work
     len=${#myarr[@]}
-    for (( i=0; i<$len; i=$(( i+2 )) )); do         
+    for (( i=0; i<$len; i=$(( i+2 )) )); do
         if [[ "${myarr[$i]}" != "--" ]];then
             mysrc=""
             mycmd=""
@@ -189,7 +191,7 @@ rss_preprocessor(){
                     mycmd=$(echo "${myarr[$j]}" | awk -F ' = ' '{print $2}')
                     if [[ "${myarr[$k]}" == "url"* ]];then
                         myurl=$(echo "${myarr[$k]}" | awk -F ' = ' '{print $2}')
-                        rel_path="${XDG_DATA_HOME}/agaetr/${myurl}"                      
+                        rel_path="${XDG_DATA_HOME}/agaetr/${myurl}"
                         # time to create the command string
                         thecommand=$(printf "wget -q -O- \"%s\" | %s > \"%s\"" "${mysrc}" "${mycmd}"  "${rel_path}")
                         loud "${thecommand}"
@@ -213,9 +215,9 @@ while [ $# -gt 0 ]; do
 # You have to have the shift or else it will keep looping...
     option="$1"
     case $option in
-    
- 
-    
+
+
+
         --loud)     export LOUD=1
                     loud "[info] Loud turned on"
                     shift
@@ -230,15 +232,15 @@ while [ $# -gt 0 ]; do
         --readme)   check_for_config #includes moving README!
                     display_readme
                     exit
-                    ;;                    
+                    ;;
         *muna)     # Just running muna, nothing to see here.
                     shift
                     URL="${@}"
                     "${SCRIPT_DIR}"/muna.sh "${URL}"
-                    exit    
+                    exit
                     ;;
         --version)  echo "${VERSION}"; check_for_config; exit ;;
-        --pull)     # perform a pull run. 
+        --pull)     # perform a pull run.
                     shift
                     loud "[info] Preprocessing RSS feeds"
                     rss_preprocessor
@@ -247,18 +249,18 @@ while [ $# -gt 0 ]; do
                     ;;
         --push)     # perform a push run.
                     shift
-                    if [ $LOUD -eq 1 ];then 
+                    if [ "$LOUD" != "1" ];then
                         "${SCRIPT_DIR}/agaetr_send.sh" --loud
                     else
                         "${SCRIPT_DIR}/agaetr_send.sh"
                     fi
                     ;;
-        --url)      # ADDING a single url.                
+        --url)      # ADDING a single url.
                     shift
                     add_single_url "${@}"
                     exit
                     ;;
-        --locations) 
+        --locations)
                     # I want to check if it's using the $HOME or flatpak ones here,
                     #check_for_config
                     echo "$XDG_CONFIG_HOME"
@@ -267,6 +269,6 @@ while [ $# -gt 0 ]; do
                     ;;
         *)          shift;;
     esac
-done   
+done
 
 # clean_temp_keyword
