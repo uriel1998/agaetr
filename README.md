@@ -94,17 +94,18 @@ linux-like distros:
 * [lynx](https://lynx.invisible-island.net/)
 * [pandoc](https://pandoc.org/)
 * [html-xml-utils](https://www.w3.org/Tools/HTML-XML-utils/README)
+* [pup](https://github.com/EricChiang/pup)  
 * [pipx](https://pipx.pypa.io/stable/installation/)
 
 On Debian/Ubuntu systems, you should be able to snag all these with:
 
-`sudo apt install xmlstarlet html-xml-utils pandoc lynx imagemagick detox python3 bash wget gawk grep curl python3`
+`sudo apt install xmlstarlet html-xml-utils pandoc lynx imagemagick detox python3 bash wget gawk grep curl python3 pup`
 
-### Python dependencies
+### Python dependencies / pipx
 
-It is recommended that you use `pipx` or similar tool and your package installer's python packages to the extent possible.
+It is recommended that you use your your package installer's python packages as much as possible to install python dependencies.  On Debian/Ubuntu, this can be as easy as:
 
-* `sudo apt install python3-platformdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
+* `sudo apt install pipx python3-platformdirs python3-configargparse python3-requests python3-feedparser python3-bs4`
 
 If you do not, you should create a virtualenv for this project, as there are a number
 of python dependencies.  In the directory for `agaetr`:
@@ -116,22 +117,31 @@ pip install -U pip
 pip install -r requirements.txt
 ```
 
+It is recommended that you use `pipx` or similar tool or your package installer's python packages to the extent possible to install senders and helpers.
+
+
 ## 4. Installation
 
 ### Manual installation
 
+Clone or download the repository to the directory of your choice. Then:
+
+* Edit `agaetr.ini` (see instructions below)
+
+* Move configuration files and set executable bits.
+
+```
+mkdir -p $HOME/.config/agaetr
+mkdir -p $HOME/.local/agaetr
+cp $PWD/agaetr.ini $HOME/.config/agaetr
+sudo chmod +x $PWD/agaetr_parse.py
+sudo chmod +x $PWD/agaetr_send.sh
+sudo chmod +x $PWD/agaetr.sh
+sudo chmod +x $PWD/muna.sh
+```
+
 You will need some variety of posting mechanism and optionally an URL
 shortening mechanism. See [Services Setup](#5-services-setup) for details.
-
-* `mkdir -p $HOME/.config/agaetr`
-* `mkdir -p $HOME/.local/agaetr`
-* Edit `agaetr.ini` (see instructions below)
-* `cp $PWD/agaetr.ini $HOME/.config/agaetr`
-* `sudo chmod +x $PWD/agaetr_parse.py`
-* `sudo chmod +x $PWD/agaetr_send.sh`
-* `sudo chmod +x $PWD/agaetr.sh`
-* `sudo chmod +x $PWD/muna.sh`
-
 
 Any service you would like to use needs to have a symlink made from the "avail"
 directory to the "enabled" directory. For example:
@@ -143,7 +153,7 @@ services.
 
 ## 5. Services Setup
 
-### Services Not Covered Here
+### Services Not Covered Here / Contributing
 
 One of the reason there are multiple different example service wrappers
 (and that they are written in pretty straightforward BASH scripting)
@@ -154,6 +164,20 @@ and without requiring a great deal of knowledge on the part of the user.
 If you create one for another service, please contact me so I can merge it in
 (this repository is mirrored multiple places).
 
+`agaetr_send` passes the following information to senders in these variables:
+
+* $title - The title of the article
+* $description - The main description of the article from the summary or OpenGraph tags.
+* $description2 - Additional description, typically used by agaetr for appending archive links, but it doesn't need to be.
+* $hashtags - what it says
+* $link - the original URL to the article
+* $imgurl - a link to an image to go with the article
+* $ALT_TEXT - alt text for the above image  
+* $shortlink - the shortened link to the article
+
+The scripts in `out_avail` each check to see if they are sourced, and the actual sending function is the filename with `_send` appended.  For example, the bluesky sender is `bluesky.sh`, and has a function `bluesky_send`.  
+
+Adding your own or different senders is largely wiring those bits together.  Examples of how limiting length is done can be seen in the senders for bluesky, mastodon, and pixelfed.  
 
 ### Shorteners and Archivers
 
@@ -227,8 +251,7 @@ binary from the [releases](https://github.com/mattn/bsky/releases) page.
 
 Install as per the directions, place the location of the binary into `agaetr.ini`.
 
-Note that if you're specifying an alternate (self-hosted) AT host, that should go *before*
-the handle and password when performing the `login` command.
+Note that if you're specifying an alternate (self-hosted) AT host, that should go *before* the handle and password when performing the `login` command.
 
 #### Pixelfed via toot  
 
@@ -262,7 +285,7 @@ self_link = https://location.of.xml.example.com/output.xml
 ```
 #### Email
 
-Install [pup](https://github.com/EricChiang/pup), which may be as easy as `sudo apt install pup` on Debian/Ubuntu.
+
 
 Fill in the appropriate bits in `agaetr.ini`.  The field `email_from` should be
 one valid email address, the field `email_to` may contain multiple addresses separated
