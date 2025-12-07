@@ -84,12 +84,9 @@ The scripts in `out_avail` each check to see if they are sourced, and the actual
 
 Adding your own or different senders is largely wiring those bits together.  Examples of how limiting length is done can be seen in the senders for bluesky, mastodon, and pixelfed.  
 
-
-
-
 ## 2. License
 
-This project is licensed under the Apache License. For the full license, see `LICENSE`.
+This project is licensed under the Apache License. For the full license, see `LICENSE`.  Senders may have their own licenses.
 
 ## 3. Prerequisites
 
@@ -349,11 +346,9 @@ cmd = sed 's/<div class="more-link-wrapper">.*\]\]><\/description>/\]\]\><\/desc
 url = /relative/path/to/xml/filename.xml
 ```
 
-Again, you can specify the output filename for the feed location in
-`agaetr.ini`. This allows the use of the preprocessor without changing anything else.
+Again, you can specify the output filename for the feed location in `agaetr.ini`. This allows the use of the preprocessor without changing anything else.
 
-This isn't meant to be a comprehensive "fix" so much as an example to
-help get you started with your own unruly feeds.
+This isn't meant to be a comprehensive "fix" so much as an example to help get you started with your own unruly feeds.
 
 ### Note about Shaarli feeds
 
@@ -450,17 +445,31 @@ online services.**
 
 There are other files in this repository:
 
-* `hooty.sh` - a rewrite of `patootie` to use `agaetr`'s framework to interactively
-send a post to (optionally multiple) services immediately.
+* `hooty.sh` - a rewrite of `patootie` to use `agaetr`'s framework to interactively send a post to (optionally multiple) services immediately.
+
 * `muna.sh` - Used by `agaetr` to remove redirections and shortening.  Exactly the same as [muna](https://github.com/uriel1998/muna).  
 
+* `ai_gen_alt_text.sh` - Used, if present, to generate alt text for images that do not have it set by the source article.  It presumes that your OpenAI API key is set in the environment variable `$OPENAI_API_KEY`.
 
 ## 12. TODO
 
 ### Roadmap:
 
-* Other services, eg. linkedin, medium?
+* ensure ad-hoc adding of single URLs works and has sane fallbacks.
+* Check email, make more robust
+* Doublecheck RSS feed generation, it's a PITA
+* send via matrix to a room.
+* send via beeper to recipient(s)
+* send daily post to beeper/matrix
+* linkedin (via crossposter)
+* reduce logspam
+* update/clean up hooty
+* record success/failure for each outbound source.
+* be able to specify config directory, ini file, etc, so that more than one can live on the same system.
+* use NBDZ's bookmarker for instant sharing.
+
 
 ### Someday/Maybe:
 
-* timeout for archivers?
+* Installation helper
+* store data in sqlite perhaps, instead of a straight text file
