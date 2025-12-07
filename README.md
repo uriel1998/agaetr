@@ -197,9 +197,7 @@ you are not using; adding additional services should follow the pattern shown.
 
 ### Shaarli (output)
 
-Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). If you are using a
-If you already have pipx, this can be as simple as `pipx install shaarli-client`.
-Make sure you set up the configuration file for the client properly. Place the
+Install and set up the [Shaarli-Client](https://github.com/shaarli/python-shaarli-client). If you already have pipx, this can be as simple as `pipx install shaarli-client`. Make sure you set up the configuration file for the client properly. Place the
 location of the binary into `agaetr.ini`.
 
 If no configuration is specified in the ini, the default config in `$XDG_DATA_HOME/shaarli/client.ini` will be used.  

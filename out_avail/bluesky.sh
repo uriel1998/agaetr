@@ -49,16 +49,16 @@ function bluesky_send {
 		echo "${total_length}" >> /home/steven/tmp/bslushit.txt
 		diff_len=$(( total_length - 290 ))
         if [ $diff_len -lt 0 ]; then
-			printf "%s\n\n%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
+			printf "%s  \n\n%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
         else
             if [ $hashlen -gt $diff_len ];then
-                printf "%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
+                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
             else
                 diff_len=$(( diff_len - hashlen ))
                 if [ $d2len -gt $diff_len ];then
                     trimto=$(( d2len - diff_len - 4 ))
                     description2="${description2:0:trimto}... "
-                    printf "%s\n\n%s\n\n%s\n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
+                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${shortlink}" > "${tempfile}"
                 else
                     diff_len=$(( diff_len - d2len ))
                     # the difference was more than we could cut out of d2len
@@ -66,13 +66,13 @@ function bluesky_send {
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "
-                        printf "%s\n\n%s\n\n%s" "${title}" "${description}" "${shortlink}" > "${tempfile}"
+                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description}" "${shortlink}" > "${tempfile}"
                     else
                         diff_len=$(( diff_len - d1len ))
                         # the difference was more than we could cut out of d1len
                         trimto=$(( tlen - diff_len - 4 ))
                         title="${title:0:trimto}... "
-                        printf "%s\n\n%s" "${title}" "${shortlink}" > "${tempfile}"
+                        printf "%s  \n\n%s" "${title}" "${shortlink}" > "${tempfile}"
                         # use tlen and diff_len to figure out how much to trim off title, post.
                         # this test HAS to pass,
                     fi
