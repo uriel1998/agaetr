@@ -52,10 +52,10 @@ function loud() {
 
 function get_instring() {
 
-    mv "${XDG_DATA_HOME}/agaetr/${prefix}posts.db" "${XDG_DATA_HOME}/agaetr/${prefix}posts_back.db"
-    tail -n +2 "${XDG_DATA_HOME}/agaetr/${prefix}posts_back.db" > "${XDG_DATA_HOME}/agaetr/${prefix}posts.db"
-    instring=$(head -1 "${XDG_DATA_HOME}/agaetr/${prefix}posts_back.db")
-    rm "${XDG_DATA_HOME}/agaetr/${prefix}posts_back.db"
+    mv "${XDG_DATA_HOME}/agaetr/posts.db" "${XDG_DATA_HOME}/agaetr/posts_back.db"
+    tail -n +2 "${XDG_DATA_HOME}/agaetr/posts_back.db" > "${XDG_DATA_HOME}/agaetr/posts.db"
+    instring=$(head -1 "${XDG_DATA_HOME}/agaetr/posts_back.db")
+    rm "${XDG_DATA_HOME}/agaetr/posts_back.db"
 
 
     if [ -z "$instring" ];then
@@ -64,7 +64,7 @@ function get_instring() {
     fi
 
     loud "[info] Adding string to the posted db"
-    echo "$instring" >> "${XDG_DATA_HOME}/agaetr/${prefix}posted.db"
+    echo "$instring" >> "${XDG_DATA_HOME}/agaetr/posted.db"
 
 }
 
