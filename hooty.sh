@@ -134,6 +134,7 @@ done
 # If stdin has data, read it wholesale into ${description}
 if [ ! -t 0 ]; then
     description="$(cat)"
+    # I don't have to limit the text here; the senders will do so as needed on their end!!!
 fi
 
 
@@ -170,7 +171,7 @@ services_string+="--field=agaetr:CHK FALSE "
 # Trim trailing space
 services_string="${services_string% }"
 
-ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
+ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "${description}" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
 echo "${ANSWER}"
 # Make our services on/off array:
