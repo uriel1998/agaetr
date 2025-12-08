@@ -19,7 +19,7 @@ export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 Need_Image="FALSE"
 IMAGE_FILE=""
 IARCHIVE=0
-LOUD=0
+LOUD=1
 wget_bin=$(which wget)
 python_bin=$(which python3)
 declare -a services_array=()
@@ -136,6 +136,8 @@ if [ ! -t 0 ]; then
     description="$(cat)"
 fi
 
+
+
 ### NOTE ###
 # Hooty uses *available*, not just *enabled* since it turns everything off by default.
 posters=$(ls -A "$SCRIPT_DIR/out_avail")
@@ -170,6 +172,7 @@ services_string="${services_string% }"
 
 ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
+echo "${ANSWER}"
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
@@ -236,7 +239,7 @@ fi
 
 if [ "$IMAGE_FILE" == "" ];then  # if there wasn't one by command line
     # to see if need to select image
-    Need_Image=$(echo "$ANSWER" | awk -F '±' '{print $4}')
+    Need_Image=$(echo "$ANSWER" | awk -F '±' '{print $5}')
 fi
 
 if [ "${Need_Image}" == "TRUE" ];then
@@ -264,7 +267,7 @@ if [ "${Need_Image}" == "TRUE" ];then
         fi
         if [ -z "$ALT_TEXT" ];then
             if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then
-				ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${imgurl}")
+                ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${IMAGE_FILE}")
 				imgalt="${ALT_TEXT}"
 			else
                 #fallback
@@ -275,6 +278,8 @@ if [ "${Need_Image}" == "TRUE" ];then
         ALT_TEXT=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g'| hxunent -f )
     fi
 fi
+
+echo "$Need_Image"
 
 
 # loop through array of services
@@ -302,6 +307,8 @@ for i in "${!services_on_array[@]}"; do
         sleep 5
     fi
 done
+
+
 
 if [ -f "$SendImage" ];then
     rm -rf "${SendImage}"

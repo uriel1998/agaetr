@@ -30,7 +30,6 @@ function daily_posts_send {
         mkdir -p "${workdir}"
     fi
     textfile="${workdir}/$(date +%Y%m%d).md"
-
     loud "[info] Writing to ${textfile}"
     if [ ! -f "${textfile}" ];then
         loud "[info] Starting new daily post"
