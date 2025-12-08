@@ -109,7 +109,7 @@ function get_better_description() {
     loud "[info] Attempting to find OpenGraph tags for description"
     html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g' | hxunent -f ) # NOT XML SAFE YET, need -b switch
 
-    og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+    og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f )
     if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
         loud "[info] Subsituting OpenGraph description for parsed description."
         description="${og_description}"
@@ -119,7 +119,7 @@ function get_better_description() {
             description="${og_description}"
         else
             # it's the original description, so now need to clean it with hxenunt
-            description=$(echo "${description}" | hxunent -f | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+            description=$(echo "${description}" | hxunent -f | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f )
         fi
     fi
 
@@ -163,7 +163,7 @@ function check_image() {
         # Extract og:image content
         og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p')
         # Extract og:image:alt content
-        og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt".* content="\([^"]*\)".*/\1/p')
+        og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt".* content="\([^"]*\)".*/\1/p' | hxunent -f  )
         if [[ $og_image == http* ]];then
             imgurl="${og_image}"
             imgalt="${og_image_alt}"

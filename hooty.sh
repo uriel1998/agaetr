@@ -4,8 +4,8 @@
 #
 #  Hooty - a version of Patootie that uses agaetr's framework to send.
 #  Using YAD and toot to have a GUI for sending a quick toot (with possible
-#  images, content warnings, etc), also can send to Bluesky and Pixelfed 
-#  (or really anything else that agaetr can send to). 
+#  images, content warnings, etc), also can send to Bluesky and Pixelfed
+#  (or really anything else that agaetr can send to).
 #  YAD = https://sourceforge.net/projects/yad-dialog/
 #  toot = https://toot.bezdomni.net/
 #  (c) Steven Saus 2025
@@ -13,12 +13,11 @@
 #
 ##############################################################################
 
-# If an argument is passed, it is assumed to be the image file to attach. 
+# If an argument is passed, it is assumed to be the image file to attach.
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export INSTALL_DIR="$(dirname "$(readlink -f "$0")")"
 Need_Image="FALSE"
 IMAGE_FILE=""
-ARCHIVEIS=0
 IARCHIVE=0
 LOUD=0
 wget_bin=$(which wget)
@@ -52,7 +51,7 @@ if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     exit 99
 else
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    if [ -f $(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then 
+    if [ -f $(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
         ARCHIVEIS=1
     fi
     if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
@@ -62,13 +61,13 @@ else
         ArchiveLinks=$(grep 'ArchiveLinks =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     else
         ArchiveLinks=ignore
-    fi    
+    fi
 fi
 
 function loud() {
 ##############################################################################
-# loud outputs on stderr 
-##############################################################################    
+# loud outputs on stderr
+##############################################################################
 	if [ "$LOUD" != "" ];then
 		if [ $LOUD -eq 1 ];then
 			echo "$@" 1>&2
@@ -80,7 +79,7 @@ function loud() {
 display_help(){
 ##############################################################################
 # Show the Help
-##############################################################################    
+##############################################################################
     echo "###################################################################"
     echo "# Standalone: /path/to/hooty.sh [options]"
     echo "# Info ############################################################"
@@ -91,7 +90,7 @@ display_help(){
     echo "# --toot"
     echo "# --bluesky"
     echo "# --pixelfed"
-    echo "# --tumblr"        
+    echo "# --tumblr"
     echo "###################################################################"
 }
 
@@ -119,12 +118,12 @@ while [ $# -gt 0 ]; do
                     shift
                     ;;
         --toot|--bluesky|--pixelfed|--tumblr)
-                    # For service checks, see if they are in out/enabled, if not... then error?    
+                    # For service checks, see if they are in out/enabled, if not... then error?
                     loud "Adding option ${1%:2}..."
                     on_array+=("${1:2}")
                     shift
                     ;;
-        --locations) 
+        --locations)
                     # I want to check if it's using the $HOME or flatpak ones here,
                     #check_for_config
                     echo "$XDG_CONFIG_HOME"
@@ -133,22 +132,22 @@ while [ $# -gt 0 ]; do
                     ;;
         *)          shift;;
     esac
-done   
+done
 
 ### NOTE ###
 # Hooty uses *available*, not just *enabled* since it turns everything off by default.
-posters=$(ls -A "$SCRIPT_DIR/out_avail") 
+posters=$(ls -A "$SCRIPT_DIR/out_avail")
 # Loop through files in the subdirectory (excluding .keep)
 for file in $posters; do
-    if [ "$file" != ".keep" ];then 
+    if [ "$file" != ".keep" ];then
         if [[ " ${on_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
             loud "${file%.*} activated by option"
             filename_no_ext=$(echo "${file%.*}")
             # Add to array
             services_array+=("$filename_no_ext")
             # Append to string (space-separated)
-            services_string+="--field=$filename_no_ext:CHK TRUE "            
-        fi            
+            services_string+="--field=$filename_no_ext:CHK TRUE "
+        fi
         # It is not explicitly turned on by command line option
         if [[ ! " ${services_array[*]} " =~ [[:space:]]${file%.*}[[:space:]] ]]; then
             # whatever you want to do when array doesn't contain value
@@ -167,7 +166,7 @@ services_string+="--field=agaetr:CHK FALSE "
 # Trim trailing space
 services_string="${services_string% }"
 
- 
+
 
 ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
@@ -179,7 +178,7 @@ services_on_array=("${temp_array[@]:5}")
 IFS=$OIFS
 
 # Get our text
-TootText=$(echo "${ANSWER}" | awk -F '±' '{print $1}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
+TootText=$(echo "${ANSWER}" | awk -F '±' '{print $1}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f  )
 if [ "${TootText}" == "" ];then
     echo "Nothing entered, exiting"
     exit 99
@@ -188,32 +187,17 @@ fi
 
 # Get our Content Warning
 cw=$(echo "${ANSWER}" | awk -F '±' '{print $2}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-if [ "$cw" == "none" ];then 
+if [ "$cw" == "none" ];then
     cw=""
 fi
 
 # Get our link
 link=$(echo "${ANSWER}" | awk -F '±' '{print $3}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-if [ "$link" == "none" ] || [ "$link" == "" ];then 
+if [ "$link" == "none" ] || [ "$link" == "" ];then
     link=""
 else
     # Dealing with archiving links
     description2=""
-    if [ $ARCHIVEIS -eq 1 ];then 
-        source "$SCRIPT_DIR/archivers/archiveis.sh"
-        loud "[info] Getting archive.is link"
-        # this should now set ARCHIVEIS to the Archiveis url
-        ARCHIVEIS=$(archiveis_send)
-        # Making sure we get a URL back
-        if [[ $ARCHIVEIS =~ http* ]];then
-            loud "[info] Got archive.is link of ${ARCHIVEIS} "
-            description2=" ais: ${ARCHIVEIS}"
-            description2_md=" [ais](${ARCHIVEIS})"
-            description2_html=" <a href=\"${ARCHIVEIS}\">ais</a>"
-        else
-            loud "[error] Did not get archive.is link"
-        fi
-    fi
 
     if [ $IARCHIVE -eq 1 ];then
         loud "[info] Getting Wayback link (this may take literally 1-3 minutes!)"
@@ -245,7 +229,7 @@ fi
 
 # Get our hashtags
 hashtags=$(echo "${ANSWER}" | awk -F '±' '{print $4}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-if [ "$hashtags" == "none" ];then 
+if [ "$hashtags" == "none" ];then
     hashtags=""
 fi
 
@@ -255,7 +239,7 @@ if [ "$IMAGE_FILE" == "" ];then  # if there wasn't one by command line
     Need_Image=$(echo "$ANSWER" | awk -F '±' '{print $4}')
 fi
 
-if [ "${Need_Image}" == "TRUE" ];then 
+if [ "${Need_Image}" == "TRUE" ];then
     if [ "${IMAGE_FILE}" == "" ]; then # if there wasn't one by command line
         IMAGE_FILE=$(yad --geometry=+200+200  --on-top --title "Select image to add" --width=500 --height=400 --file --file-filter "Graphic files | *.jpg *.png *.webp *.jpeg")
     fi
@@ -270,7 +254,7 @@ if [ "${Need_Image}" == "TRUE" ];then
         cp "${IMAGE_FILE}" "${SendImage}"
         # resizing for alt text
         if [ -f /usr/bin/convert ];then
-            /usr/bin/convert -resize 800x512\! "${SendImage}" "${TempImage}" 
+            /usr/bin/convert -resize 800x512\! "${SendImage}" "${TempImage}"
         else
             cp "${IMAGE_FILE}" "${TempImage}"
         fi
@@ -278,14 +262,14 @@ if [ "${Need_Image}" == "TRUE" ];then
         if [ -f "${TempImage}" ];then
             rm "${TempImage}"
         fi
-        if [ ! -z "$ALT_TEXT" ];then 
+        if [ ! -z "$ALT_TEXT" ];then
             # parens changed here because otherwise eval chokes
             AltText=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
         else
             ALT_TEXT=""
         fi
     fi
-fi 
+fi
 
 
 # loop through array of services
@@ -313,7 +297,7 @@ for i in "${!services_on_array[@]}"; do
         sleep 5
     fi
 done
-        
+
 if [ -f "$SendImage" ];then
     rm -rf "${SendImage}"
 fi
