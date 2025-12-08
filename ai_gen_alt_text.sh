@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CLEANUPNEEDED=""
+CLEANUPNEEDED="0"
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 IMAGE [PROMPT]" >&2
@@ -69,6 +69,6 @@ curl -sS https://api.openai.com/v1/chat/completions \
 }
 EOF
 
-if [ $CLEANUPNEEDED != "" ];then
+if [ $CLEANUPNEEDED != "0" ];then
 	rm ${TEMPFILE}
 fi

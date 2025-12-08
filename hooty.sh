@@ -51,9 +51,6 @@ if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     exit 99
 else
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-    if [ -f $(grep 'archiveis =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
-        ARCHIVEIS=1
-    fi
     if [ -f $(grep 'waybackpy =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}') ];then
         IARCHIVE=1
     fi
@@ -134,6 +131,11 @@ while [ $# -gt 0 ]; do
     esac
 done
 
+# If stdin has data, read it wholesale into ${description}
+if [ ! -t 0 ]; then
+    description="$(cat)"
+fi
+
 ### NOTE ###
 # Hooty uses *available*, not just *enabled* since it turns everything off by default.
 posters=$(ls -A "$SCRIPT_DIR/out_avail")
@@ -165,8 +167,6 @@ services_array+=("agaetr")
 services_string+="--field=agaetr:CHK FALSE "
 # Trim trailing space
 services_string="${services_string% }"
-
-
 
 ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
@@ -258,16 +258,21 @@ if [ "${Need_Image}" == "TRUE" ];then
         else
             cp "${IMAGE_FILE}" "${TempImage}"
         fi
-        ALT_TEXT=$(yad --geometry=+200+200 --window-icon=musique --on-top --skip-taskbar --image-on-top --borders=5 --title "Choose your alt text" --image "${TempImage}" --form --separator="" --item-separator="," --text-align=center --field="Alt text to use?:TXT" "I was too lazy to put alt text" --item-separator="," --separator="")
+        ALT_TEXT=$(yad --geometry=+200+200 --window-icon=musique --on-top --skip-taskbar --image-on-top --borders=5 --title "Choose your alt text" --image "${TempImage}" --form --separator="" --item-separator="," --text-align=center --field="Alt text to use?:TXT" --item-separator="," --separator="")
         if [ -f "${TempImage}" ];then
             rm "${TempImage}"
         fi
-        if [ ! -z "$ALT_TEXT" ];then
-            # parens changed here because otherwise eval chokes
-            AltText=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g')
-        else
-            ALT_TEXT=""
+        if [ -z "$ALT_TEXT" ];then
+            if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then
+				ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${imgurl}")
+				imgalt="${ALT_TEXT}"
+			else
+                #fallback
+                imgalt="An image for decorative purposes only."
+			fi
         fi
+        # parens changed here because otherwise eval chokes
+        ALT_TEXT=$(echo "${ALT_TEXT}" | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g'| hxunent -f )
     fi
 fi
 
