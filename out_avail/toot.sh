@@ -35,19 +35,16 @@ function toot_send {
         urlen=25 # accounting for space
         total_length=$(( tlen + d1len + d2len + hashlen + urlen ))
         diff_len=$(( 460 - total_length ))
-
-        # WHY IS THIS NOT WORKING???!@??@
         if [[ "$diff_len" -gt 0 ]]; then
             printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}" > "${tempfile}"
         else
             # converting diff_len into abs sorta
             diff_len=${diff_len#-}
-            notify-send "2"
             if [[ "$hashlen" -gt "$diff_len" ]];then
-                notify-send "3"
+
                 printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
             else
-                notify-send "4"
+
                 diff_len=$(( diff_len - hashlen ))
                 if [[ "$d2len" -gt "$diff_len" ]];then
                     notify-send "5"
@@ -55,11 +52,11 @@ function toot_send {
                     description2="${description2:0:trimto}... "
                     printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
                 else
-                    notify-send "6"
+
                     diff_len=$(( diff_len - d2len ))
                     # the difference was more than we could cut out of d2len
                     if [[ "$d1len" -gt "$diff_len" ]];then
-                        notify-send "7"
+
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "

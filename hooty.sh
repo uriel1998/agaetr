@@ -173,7 +173,6 @@ services_string="${services_string% }"
 
 ANSWER=$(yad --geometry=+200+400 --form --separator="±" --item-separator="," --on-top --title "hooty" --field="What to post?:TXT" "${description}" --field="ContentWarning:CBE" none,discrimination,bigot,uspol,medicine,violence,reproduction,healthcare,LGBTQIA,climate,SocialMedia,other --field="url:TXT" "${link}" --field="Hashtags:TXT" "" -columns=2  --field="Attachment?":CHK "${Need_Image}"  ${services_string} --item-separator="," --button=Cancel:99 --button=Post:0)
 
-echo "${ANSWER}"
 # Make our services on/off array:
 OIFS=$IFS
 IFS='±' read -r -a temp_array <<< "${ANSWER}"
@@ -210,7 +209,6 @@ else
         IARCHIVE=$(wayback_send)
         # I may need to put in a shortening thing here
         # Making sure we get a URL back
-        echo "$IARCHIVE"
         if [[ $IARCHIVE =~ http* ]];then
             loud "[info] Got Wayback link of ${IARCHIVE} "
             # They are always SUPER long
@@ -280,9 +278,6 @@ if [ "${Need_Image}" == "TRUE" ];then
     fi
 fi
 
-echo "$Need_Image"
-
-
 # loop through array of services
 # if equivalent in the on array is TRUE, then source and call
 # "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "ALT_TEXT"
@@ -308,7 +303,6 @@ for i in "${!services_on_array[@]}"; do
         sleep 5
     fi
 done
-
 
 
 if [ -f "$SendImage" ];then
