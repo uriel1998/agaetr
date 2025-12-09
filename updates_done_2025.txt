@@ -16,3 +16,4 @@ added in more hxenunt to deal with special characters
 Better shortening to meet character limits
 Updated README to be more clear and to better describe how things work for contributors.
 added alt text generator
+Daily posts with summaries to wordpress via postie
