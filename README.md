@@ -2,7 +2,7 @@
 
 A modular system to take a list of RSS feeds, process them, and send them to
 social media with images, content warnings, and sensitive image flags when
-available.
+available.  Also includes an example of a daily post creator (such as for Postie and Wordpress) and a GUI poster, `hootie`.  Will shortly include the bookmarker from `newsbeuter_dangerzone` as well, so it's a set up once kind of thing.
 
 ![agaetr logo](https://raw.githubusercontent.com/uriel1998/agaetr/master/agaetr-open-graph.png "logo")
 
@@ -27,7 +27,7 @@ available.
 `agaetr` is a modular system made up of several small programs designed to take
 input (particularly RSS feeds) and then share them to various social media outputs.
 
-This system is designed for *single user* use, as API keys are required.
+This system is designed for *single user* use, as API keys are required.  Setting up multiple posters is a PITA, to be sure, but the idea is that once you've done that *once*, you can use it for `agaetr`, `mutt`, GUI tools, a bookmarker for `newsboat`, etc, with minimal further configuration.
 
 Tested with feeds from:
 
