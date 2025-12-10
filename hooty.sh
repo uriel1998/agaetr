@@ -179,9 +179,14 @@ IFS='±' read -r -a temp_array <<< "${ANSWER}"
 # Create a new array ignoring the first three entries (since they're not services)
 services_on_array=("${temp_array[@]:5}")
 IFS=$OIFS
+# Extract the first field (body text) from the YAD result
+BodyField=$(echo "${ANSWER}" | awk -F '±' '{print $1}')
+
+# Turn "\n" sequences from YAD into real newlines
+BodyField=$(printf '%b' "${BodyField}")
 
 # Get our text
-TootText=$(echo "${ANSWER}" | awk -F '±' '{print $1}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f  )
+TootText=$(echo "${BodyField}" | awk -F '±' '{print $1}' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f  )
 if [ "${TootText}" == "" ];then
     echo "Nothing entered, exiting"
     exit 99
