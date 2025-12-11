@@ -44,19 +44,16 @@ function toot_send {
 
                 printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
             else
-
                 diff_len=$(( diff_len - hashlen ))
-                if [[ "$d2len" -gt "$diff_len" ]];then
-                    notify-send "5"
-                    trimto=$(( d2len - diff_len - 4 ))
-                    description2="${description2:0:trimto}... "
+                d2altlen=$(( d2len - 9 ))
+                # removing the leading part, we don't want to truncate the url
+                if [[ "$d2altlen" -gt "$diff_len" ]];then
+                    description2="${description2#Archive: }"
                     printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
                 else
-
                     diff_len=$(( diff_len - d2len ))
                     # the difference was more than we could cut out of d2len
                     if [[ "$d1len" -gt "$diff_len" ]];then
-
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "
