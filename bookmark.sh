@@ -49,8 +49,10 @@ function loud() {
 # loud outputs on stderr
 ##############################################################################
     if [ "${LOUD:-0}" -eq 1 ];then
-			echo "$@" 1>&2
+		echo "$@" 1>&2
+	fi
 }
+
 
 function get_better_description() {
     # to strip out crappy descriptions and either omit them or, if available,

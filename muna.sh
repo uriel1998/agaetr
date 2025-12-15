@@ -9,13 +9,16 @@
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 
+
 function loud() {
-	if [ "$LOUD" != "" ];then
-		if [ $LOUD -eq 1 ];then
-			echo "$@" 1>&2
-		fi
-    fi
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
+		echo "$@" 1>&2
+	fi
 }
+
 
 
 strip_tracking_url() {
