@@ -20,13 +20,12 @@ inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
-
 function loud() {
-	if [ "$LOUD" != "" ];then
-		if [ $LOUD -eq 1 ];then
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
 			echo "$@" 1>&2
-		fi
-    fi
 }
 
 

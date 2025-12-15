@@ -8,10 +8,18 @@
 #
 ##############################################################################
 
+function loud() {
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
+			echo "$@" 1>&2
+}
+
 
 function surfraw_bookmark {
     echo -e "${title}\t${link}" >> ${XDG_CONFIG_DIR}/surfraw/bookmarks
-    poster_result_code=0 
+    poster_result_code=0
 #https://docs.google.com/document/d/1Nsv52MvSjbLb2PCpHlat0gkzw0EvtSgpKHu4mk0MnrA/edit#
 }
 

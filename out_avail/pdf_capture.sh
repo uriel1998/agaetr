@@ -10,30 +10,21 @@
 
 
 function loud() {
-    if [ $LOUD -eq 1 ];then
-        echo "$@"
-    fi
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
+			echo "$@" 1>&2
 }
 
 function pdf_capture_send {
 
-        # check some config things that SHOULD be set, etc.
-        if [ -n "${my_CONFIG_DIR}" ];then
-            # if the variable is set and exported, they've probably set it up properly.
-            ConfigFile="${my_CONFIG_DIR}/newsbeuter_dangerzone.ini"
-        else
-            loud "[WARN] Configuration variable not set, checking default location."
-            # try to find a default quickly.
-            CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/newsbeuter_dangerzone"
-            # here, though, we're doublechecking.
-            if [ -f "${CONFIG_DIR}/newsbeuter_dangerzone.ini" ];then
-                ConfigFile="${CONFIG_DIR}/newsbeuter_dangerzone.ini"
-            else
-                loud "[ERROR] Configuration not found at"
-                loud "[ERROR] ${CONFIG_DIR}/newsbeuter_dangerzone.ini"
-                exit 97
-            fi
-        fi
+    ConfigFile="${XDG_CONFIG_HOME:-$HOME/.config}/agaetr/agaetr.ini"
+    if [ ! -f "${ConfigFile}" ];then
+        loud "[ERROR] Configuration not found"
+        exit 97
+    fi
+
 
         # environment
         if [ "${save_directory}" != "" ] && [ -d "${save_directory}" ];then

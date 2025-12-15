@@ -12,11 +12,11 @@
 #https://blog.edmdesigner.com/send-email-from-linux-command-line/
 
 function loud() {
-	if [ "$LOUD" != "" ];then
-		if [ $LOUD -eq 1 ];then
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
 			echo "$@" 1>&2
-		fi
-    fi
 }
 
 # should have been passed in, but just in case...

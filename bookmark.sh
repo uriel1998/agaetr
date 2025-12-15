@@ -40,14 +40,16 @@ export CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/agaetr"
 source "${SCRIPT_DIR}/muna.sh"
 
 
-#TODO - PULL THIS FROM INI - CANNOT BE THE SAME ENABLED DUE TO SOME WEIRD STUFF MAYBE?
-enabled_out_dir="${SCRIPT_DIR}/nbdz_out_enabled"
+# bookmarker uses *available*, not just *enabled* since it turns everything off by default.
+enabled_out_dir="${SCRIPT_DIR}/out_available"
 
 
 function loud() {
+##############################################################################
+# loud outputs on stderr
+##############################################################################
     if [ "${LOUD:-0}" -eq 1 ];then
-        echo "$@"
-    fi
+			echo "$@" 1>&2
 }
 
 function get_better_description() {
@@ -117,10 +119,6 @@ function get_better_description() {
 
 
 }
-
-
-
-
 
 ##############################################################################
 # Enter here

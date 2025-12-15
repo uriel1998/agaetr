@@ -7,11 +7,40 @@
 #  Licensed under the MIT license
 #
 ##############################################################################
+function loud() {
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
+			echo "$@" 1>&2
+}
 
 function save_html_send {
 
+
+    ConfigFile="${XDG_CONFIG_HOME:-$HOME/.config}/agaetr/agaetr.ini"
+    if [ ! -f "${ConfigFile}" ];then
+        loud "[ERROR] Configuration not found"
+        exit 97
+    fi
+    # environment
+    if [ "${save_directory}" != "" ] && [ -d "${save_directory}" ];then
+        SAVEDIR="${save_directory}"
+    else
+        #ini
+        save_directory=$(grep 'save_directory' "${ConfigFile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+        if [ "${save_directory}" != "" ] && [ -d "${save_directory}" ];then
+            SAVEDIR="${save_directory}"
+        else
+            SAVEDIR=$(xdg-user-dir DOWNLOAD)
+            if [ ! -d "${SAVEDIR}" ];then
+                SAVEDIR="${HOME}"
+            fi
+        fi
+    fi
+
     #THIS IS THE BASE PATH WHERE THIS MODULE WILL SAVE COPIES
-    HtmlSavePath="${XDG_DATA_HOME}/agaetr/save"
+    HtmlSavePath="${SAVEDIR}"
 
     if [ -f $(which detox) ];then
         dttitle=$(echo "${title}" | detox --inline)
@@ -19,12 +48,12 @@ function save_html_send {
     else
         outpath="${HtmlSavePath}/${title}"
     fi
-    
+
     nowdir=$(echo "$PWD")
     mkdir "${outpath}"
     cd "${outpath}"
 
-    
+
     binary=$(grep 'wget =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     if [ ! -f "$binary" ];then
         binary=$(which wget)
@@ -54,6 +83,15 @@ else
     if [ "$#" = 0 ];then
         echo -e "Please call this as a function or with \nthe url as the first argument and optional \ndescription as the second."
     else
+        if [ "${1}" == "--loud" ];then
+            LOUD=1
+            shift
+        else
+            if [ "$LOUD" == "" ];then
+                # so it doesn't clobber exported env
+                LOUD=0
+            fi
+        fi
         link="${1}"
         if [ ! -z "$2" ];then
             title="$2"

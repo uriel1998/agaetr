@@ -15,11 +15,11 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=1
 
 function loud() {
-	if [ "$LOUD" != "" ];then
-		if [ $LOUD -eq 1 ];then
+##############################################################################
+# loud outputs on stderr
+##############################################################################
+    if [ "${LOUD:-0}" -eq 1 ];then
 			echo "$@" 1>&2
-		fi
-    fi
 }
 
 
