@@ -28,25 +28,19 @@ LOUD=1
 
 # Set directories, get environment, etc.
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-description2=""
+if [ -z $description2 ];then
+    description2=""
+fi
 
 export CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.local/state}/newsbeuter_dangerzone"
 if [ ! -d "${CACHE_DIR}" ];then
     mkdir -p "${CACHE_DIR}"
 fi
-export CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/newsbeuter_dangerzone"
-source "$CONFIG_DIR/muna.sh"
+export CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/agaetr"
+source "${SCRIPT_DIR}/muna.sh"
 
-enabled_out_dir="${my_CONFIG_DIR}/${profile}/out_enabled"
+enabled_out_dir="${SCRIPT_DIR}/out_enabled"
 
-# If the output dir is not configured in environment, sub the base NBDZ config dir
-if [ ! -d "$(readlink -f "${enabled_out_dir}")" ];then
-    enabled_out_dir="${my_CONFIG_DIR}/out_enabled"
-fi
-if [ ! -d "$(readlink -f "${my_CONFIG_DIR}")" ];then
-    my_CONFIG_DIR="${CONFIG_DIR}"
-    enabled_out_dir="${my_CONFIG_DIR}/out_enabled"
-fi
 
 function loud() {
     if [ "${LOUD:-0}" -eq 1 ];then
@@ -106,10 +100,16 @@ function get_better_description() {
             ALT_TEXT=""
         else
             export imgurl
-            # if alt text is none and ai_alt_text is set
-            # DOWNLOAD THE IMAGE
-            # call the ai_alt_text - if some setting is set.
-            #export ALT_TEXT
+            if [ -z "$ALT_TEXT" ];then
+                if [ -f "$SCRIPT_DIR/ai_gen_alt_text.sh" ];then
+                    IMAGE_FILE=$(mktemp)
+                    wget -q --no-check-certificate -erobots=off --user-agent="${ua}" "${imgurl}" -O "${IMAGE_FILE}"
+                    ALT_TEXT=$("$SCRIPT_DIR/ai_gen_alt_text.sh" "${IMAGE_FILE}")
+                else
+                    ALT_TEXT="An image for decorative purposes only."
+                fi
+            fi
+            export ALT_TEXT
         fi
     fi
 
