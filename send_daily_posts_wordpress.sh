@@ -134,3 +134,6 @@ for file in "${workdir}"/*.md; do
 		fi
     fi
 done
+if [ -f "${outfile}" ];then
+	rm -rf "${outfile}"
+fi

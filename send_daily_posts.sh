@@ -39,6 +39,7 @@ if [ ! -d "${XDG_CONFIG_HOME}" ];then
 fi
 
 
+loud "[info] Setting up for email to blog."
 
 if [ ! -f "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" ];then
     echo "INI not located. Exiting." >&2
@@ -68,31 +69,74 @@ OIFS="$IFS"
 IFS=';' read -ra email_addresses <<< "${raw_emails}"
 IFS="$OIFS"
 
-# Prettyfy text here
-# choose day (s) to post.
-    # Not today
-    # not in db - basically just do a sort-and-diff on ls and that file, huh?
-    # for each of those results, convert that markdown to pretty html for emails
-    # then send it
-    # then write that date in the db
+#  Flow is different here than to blog -- still loop and construct, but construct once,
+# send multiple.
+for file in "${workdir}"/*.md; do
+    # Skip literal pattern if no files match
+    [ -e "${file}" ] || continue
+	loud "[info] Processing ${file}."
+    base="$(basename -- "${file}")"
 
-    # assembling the email:
-    #make a tempfile
-    cat "${XDG_DATA_HOME}/agaetr/daily_email_header.txt" > "${outfile}"
-    pandoc -f gfm -t html -i 20251206.md | sed 's#<hr />#</div><div>#g' >> "${outfile}"
-    quote=$($(which fortune) /home/steven/vault/fortunes/grunkle)
-    if [ $? != 1 ];then
-        # TODO - customize this, but basically have a quotation here.
-        printf "<h4>Quote of the Day:</h4>%s</div><div>" "${quote}" >> "${outfile}"
-    fi
-    cat "${XDG_DATA_HOME}/agaetr/daily_email_footer.txt" >> "${outfile}"
-# Okay, this MIGHT work for Wordpress, but is shit for everyone else. So how do we make it a real html email?
-    for email_addy in ${email_addresses[@]}
-    do
-        (
-            echo "From: ${email_from}"
-            echo "To: ${email_addy}"
-            echo "Subject: This is your daily links file."
-            echo
-            cat ~/.local/share/agaetr/20251207.md
-        ) | /usr/sbin/sendmail -t -f "steven@stevesaus.com"
+    if [[ "${base}" =~ ^[0-9]{8}\.md$ ]]; then
+		day="${base%%.md}"
+		outfile=$(mktemp)
+		# Skip today
+        if [[ "${day}" = "${today}" ]]; then
+            continue
+        fi
+
+        # Skip if already in sent_days_db
+        if grep -Fxq "${base}" "${sent_days_db}"; then
+            continue
+        fi
+		# Valid file to send, Prettyfy text here
+		# Strip directory path, leaving only the basename
+		base="$(basename -- "${file}")"
+		# Extract YYYYMMDD
+		ymd="${base%%.*}"
+		# Convert to RFC 2822 format at midnight local time
+		email_date="$(date -d "${ymd} 00:00:00" +"%a, %d %b %Y %H:%M:%S %z")"
+		short_date="$(date -d "${ymd} 00:00:00" +"%-d %b")"
+	    cat "${XDG_DATA_HOME}/agaetr/daily_email_header.txt" > "${outfile}"
+		loud "[info] Getting AI summary of post."
+		summary=$(${SCRIPT_DIR}/ai_gen_summary_text.sh ${file})
+		if [ $? != 1 ];then
+			loud "[info] Got AI summary of post."
+			printf "<p><b>TL;DR</b>: %s</p></div><div>" "${summary}" >> "${outfile}"
+		else
+			loud "[warn] Failed getting AI summary of post; falling back to default."
+			printf "<p>This is a roundup of things I found around the internet that I thought were neat or noteworthy in some way and shared to social media.</p></div><div>\n"  >> "${outfile}"
+		fi
+	    pandoc -f gfm -t html -i 20251206.md | sed 's#<hr />#</div><div>#g' >> "${outfile}"
+	    quote=$($(which fortune) /home/steven/vault/fortunes/grunkle)
+	    if [ $? != 1 ];then
+	        # TODO - customize this, but basically have a quotation here.
+			printf "<h2>Quote of the Day:</h2>%s</div><div>" "${quote}" >> "${outfile}"
+	    fi
+	    cat "${XDG_DATA_HOME}/agaetr/daily_email_footer.txt" >> "${outfile}"
+
+		#email assembled!
+	    for email_addy in ${email_addresses[@]}
+	    do
+	        (
+	            echo "From: ${email_from}"
+	            echo "To: ${email_addy}"
+				echo "Date: ${email_date}"
+				echo "Subject: Roundup of links for ${short_date}."
+				echo "Content-Type: text/html; charset=UTF-8"
+				echo "MIME-Version: 1.0";
+				echo
+				cat "${outfile}"
+	        ) | /usr/sbin/sendmail -t -f "steven@stevesaus.com"
+			if [ "$?" == "0" ];then
+				loud "[info] email sent."
+				echo "${base}" >> "${sent_days_db}"
+				rm "${outfile}"
+			else
+				loud "[warn] Sending email failed!"
+			fi
+		done
+	fi
+if [ -f "${outfile}" ];then
+	rm -rf "${outfile}"
+fi
