@@ -39,6 +39,8 @@ fi
 export CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/agaetr"
 source "${SCRIPT_DIR}/muna.sh"
 
+
+#TODO - PULL THIS FROM INI - CANNOT BE THE SAME ENABLED DUE TO SOME WEIRD STUFF
 enabled_out_dir="${SCRIPT_DIR}/out_enabled"
 
 
@@ -222,8 +224,8 @@ get_better_description
         if [ "$p" != ".keep" ];then
             echo "Processing ${p%.*}..."
             send_funct=$(echo "${p%.*}_send")
-            source "$SCRIPT_DIR/out_enabled/$p"
-            echo "$SCRIPT_DIR/out_enabled/$p"
+            source "${enabled_out_dir}/$p"
+            echo "${enabled_out_dir}/$p"
             eval ${send_funct}
             sleep 5
         fi

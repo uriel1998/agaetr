@@ -27,7 +27,7 @@ available.  Also includes an example of a daily post creator (such as for Postie
 `agaetr` is a modular system made up of several small programs designed to take
 input (particularly RSS feeds) and then share them to various social media outputs.
 
-This system is designed for *single user* use, as API keys are required.  Setting up multiple posters is a PITA, to be sure, but the idea is that once you've done that *once*, you can use it for `agaetr`, `mutt`, GUI tools, a bookmarker for `newsboat`, etc, with minimal further configuration.
+This system is designed for *single user* use, as API keys are required.  Setting up multiple posters is a PITA, to be sure, but the idea is that once you've done that *once*, you can use it for `agaetr`, `mutt`, GUI tools, a bookmarker for `newsboat`, etc, without furthe
 
 Tested with feeds from:
 
