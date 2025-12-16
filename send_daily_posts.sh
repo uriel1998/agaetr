@@ -61,7 +61,7 @@ if [ $(grep -c 'daily_email_to' "${inifile}") -eq 0 ];then
 fi
 
 raw_emails=$(grep 'daily_email_to' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-email_from=$(grep 'email_from' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+email_from=$(grep 'daily_email_from' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 if [ "${raw_emails}" == "" ];then
     loud "[ERROR] addresses to send to not set in ini."
     exit 99
@@ -122,7 +122,7 @@ for file in "${workdir}"/*.md; do
 
 
 		#email assembled!
-	    for email_addy in ${email_addresses[@]}
+        for email_addy in "${email_addresses[@]}"
 	    do
             loud "[info] Sending email that would have date of ${email_date} to ${email_addy}."
 	        (
@@ -133,7 +133,7 @@ for file in "${workdir}"/*.md; do
 			echo "Content-Type: text/html; charset=UTF-8"
 			echo "MIME-Version: 1.0";
 			echo
-			cat "${outfile}" ) | /usr/sbin/sendmail -t -f "steven@stevesaus.com"
+			cat "${outfile}"     ) | /usr/sbin/sendmail -t -f "steven@stevesaus.com"
 			if [ "$?" == "0" ];then
 				loud "[info] email sent."
 				echo "${base}" >> "${sent_days_db}"
