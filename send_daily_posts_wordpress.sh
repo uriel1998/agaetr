@@ -51,7 +51,7 @@ else
     inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 fi
 # Where are the stored daily posts located?
-path=$(grep 'daily_posts =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+path=$(grep 'daily_posts' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 workdir=$(realpath "${path}")
 sent_days_db="${XDG_DATA_HOME}/agaetr/daily_blog_posts_sent.db"
 
