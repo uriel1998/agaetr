@@ -24,7 +24,8 @@ if [ ! -d "${XDG_DATA_HOME}" ];then
 fi
 inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
 
-function matrix_send {
+function matrix_send
+{
 	if [ "$title" == "$link" ];then
         title=""
     fi
@@ -33,13 +34,14 @@ function matrix_send {
 
 	loud "[info] Posting reply to maubot"
 	jtitle="${title}"
-	jbody=$(printf "%s  \n%s  \n%s  \n%s  " "${description}" "${description2}" "${link}" "${hashtags}"}
+	jbody=$(printf "%s  \n%s  \n%s  \n%s  " "${description}" "${description2}" "${link}" "${hashtags}"
 #   Build the JSON safely with jq
 	json_payload=$(jq -n --arg title "${jtitle}" --arg body "${jbody}" '{ title: $title,body: $body}')
 
 	# Then send it with curl
 	curl -X POST -H "Content-Type: application/json" "${MATRIXSERVER}/_matrix/maubot/plugin/${MAUBOT_STATUS_WEBHOOK_INSTANCE}/send" -d "$json_payload"
-	poster_result_code=$?
+
+	export poster_result_code=$?
 
 }
 
