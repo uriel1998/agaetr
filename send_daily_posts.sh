@@ -70,10 +70,10 @@ fi
 
 # Split raw CSV of of emails into actual email addresses
 OIFS="$IFS"
-IFS=';' read -ra email_addresses <<< "${raw_emails}"
+IFS=',' read -ra email_addresses <<< "${raw_emails}"
 IFS="$OIFS"
 
-
+today="$(date +%Y%m%d)"
 #  Flow is different here than to blog -- still loop and construct, but construct once,
 # send multiple.
 for file in "${workdir}"/*.md; do
