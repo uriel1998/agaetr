@@ -1,6 +1,6 @@
 # agaetr
 
-A modular system to take a list of RSS feeds, process them, and send them to social media with images, content warnings, and sensitive image flags when available. Also includes an example of a daily post creator (such as for Postie and WordPress), bookmarking utility for newsboat, and a GUI poster, `hooty`.
+A modular system to take a list of RSS feeds (or user input of a single url!), process them, and send them to social media with images, content warnings, and sensitive image flags when available. Also includes an example of a daily post creator (such as for Postie and WordPress), bookmarking utility for newsboat, and a GUI poster, `hooty`.
 
 ## What is agaetr?
 
