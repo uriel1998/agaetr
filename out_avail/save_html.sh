@@ -2,11 +2,13 @@
 
 ##############################################################################
 #
-#  sending script
-#  (c) Steven Saus 2022
+#  Sending helper script for agaetr
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
 ##############################################################################
+
+
 function loud() {
 ##############################################################################
 # loud outputs on stderr

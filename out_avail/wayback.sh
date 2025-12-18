@@ -2,8 +2,8 @@
 
 ##############################################################################
 #
-#  sending script
-#  (c) Steven Saus 2022
+#  Sending helper script for agaetr
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
 ##############################################################################
@@ -26,7 +26,7 @@ function wayback_send {
     local retries=0
 	local max_retries=90   # ~3 minutes if sleep 2s per poll; adjust to taste
 
-    # Read keys from your config (same as before)
+    # Read keys from config
     wayback_access=$(grep wayback_access "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     wayback_secret=$(grep wayback_secret "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 

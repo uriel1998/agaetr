@@ -2,7 +2,7 @@
 
 ##############################################################################
 #
-#  sending script
+#  Sending helper script for agaetr
 #  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
