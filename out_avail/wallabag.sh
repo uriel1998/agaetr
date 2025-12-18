@@ -19,7 +19,7 @@ function loud() {
 
 function wallabag_send {
 
-    binary=$(grep 'wallabag =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'wallabag' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     outstring=$(echo "$binary add --quiet --title \"$title\" $link ")
     loud "${outstring}"

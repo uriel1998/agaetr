@@ -28,7 +28,7 @@ function bluesky_send {
         title=""
     fi
 
-    binary=$(grep 'bluesky =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'bluesky' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     if [ "$description2" != "" ];then
         description2="Archive: ${description2}"

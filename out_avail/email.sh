@@ -34,12 +34,12 @@ function email_send {
     else
         title="${1}"
     fi
-    smtp_server=$(grep 'smtp_server =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    smtp_port=$(grep 'smtp_port =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    smtp_username=$(grep 'smtp_username =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    smtp_password=$(grep 'smtp_password =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    email_from=$(grep 'email_from =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-    raw_emails=$(grep 'email_to =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_server=$(grep 'smtp_server' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_port=$(grep 'smtp_port' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_username=$(grep 'smtp_username' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    smtp_password=$(grep 'smtp_password' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    email_from=$(grep 'email_from' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+    raw_emails=$(grep 'email_to' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     tmpfile=$(mktemp)
     loud "Obtaining text of HTML..."

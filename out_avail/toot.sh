@@ -27,7 +27,7 @@ function toot_send {
     fi
 
     account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    binary=$(grep 'toot =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'toot' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     outstring=$(printf "%s  \n\n%s  \n\n%s  \n%s" "${title}" "${description}" "${description2}" "$hashtags")
     if [ ${#outstring} -gt 460 ];then

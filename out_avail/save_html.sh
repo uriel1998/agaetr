@@ -58,7 +58,7 @@ function save_html_send {
     cd "${outpath}"
 
 
-    binary=$(grep 'wget =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep 'wget' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     if [ ! -f "$binary" ];then
         binary=$(which wget)
     fi

@@ -24,8 +24,8 @@ function daily_posts_send {
     if [ "$title" == "$link" ];then
         title=""
     fi
-    picgo_binary=$(grep 'picgo =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    path=$(grep 'daily_posts =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    picgo_binary=$(grep 'picgo' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    path=$(grep 'daily_posts' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
     workdir=$(realpath "${path}")
     if [ ! -d "${workdir}" ];then
         mkdir -p "${workdir}"
