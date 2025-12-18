@@ -17,8 +17,8 @@ if [ ! -d "${XDG_DATA_HOME}" ];then
     export XDG_DATA_HOME="${HOME}/.local/share"
 fi
 inifile="${XDG_CONFIG_HOME}/agaetr/agaetr.ini"
-RSSSavePath=$(grep 'rss_output_path =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
-self_link=$(grep 'self_link =' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+RSSSavePath=$(grep 'rss_output_path' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
+self_link=$(grep 'self_link' "${inifile}" | sed 's/ //g' | awk -F '=' '{print $2}')
 
 function loud() {
 ##############################################################################
@@ -54,14 +54,15 @@ function rss_gen_send {
     DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
     loud "[info] Adding entry to RSS feed"
-    xmlstarlet ed -L \
-        -s "/rss/channel" -t elem -n item -v "" \
-        -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
-        -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
-        -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
-        -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
-        -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
-        -d "/rss/channel/item[position()>10]" "${RSSSavePath}"
+	xmlstarlet ed -L \
+		-i "/rss/channel/*[1]" -t elem -n item -v "" \
+		-s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
+		-s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
+		-s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
+		-s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
+		-s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
+		-d "/rss/channel/item[position()>10]" \
+		"${RSSSavePath}"
 
 
 
@@ -100,6 +101,6 @@ else
         if [ ! -z "$2" ];then
             title="$2"
         fi
-        rss_gen
+        rss_gen_send
     fi
 fi
