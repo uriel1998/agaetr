@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+##############################################################################
+#
+#  This is a helper script for creating a summary of the daily post/blog post
+#  using the OpenAI API.
+#
+#  (c) Steven Saus 2025
+#  Licensed under the MIT license
+#
+##############################################################################
+
+
 if [ $# -lt 1 ]; then
     echo "Usage: $0 TEXTFILE [PROMPT]" >&2
     exit 1

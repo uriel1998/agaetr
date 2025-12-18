@@ -2,8 +2,8 @@
 
 ##############################################################################
 #
-#  shortening script
-#  (c) Steven Saus 2020
+#  shortening script as part of agaetr
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
 ##############################################################################

@@ -4,7 +4,7 @@
 #
 #  This will interactively let you determine where your bookmarks will go for
 #  newsboat or newsbeuter
-#  (c) Steven Saus 2024
+#  (c) Steven Saus 2025
 #  Licensed under the MIT license
 #
 ##############################################################################

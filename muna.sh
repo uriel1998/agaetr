@@ -1,9 +1,11 @@
 #!/bin/bash
 
 ##############################################################################
-# muna, by Steven Saus 3 May 2022
-# steven@stevesaus.com
-# Licenced under the Apache License
+#
+#  muna is a script to deobfuscate links either standalone or as part of agaetr
+#
+#  (c) Steven Saus 2025
+#  Licensed under the MIT license
 ##############################################################################
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"

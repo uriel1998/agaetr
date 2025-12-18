@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+##############################################################################
+#
+#  This is a helper script for creating alt text for images for the visually impaired
+#  using the OpenAI API.
+#
+#  (c) Steven Saus 2025
+#  Licensed under the MIT license
+#
+##############################################################################
+
+
 CLEANUPNEEDED="0"
 
 if [ $# -lt 1 ]; then
