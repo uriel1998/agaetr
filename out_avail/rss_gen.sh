@@ -32,9 +32,10 @@ function loud() {
 
 
 function rss_gen_send {
+
     if [ ! -f "${RSSSavePath}" ];then
         loud "[info] Starting XML file"
-        printf '<?xml version="1.0" encoding="utf-8"?>\n' > "${RSSSavePath}"
+        printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">\n' >> "${RSSSavePath}"
         printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
         printf '  <channel>\n' >> "${RSSSavePath}"
         printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
@@ -44,9 +45,27 @@ function rss_gen_send {
         printf '  </channel>\n' >> "${RSSSavePath}"
         printf '</rss>\n' >> "${RSSSavePath}"
     fi
+    picgo_binary=$(grep 'picgo' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    # Get the image, if exists.
+    if [ ! -z "${imgurl}" ];then
+        # If image is local. upload via picgo
+        if [ -f "${imgurl}" ];then
+            loud "[info] Image is a local file, uploading via picgo"
+            bob=$(${picgo_binary} u "${imgurl}")
+            imgurl=$(echo "${bob}" | grep -e "^http")
+        fi
+        # triple check that it's a url
+        if [[ $imgurl == http* ]];then
+            loud "[info] Image exists, and is an URL"
+            Limgurl="${imgurl}"
+        else
+            Limgurl=""
+        fi
+    fi
     XML_title=$(echo "${title}" | hxunent -fb )
     XML_description=$(echo "${description}" | hxunent -fb )
     XML_description2=$(echo "${description2}" | hxunent -fb )
+
 
     TITLE="${XML_title}"
     LINK="${link}"
@@ -54,17 +73,27 @@ function rss_gen_send {
     DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
     loud "[info] Adding entry to RSS feed"
-	xmlstarlet ed -L \
-		-i "/rss/channel/*[1]" -t elem -n item -v "" \
-		-s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
-		-s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
-		-s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
-		-s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
-		-s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
-		-d "/rss/channel/item[position()>10]" \
-		"${RSSSavePath}"
+    xml_ed_args=(
+        -i "/rss/channel/*[1]" -t elem -n item -v ""
+        -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}"
+        -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}"
+        -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}"
+        -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}"
+        -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}"
+    )
 
+    if [ -n "${Limageurl:-}" ]; then
+        xml_ed_args+=(
+            -s "/rss/channel/item[1]" -t elem -n "media:content" -v ""
+            -i "/rss/channel/item[1]/media:content" -t attr -n url    -v "${Limageurl}"
+            -i "/rss/channel/item[1]/media:content" -t attr -n medium -v "image"
+        )
+    fi
 
+    xmlstarlet ed -L -N media="http://search.yahoo.com/mrss/" \
+        "${xml_ed_args[@]}" \
+        -d "/rss/channel/item[position()>10]" \
+        "${RSSSavePath}"
 
 }
 
