@@ -100,8 +100,8 @@ for file in "${workdir}"/*.md; do
 		# Extract YYYYMMDD
 		ymd="${base%%.*}"
 		# Convert to RFC 2822 format at midnight local time
-		email_date="$(date -d "${ymd} 00:00:00" +"%a, %d %b %Y %H:%M:%S %z")"
-		short_date="$(date -d "${ymd} 00:00:00" +"%-d %b")"
+        email_date="$(date -d "${ymd} 23:59:00" +"%a, %d %b %Y %H:%M:%S %z")"
+        short_date="$(date -d "${ymd} 23:59:00" +"%-d %b")"
 	    cat "${XDG_DATA_HOME}/agaetr/daily_email_header.txt" > "${outfile}"
 		loud "[info] Getting AI summary of post."
 		summary=$(${SCRIPT_DIR}/ai_gen_summary_text.sh ${file})

@@ -36,7 +36,6 @@ function rss_gen_send {
     if [ ! -f "${RSSSavePath}" ];then
         loud "[info] Starting XML file"
         printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">\n' >> "${RSSSavePath}"
-        printf '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n' >> "${RSSSavePath}"
         printf '  <channel>\n' >> "${RSSSavePath}"
         printf '    <title>My RSS Feed</title>\n' >> "${RSSSavePath}"
         printf '    <description>This is my RSS Feed</description>\n' >> "${RSSSavePath}"
@@ -64,37 +63,41 @@ function rss_gen_send {
     fi
     XML_title=$(echo "${title}" | hxunent -fb )
     XML_description=$(echo "${description}" | hxunent -fb )
-    XML_description2=$(echo "${description2}" | hxunent -fb )
+    XML_description2=$(echo "Archive links: ${description2}" | hxunent -fb )
 
 
     TITLE="${XML_title}"
     LINK="${link}"
     DATE="$(date -R)"
-    DESC=$(printf "%s\nArchive links:\n%s\n" "${XML_description}" "${XML_description2_html}")
+    DESC=$(printf "%s\n\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
     loud "[info] Adding entry to RSS feed"
-    xml_ed_args=(
-        -i "/rss/channel/*[1]" -t elem -n item -v ""
-        -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}"
-        -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}"
-        -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}"
-        -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}"
-        -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}"
-    )
-
-    if [ -n "${Limageurl:-}" ]; then
-        xml_ed_args+=(
-            -s "/rss/channel/item[1]" -t elem -n "media:content" -v ""
-            -i "/rss/channel/item[1]/media:content" -t attr -n url    -v "${Limageurl}"
-            -i "/rss/channel/item[1]/media:content" -t attr -n medium -v "image"
-        )
+    if [ -n "${Limgurl//[[:space:]]/}" ]; then
+        loud "[info] Media found, inserting."
+        xmlstarlet ed -L -N media="http://search.yahoo.com/mrss/" \
+            -i "/rss/channel/*[1]" -t elem -n item -v "" \
+            -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
+            -s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
+            -s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
+            -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
+            -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
+            -s "/rss/channel/item[1]" -t elem -n "media:content" -v "" \
+            -s "/rss/channel/item[1]/media:content" -t attr -n url    -v "${Limgurl}" \
+            -s "/rss/channel/item[1]/media:content" -t attr -n medium -v "image" \
+            -d "/rss/channel/item[position()>10]" \
+            "${RSSSavePath}"
+    else
+        loud "[info] No media found, writing."
+        xmlstarlet ed -L \
+    		-i "/rss/channel/*[1]" -t elem -n item -v "" \
+    		-s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
+    		-s "/rss/channel/item[1]" -t elem -n link        -v "${LINK}" \
+    		-s "/rss/channel/item[1]" -t elem -n pubDate     -v "${DATE}" \
+    		-s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
+    		-s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
+    		-d "/rss/channel/item[position()>10]" \
+    		"${RSSSavePath}"
     fi
-
-    xmlstarlet ed -L -N media="http://search.yahoo.com/mrss/" \
-        "${xml_ed_args[@]}" \
-        -d "/rss/channel/item[position()>10]" \
-        "${RSSSavePath}"
-
 }
 
 
