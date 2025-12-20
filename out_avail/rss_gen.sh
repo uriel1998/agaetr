@@ -71,9 +71,11 @@ function rss_gen_send {
     DATE="$(date -R)"
     DESC=$(printf "%s\n\n%s\n" "${XML_description}" "${XML_description2_html}")
     GUID="${link}"
+    #TODO:This is not adding images like it's supposed to, sigh....
     loud "[info] Adding entry to RSS feed"
     if [ -n "${Limgurl//[[:space:]]/}" ]; then
         loud "[info] Media found, inserting."
+        # Pass 1: add item and media:content element
         xmlstarlet ed -L -N media="http://search.yahoo.com/mrss/" \
             -i "/rss/channel/*[1]" -t elem -n item -v "" \
             -s "/rss/channel/item[1]" -t elem -n title       -v "${TITLE}" \
@@ -82,10 +84,16 @@ function rss_gen_send {
             -s "/rss/channel/item[1]" -t elem -n description -v "${DESC}" \
             -s "/rss/channel/item[1]" -t elem -n guid        -v "${GUID}" \
             -s "/rss/channel/item[1]" -t elem -n "media:content" -v "" \
-            -s "/rss/channel/item[1]/media:content" -t attr -n url    -v "${Limgurl}" \
-            -s "/rss/channel/item[1]/media:content" -t attr -n medium -v "image" \
             -d "/rss/channel/item[position()>10]" \
-            "${RSSSavePath}"
+            "${RSSSavePath}" || return 1
+
+        # Pass 2: set attributes on the (now definitely present) media:content
+        xmlstarlet ed -L -N media="http://search.yahoo.com/mrss/" \
+            -i "/rss/channel/item[1]/media:content[not(@url)]"    -t attr -n url    -v "${Limgurl}" \
+            -i "/rss/channel/item[1]/media:content[not(@medium)]" -t attr -n medium -v "image" \
+            -u "/rss/channel/item[1]/media:content/@url"          -v "${Limgurl}" \
+            -u "/rss/channel/item[1]/media:content/@medium"       -v "image" \
+            "${RSSSavePath}" || return 1
     else
         loud "[info] No media found, writing."
         xmlstarlet ed -L \
