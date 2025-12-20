@@ -33,8 +33,6 @@ Special thanks to Alvin Alexander, [whose post](https://alvinalexander.com/pytho
 ## TODO
 
 ### Roadmap:
-* Cleanup code and ini parsing for standardization.
-* Doublecheck RSS feed generation, it's a PITA
 * send via beeper to recipient(s)
 * linkedin (via crossposter)
 * reduce logspam
