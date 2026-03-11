@@ -250,9 +250,9 @@ while [ $# -gt 0 ]; do
         --push)     # perform a push run.
                     shift
                     if [ "$LOUD" != "1" ];then
-                        "${SCRIPT_DIR}/agaetr_send.sh" --loud
+                        "${SCRIPT_DIR}/agaetr_send.sh" 
                     else
-                        "${SCRIPT_DIR}/agaetr_send.sh"
+                        "${SCRIPT_DIR}/agaetr_send.sh" --loud
                     fi
                     ;;
         --url)      # ADDING a single url.
