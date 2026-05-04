@@ -40,20 +40,20 @@ function toot_send {
         total_length=$(( tlen + d1len + d2len + hashlen + urlen ))
         diff_len=$(( 460 - total_length ))
         if [[ "$diff_len" -gt 0 ]]; then
-            printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}" > "${tempfile}"
+            printf "%s \n\n%s \n\n%s \n\n%s \n\n%s" "${title}" "${description} " "${description2} " "${hashtags}" "${link} "  > "${tempfile}"
         else
             # converting diff_len into abs sorta
             diff_len=${diff_len#-}
             if [[ "$hashlen" -gt "$diff_len" ]];then
 
-                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
+                printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title} " "${description} " "${description2} " "${link} " > "${tempfile}"
             else
                 diff_len=$(( diff_len - hashlen ))
                 d2altlen=$(( d2len - 9 ))
                 # removing the leading part, we don't want to truncate the url
                 if [[ "$d2altlen" -gt "$diff_len" ]];then
                     description2="${description2#Archive: }"
-                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2}" "${link}" > "${tempfile}"
+                    printf "%s  \n\n%s  \n\n%s  \n\n%s" "${title}" "${description}" "${description2} " "${link} " > "${tempfile}"
                 else
                     diff_len=$(( diff_len - d2len ))
                     # the difference was more than we could cut out of d2len
@@ -61,14 +61,14 @@ function toot_send {
                         # use d1len and diff_len to figure out how much to trim off d1len, post.
                         trimto=$(( d1len - diff_len - 4 ))
                         description="${description:0:trimto}... "
-                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description}" "${link}" > "${tempfile}"
+                        printf "%s  \n\n%s  \n\n%s" "${title}" "${description} " "${link} " > "${tempfile}"
                     else
                         notify-send "8"
                         diff_len=$(( diff_len - d1len ))
                         # the difference was more than we could cut out of d1len
                         trimto=$(( tlen - diff_len - 4 ))
                         title="${title:0:trimto}... "
-                        printf "%s  \n\n%s" "${title}" "${link}" > "${tempfile}"
+                        printf "%s  \n\n%s" "${title} " "${link} " > "${tempfile}"
                         # use tlen and diff_len to figure out how much to trim off title, post.
                         # this test HAS to pass, because urllen is ALWAYS pegged to 23, so it can't overflow
                     fi
@@ -77,10 +77,16 @@ function toot_send {
         fi
     else
         # I realize this is a double test.
-        printf "%s \n\n%s \n\n%s \n%s" "${title}" "${description}" "${description2}" "${link}" "${hashtags}" > "${tempfile}"
+	printf "%s\n\n%s\n\n%s\n\n%s\n%s\n" \
+		"${title}" \
+		"${description}" \
+		"${description2}" \
+		"${hashtags}" \
+		"${link}" \
+		> "${tempfile}"
     fi
 
-
+cp "${tempfile}" /home/steven/tmp/fuck.txt
 
     # Get the image, if exists, then send the post
     if [ ! -z "${imgurl}" ];then

@@ -1,11 +1,9 @@
 #!/bin/bash
 
 ##############################################################################
-#
-#  muna is a script to deobfuscate links either standalone or as part of agaetr
-#
-#  (c) Steven Saus 2025
-#  Licensed under the MIT license
+# muna, by Steven Saus 3 May 2022
+# steven@stevesaus.com
+# Licenced under the Apache License
 ##############################################################################
 
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -30,7 +28,7 @@ strip_tracking_url() {
     local orig_effective clean_effective
 
     if [ -z "${url}" ]; then
-        printf 'Usage: strip_tracking_url "URL"\n' >&2
+        loud 'Usage: strip_tracking_url "URL"\n'
         return 1
     fi
 

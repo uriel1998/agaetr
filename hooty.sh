@@ -287,7 +287,7 @@ fi
 # "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "ALT_TEXT"
 description="${TootText}"
 imgurl="${SendImage}"
-echo "$pubtime" "$title" "$description" "$link" "$hashtags" "$cw"  "${imgurl}" "$ALT_TEXT"
+echo "$pubtime" "$title" "$description " "$link" "$hashtags" "$cw"  "${imgurl}" "$ALT_TEXT"
 
 for i in "${!services_on_array[@]}"; do
     if [[ "${services_on_array[i]}" == "TRUE" ]]; then
