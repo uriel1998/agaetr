@@ -20,6 +20,24 @@ import urllib.parse
 import pathlib
 
 
+def extract_img_url(imgtag):
+    if imgtag is None:
+        return None
+
+    for attr in ('src', 'data-src', 'data-lazy-src', 'data-original'):
+        imgurl = imgtag.get(attr)
+        if imgurl:
+            return imgurl
+
+    srcset = imgtag.get('srcset')
+    if srcset:
+        first_source = srcset.split(',')[0].strip().split()[0]
+        if first_source:
+            return first_source
+
+    return None
+
+
 ########################################################################
 # Defining configuration locations and such
 ########################################################################
@@ -228,36 +246,28 @@ def parse_that_feed(url,sensitive,CW,GCW):
                     #print(imgtag)
                 # checking for tracking images
                 if soup.find("img"):
+                    is_tracking_image = False
                     if imgtag.has_attr('width'):
-                        if (int(imgtag['width']) > 2):    
-                            imgurl = imgtag['src']
-                            # seeing if there's an alt title for accessibility
-                            if imgtag.has_attr('alt'):
-                                imgalt = imgtag['alt']
-                            else: 
-                                if imgtag.has_attr('title'):
-                                    imgalt = imgtag['title']
-                                else:    
-                                    imgalt = None
-                            #checking for empty strings
-                            imgalt = imgalt.strip()
-                            if not imgalt:
-                                imgalt = post.title
-                    else:
-                        imgurl = imgtag['src']
+                        try:
+                            is_tracking_image = int(imgtag['width']) <= 2
+                        except (TypeError, ValueError):
+                            is_tracking_image = False
+
+                    if not is_tracking_image:
+                        imgurl = extract_img_url(imgtag)
                         # seeing if there's an alt title for accessibility
                         if imgtag.has_attr('alt'):
                             imgalt = imgtag['alt']
-                        else: 
+                        else:
                             if imgtag.has_attr('title'):
                                 imgalt = imgtag['title']
-                            else:    
+                            else:
                                 imgalt = None
-                        #checking for empty strings
+                        # checking for empty strings
+                        if imgalt:
+                            imgalt = imgalt.strip()
                         if not imgalt:
                             imgalt = post.title
-                        else:
-                            imgalt = imgalt.strip()
             print("# Adding " + post.title)
             
             if cwmarker > 0:  
