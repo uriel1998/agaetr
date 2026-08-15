@@ -19,6 +19,8 @@ import requests
 import urllib.parse
 import pathlib
 
+LOUD = os.environ.get("LOUD", "0") == "1"
+
 
 def extract_img_url(imgtag):
     if imgtag is None:
@@ -268,7 +270,8 @@ def parse_that_feed(url,sensitive,CW,GCW):
                             imgalt = imgalt.strip()
                         if not imgalt:
                             imgalt = post.title
-            print("# Adding " + post.title)
+            if LOUD:
+                print("# Adding " + post.title)
             
             if cwmarker > 0:  
                 words = ContentWarningString.split()
@@ -285,7 +288,8 @@ def parse_that_feed(url,sensitive,CW,GCW):
             
             f.close
         else:
-            print("## Already have " + post.title)
+            if LOUD:
+                print("## Already have " + post.title)
     return
 
 

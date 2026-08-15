@@ -200,7 +200,7 @@ function unredirector {
     local headers
     headers="$(
         wget \
-            --spider \
+            --spider --quiet \
             --server-response \
             --timeout=10 \
             --max-redirect=20 \
