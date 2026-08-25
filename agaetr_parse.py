@@ -289,7 +289,7 @@ def parse_that_feed(url,sensitive,CW,GCW):
                 HashtagsString = (" ".join(sorted(set(words2), key=words2.index)))
                 f.write(thetime + "|" + post.title + "|" + post.link + "|" + "|" + str(imgalt) + "|" + str(imgurl) + "|" + HashtagsString + "|" + str(post_description) + "\n")
             
-            f.close
+            f.close()
         else:
             if LOUD:
                 print("## Already have " + post.title)
@@ -326,11 +326,11 @@ shutil.copyfile(db,tmp)
 
 infile = open(tmp,'r')
 lines = infile.readlines()
-infile.close
+infile.close()
 out = open(db, 'w')
 for line in sorted(lines, key=lambda line: line.split()[0]):
     out.write(line)
-out.close
+out.close()
 os.remove(tmp)
 
 exit()
