@@ -26,7 +26,7 @@ PROMPT="${@:-Describe this image in one short sentence. Use no punctuation that 
 if [ ! -f "${IMAGE}" ]; then
 	if [[ $IMAGE == *"http"* ]]; then
 		TEMPFILE=$(mktemp)
-		ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+		ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0"
         wget --timeout=10 \
 			--max-redirect=20 \
             --no-check-certificate \

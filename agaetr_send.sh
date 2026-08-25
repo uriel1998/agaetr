@@ -54,6 +54,10 @@ function loud() {
 
 
 function get_instring() {
+    if [ ! -s "${XDG_DATA_HOME}/agaetr/posts.db" ];then
+        loud "[info] Nothing to post."
+        return 1
+    fi
 
     mv "${XDG_DATA_HOME}/agaetr/posts.db" "${XDG_DATA_HOME}/agaetr/posts_back.db"
     tail -n +2 "${XDG_DATA_HOME}/agaetr/posts_back.db" > "${XDG_DATA_HOME}/agaetr/posts.db"
@@ -63,40 +67,32 @@ function get_instring() {
 
     if [ -z "$instring" ];then
         loud "[info] Nothing to post."
-        exit
+        return 1
     fi
 
     loud "[info] Adding string to the posted db"
     echo "$instring" >> "${XDG_DATA_HOME}/agaetr/posted.db"
 
+    return 0
 }
 
 function parse_instring() {
-    OIFS=$IFS
-    IFS='|'
-    myarr=($(echo "$instring"))
-    IFS=$OIFS
+    local remainder=""
 
-    # pulling array into named variables so they work with sourced functions
-    # these are all set as global variables so they can be sent to sourced functions
+    IFS='|' read -r posttime title link cw imgalt imgurl hashtags description remainder <<< "${instring}"
 
     # passing published time (from dd MMM)
-    posttime=$(echo "${myarr[0]}")
     posttime2="${posttime::-6}"
     pubtime=$(date -d"$posttime2" +%d\ %b)
-    title=$(echo "${myarr[1]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-    link=$(echo "${myarr[2]}")
-    cw=$(echo "${myarr[3]}")
-    imgurl=$(echo "${myarr[5]}")
-    imgalt=$(echo "${myarr[4]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
-    hashtags=$(echo "${myarr[6]}")
-    description=$(echo "${myarr[7]}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+    title=$(echo "${title}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+    imgalt=$(echo "${imgalt}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
+    description=$(echo "${description}" | sed 's|["]|“|g' | sed 's|['\'']|’|g' )
 }
 
 function get_better_description() {
     # to strip out crappy descriptions and either omit them or, if available,
     # substitute og tags.
-    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0"
 
     patterns=("Photo illustration by" "The Independent is on the ground" "Sign up for our email newsletter" "originally published")
     patterns+="(Image Credit:"
@@ -110,7 +106,7 @@ function get_better_description() {
         fi
     done
     loud "[info] Attempting to find OpenGraph tags for description"
-    html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g' | hxunent -f ) # NOT XML SAFE YET, need -b switch
+    html=$(wget --no-check-certificate -erobots=off --timeout=15 --tries=1 --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g' | hxunent -f ) # NOT XML SAFE YET, need -b switch
 
     og_description=$(echo "${html}" | sed -n 's/.*<meta property="og:description".* content="\([^"]*\)".*/\1/p' | sed -e 's/ "/ “/g' -e 's/" /” /g' -e 's/"\./”\./g' -e 's/"\,/”\,/g' -e 's/\."/\.”/g' -e 's/\,"/\,”/g' -e 's/"/“/g' -e "s/'/’/g" -e 's/ -- /—/g' -e 's/(/❲/g' -e 's/)/❳/g' -e 's/ — /—/g' -e 's/ - /—/g'  -e 's/ – /—/g' -e 's/ – /—/g' | hxunent -f )
     if [[ "$description" == *"..."* ]] && [ "$og_description" != "" ];then
@@ -129,6 +125,8 @@ function get_better_description() {
 }
 
 function check_image() {
+    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0"
+
     loud "[info] Read in image url: ${imgurl}"
     loud "[info] Read in image alt: ${imgalt}"
     if [[ $imgurl == *missing-image* ]] || [[ $imgurl == *placeholder* ]];then
@@ -148,7 +146,7 @@ function check_image() {
     if [ "${imgurl}" != "" ];then
         #Checking the stored image url
         loud "[info] Checking existence of ${imgurl}"
-        imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
+        imagecheck=$(wget -q --spider --timeout=15 --tries=1 --no-check-certificate -erobots=off --user-agent="${ua}" "${imgurl}"; echo $?)
         if [ "${imagecheck}" -ne 0 ];then
             loud "[warn] Stored image no longer available."
             imgurl=""
@@ -162,9 +160,9 @@ function check_image() {
         # Fetch webpage content
         # using wget because some sites (independent, cough) don't return anything
         # with curl?
-        html=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
+        html=$(wget --no-check-certificate -erobots=off --timeout=15 --tries=1 --user-agent="${ua}" -O- "${link}" | sed 's|>|>\n|g')
         # Extract og:image content
-        og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p')
+        og_image=$(echo "${html}" | sed -n 's/.*<meta property="og:image".* content="\([^"]*\)".*/\1/p' | hxunent -f)
         # Extract og:image:alt content
         og_image_alt=$(echo "${html}" | sed -n 's/.*<meta property="og:image:alt".* content="\([^"]*\)".*/\1/p' | hxunent -f  )
         if [[ $og_image == http* ]];then
@@ -178,9 +176,15 @@ function check_image() {
     fi
 
     #Checking the image url AGAIN before sending it to the client
-    imagecheck=$(wget -q --spider "${imgurl}"; echo $?)
+    if [ "${imgurl}" != "" ];then
+        imagecheck=$(wget -q --spider --timeout=15 --tries=1 --no-check-certificate -erobots=off --user-agent="${ua}" "${imgurl}"; echo $?)
+    else
+        imagecheck=1
+    fi
 
-    if [ "${imagecheck}" -ne 0 ];then
+    if [ "${imgurl}" == "" ];then
+        loud "[info] No usable image found."
+    elif [ "${imagecheck}" -ne 0 ];then
         loud "[warn] Image no longer available; omitting."
         imgurl=""
         imgalt=""
@@ -274,17 +278,25 @@ done
 
 
 loud "[info] Getting instring"
-get_instring
+if ! get_instring;then
+    exit 0
+fi
 loud "[info] Parsing instring"
 parse_instring
 
 # Deshortening, deobfuscating, and unredirecting the URL with muna
+original_link="$link"
 url="$link"
 loud "[info] Running muna"
 source "$SCRIPT_DIR/muna.sh"
 strip_tracking_url
 unredirector
-link="$url"
+if [ -n "${url}" ];then
+    link="$url"
+else
+    loud "[warn] URL processing returned empty; keeping original link."
+    link="$original_link"
+fi
 
 
 loud "[info] Checking image"

@@ -20,6 +20,15 @@ A modular system to take a list of RSS feeds (or user input of a single url!), p
 - **Archival Support**: Integration with Wayback Machine for link preservation
 
 ***
+## Recent Reliability Fixes
+
+- Queue rows with an empty trailing description field now parse correctly during `--push`.
+- `--push --loud` now behaves verbosely regardless of argument order.
+- If URL cleanup or archive lookup fails, agaetr now keeps the original link instead of posting without a URL.
+- Mastodon and Bluesky senders now build post bodies more safely and avoid `eval` for posting commands.
+- A tag that exactly matches a configured CW keyword, such as `uspol`, now triggers that content warning during parsing.
+
+***
 ## Architecture Philosophy
 
 This was created because pay services are expensive, and other options are either limited or subject to frequent bitrot. The modular structure is specifically designed so that it should be easy to create a new module for additional services, as it relies on other programs to do most of the posting. Therefore, if one posting tool dies, another can be found and relatively easily swapped in without changing your whole setup.

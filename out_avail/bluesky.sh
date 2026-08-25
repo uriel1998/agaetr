@@ -14,8 +14,29 @@ function loud() {
 # loud outputs on stderr
 ##############################################################################
     if [ "${LOUD:-0}" -eq 1 ];then
-		echo "$@" 1>&2
+			echo "$@" 1>&2
 	fi
+}
+
+append_post_section() {
+    local file="$1"
+    local text="$2"
+
+    if [ -n "${text}" ];then
+        if [ -s "${file}" ];then
+            printf "\n\n%s" "${text}" >> "${file}"
+        else
+            printf "%s" "${text}" >> "${file}"
+        fi
+    fi
+}
+
+append_cmd_arg() {
+    local value="$1"
+
+    if [ -n "${value}" ];then
+        cmd_args+=("${value}")
+    fi
 }
 
 
@@ -28,7 +49,7 @@ function bluesky_send {
         title=""
     fi
 
-    binary=$(grep 'bluesky' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep '^bluesky[[:space:]]*=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     if [ "$description2" != "" ];then
         description2="Archive: ${description2}"
@@ -84,8 +105,12 @@ function bluesky_send {
             fi
         fi
     else
-        # I realize this is a double test.
-        printf "%s \n\n%s \n\n%s \n%s" "${title}" "${description}" "${description2}" "${shortlink}" "${hashtags}" > "${tempfile}"
+        : > "${tempfile}"
+        append_post_section "${tempfile}" "${title}"
+        append_post_section "${tempfile}" "${description}"
+        append_post_section "${tempfile}" "${description2}"
+        append_post_section "${tempfile}" "${shortlink}"
+        append_post_section "${tempfile}" "${hashtags}"
     fi
 
 
@@ -118,9 +143,17 @@ function bluesky_send {
         Limgurl=""
     fi
 
-    postme=$(printf "cat %s | %s post --stdin %s" "${tempfile}" "${binary}"  "${Limgurl}")
-    loud "${postme}"
-    eval "${postme}";poster_result_code=$?     # returns 0|1
+    cmd_args=("${binary}" "post" "--stdin")
+    if [ -f "${Outfile}" ];then
+        cmd_args+=("--image" "${Outfile}")
+        if [ -n "${ALT_TEXT}" ];then
+            cmd_args+=("--image-alt" "${ALT_TEXT}")
+        else
+            cmd_args+=("--image-alt" "An image pulled automatically from the post for decorative purposes only.")
+        fi
+    fi
+    loud "${cmd_args[*]}"
+    "${cmd_args[@]}" < "${tempfile}";poster_result_code=$?     # returns 0|1
 
 
     if [ -f "${Outfile}" ];then

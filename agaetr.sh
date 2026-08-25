@@ -34,6 +34,14 @@ if [ ! -d "${XDG_CONFIG_HOME}" ];then
     exit 99
 fi
 
+# Honor --loud regardless of argument order so action flags can run verbosely.
+for arg in "$@"; do
+    if [ "${arg}" = "--loud" ];then
+        export LOUD=1
+        break
+    fi
+done
+
 
 function loud() {
 ##############################################################################
@@ -85,6 +93,7 @@ display_help(){
     echo "# Usage ###########################################################"
     echo "# --pull: draw in configured RSS sources"
     echo "# --push: push out from queue"
+    echo "#          use with --loud in any argument order for verbose output"
     echo "# --muna [URL]: unredirect a URL "
     echo "# --url [URL] --description [text]: add single url to outbound queue "
     echo "# --version: report version  "
@@ -254,6 +263,7 @@ while [ $# -gt 0 ]; do
                     else
                         "${SCRIPT_DIR}/agaetr_send.sh" --loud
                     fi
+                    exit
                     ;;
         --url)      # ADDING a single url.
                     shift

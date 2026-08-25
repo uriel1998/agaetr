@@ -21,3 +21,7 @@ Daily posts with summaries to email addresses
 fixed truncation of description2 in Toot
 fixed newline presentation in hooty
 incorporating nbdz bookmarker - add save_directory to ini
+2026-08-25: fixed push queue parsing for trailing-empty fields in posts.db/posted.db rows
+2026-08-25: preserved original links when muna cannot improve or archive a URL
+2026-08-25: fixed Bluesky and Mastodon senders to avoid eval and keep stable URL/hashtag output
+2026-08-25: fixed empty-image handling, loud push argument order, and direct CW triggering from matching tags

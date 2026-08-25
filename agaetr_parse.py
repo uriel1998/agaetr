@@ -188,6 +188,9 @@ def parse_that_feed(url,sensitive,CW,GCW):
 
                     if hasattr(post, 'tags'):
                         for d in tags:
+                            if d == str.lower(keyword):
+                                cwmarker += 1
+                                ContentWarningString = ContentWarningString + " " + keyword
                             if d in ContentWarningList.split():
                                 cwmarker += 1
                                 ContentWarningString = ContentWarningString + " " + keyword

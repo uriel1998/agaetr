@@ -14,8 +14,21 @@ function loud() {
 # loud outputs on stderr
 ##############################################################################
     if [ "${LOUD:-0}" -eq 1 ];then
-		echo "$@" 1>&2
+			echo "$@" 1>&2
 	fi
+}
+
+append_post_section() {
+    local file="$1"
+    local text="$2"
+
+    if [ -n "${text}" ];then
+        if [ -s "${file}" ];then
+            printf "\n\n%s" "${text}" >> "${file}"
+        else
+            printf "%s" "${text}" >> "${file}"
+        fi
+    fi
 }
 
 
@@ -26,8 +39,8 @@ function toot_send {
         title=""
     fi
 
-    account_using=$(grep 'mastodon =' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
-    binary=$(grep 'toot' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    account_using=$(grep '^mastodon[[:space:]]*=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
+    binary=$(grep '^toot[[:space:]]*=' "${XDG_CONFIG_HOME}/agaetr/agaetr.ini" | sed 's/ //g' | awk -F '=' '{print $2}')
 
     outstring=$(printf "%s  \n\n%s  \n\n%s  \n%s" "${title}" "${description}" "${description2}" "$hashtags")
     if [ ${#outstring} -gt 460 ];then
@@ -76,17 +89,13 @@ function toot_send {
             fi
         fi
     else
-        # I realize this is a double test.
-	printf "%s\n\n%s\n\n%s\n\n%s\n%s\n" \
-		"${title}" \
-		"${description}" \
-		"${description2}" \
-		"${hashtags}" \
-		"${link}" \
-		> "${tempfile}"
+        : > "${tempfile}"
+        append_post_section "${tempfile}" "${title}"
+        append_post_section "${tempfile}" "${description}"
+        append_post_section "${tempfile}" "${description2}"
+        append_post_section "${tempfile}" "${hashtags}"
+        append_post_section "${tempfile}" "${link}"
     fi
-
-cp "${tempfile}" /home/steven/tmp/fuck.txt
 
     # Get the image, if exists, then send the post
     if [ ! -z "${imgurl}" ];then
@@ -116,22 +125,28 @@ cp "${tempfile}" /home/steven/tmp/fuck.txt
     else
         Limgurl=""
     fi
-poster_result_code=0
-    if [ ! -z "${cw}" ];then
-        #there should be commas in the cw! apply sensitive tag if there's an image
-        if [ ! -z "${imgurl}" ];then
-            #if there is an image, and it's a CW'd post, the image should be sensitive
-            cw=$(echo "--sensitive -p \"$cw\"")
-        else
-            cw=$(echo "-p \"$cw\"")
-        fi
-    else
-        cw=""
-    fi
+    poster_result_code=0
+    cw_text="${cw}"
 
-    postme=$(printf "cat %s | %s post %s %s -u %s" "${tempfile}" "$binary" "${Limgurl}" "${cw}" "${account_using}")
-    loud "${postme}"
-    eval ${postme};poster_result_code=$?     # returns 0|1
+    cmd_args=("${binary}" "post" "-u" "${account_using}")
+    if [ -f "${Outfile}" ];then
+        cmd_args+=("--media" "${Outfile}")
+        if [ -n "${ALT_TEXT}" ];then
+            cmd_args+=("--description" "${ALT_TEXT}")
+        else
+            cmd_args+=("--description" "An image pulled automatically from the post for decorative purposes only.")
+        fi
+    fi
+    if [ -n "${cw_text}" ];then
+        if [ -n "${imgurl}" ];then
+            cmd_args+=("--sensitive")
+        else
+            :
+        fi
+        cmd_args+=("-p" "${cw_text}")
+    fi
+    loud "${cmd_args[*]}"
+    "${cmd_args[@]}" < "${tempfile}";poster_result_code=$?     # returns 0|1
 
     if [ -f "${Outfile}" ];then
         rm "${Outfile}"

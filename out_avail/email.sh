@@ -47,7 +47,7 @@ function email_send {
     echo "  " >> ${tmpfile}
 
     # We have MUCH better ways of getting this email.
-    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+    local ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:154.0) Gecko/20100101 Firefox/154.0"
     input=$(wget --no-check-certificate -erobots=off --user-agent="${ua}" -O- "${link}" )
 
     antimatch=""
