@@ -1,6 +1,10 @@
 # reference, old shit
 1_reference/
 
+# AI agent / local automation state
+.codex/
+.agents/
+
 # macOS Junks
 .DS_Store
 
